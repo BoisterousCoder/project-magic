@@ -8,6 +8,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Run Server and client
 
+Run `ng build` to build the project. The build artifacts will be stored in the `public/` directory. Use the `-prod` flag for a production build.
 
 Then Run 
 
