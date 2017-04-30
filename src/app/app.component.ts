@@ -11,7 +11,7 @@ import * as socketIo from 'socket.io-client';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Project Magic';
   socket;
   constructor(){
     this.socket = socketIo.connect("localhost"); 
