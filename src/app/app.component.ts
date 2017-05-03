@@ -6,16 +6,29 @@ import * as socketIo from 'socket.io-client';
 // let pug_opts = { doctype: 'html', plugins: [pug_plugin_ng] };
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Project Magic';
-  socket;
-  constructor(){
-    this.socket = socketIo.connect("localhost"); 
-  }
-  ngOnInit() {
-  }
+    windowWidth:number;
+    windowHeight:number;
+    printScale:number;
+    boardSize:number = 100;
+    landSize:number;
+    boardZoom:number = 1;
+    isWindowVertical:boolean;
+    title = 'Project Magic';
+    socket;
+    constructor(){
+        this.socket = socketIo.connect("localhost"); 
+    }
+    onResize(event) {
+        this.windowWidth = event.target.all[12].width.baseVal.value; 
+        this.windowHeight = event.target.all[12].height.baseVal.value;
+        let smallSide = Math.min(this.windowWidth, this.windowHeight);
+        console.log(event.target);
+        this.printScale = this.boardSize/smallSide;
+        this.landSize = this.printScale * (this.boardSize/this.boardZoom);
+    }
 }
