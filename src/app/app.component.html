@@ -16,6 +16,14 @@
             <path style="fill: inherit;" d="M 0 1 L 0.5 0.5 L 1 1 Z" class="land"/>
         </g>
     </defs>
+    <svg:use 
+        *ngFor="let land of board"
+        xlink:href="#land_3way"
+        [attr.x]="land.x * landSize"
+        [attr.y]="land.y * landSize"
+        [attr.fill]="land.color" 
+        [style.transform]="'scale('+landSize+', '+landSize+')'"
+    ></use>
     <game-board [landSize]="landSize"></game-board>
     <!--<use xlink:href="#land_3way" x='50' y='50' style="fill: blue;"/>-->
 </svg>

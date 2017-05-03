@@ -16,19 +16,28 @@ export class AppComponent {
     printScale:number;
     boardSize:number = 100;
     landSize:number;
-    boardZoom:number = 1;
+    boardZoom:number = 4;
     isWindowVertical:boolean;
     title = 'Project Magic';
+	board = [
+		{
+			color:'blue',
+			x:0,
+			y:0
+		}
+	]
     socket;
     constructor(){
         this.socket = socketIo.connect("localhost"); 
     }
     onResize(event) {
-        this.windowWidth = event.target.all[12].width.baseVal.value; 
-        this.windowHeight = event.target.all[12].height.baseVal.value;
+        this.windowWidth = event.target.defaultView.innerWidth; 
+        this.windowHeight = event.target.defaultView.innerHeight;
+		console.log('window is ' + this.windowWidth + ' by ' + this.windowHeight);
         let smallSide = Math.min(this.windowWidth, this.windowHeight);
-        console.log(event.target);
-        this.printScale = this.boardSize/smallSide;
+        this.printScale = smallSide/this.boardSize;
+		console.log('print scale is ' + this.printScale);
         this.landSize = this.printScale * (this.boardSize/this.boardZoom);
+		console.log('land size is' + this.landSize);
     }
 }
