@@ -19,8 +19,8 @@
     <svg:use 
         *ngFor="let land of board"
         xlink:href="#land_3way"
-        [attr.x]="land.x"
-        [attr.y]="land.y"
+        [attr.x]="land.printX"
+        [attr.y]="land.printY"
         [attr.fill]="land.color" 
         [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', 0.5, 0.5)'"
     ></use>
