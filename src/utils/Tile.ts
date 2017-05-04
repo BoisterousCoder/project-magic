@@ -7,7 +7,7 @@ export class Tile extends Point{
         return 'land_3way';
     }
     get rotation(){
-        return 0;
+        return 90;
     }
     get entrances(){
         return this.__entrances
