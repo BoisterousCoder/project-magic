@@ -22,7 +22,6 @@
         [attr.x]="land.x"
         [attr.y]="land.y"
         [attr.fill]="land.color" 
-        [attr.transform]="'scale('+landSize+', '+landSize+')'"
-        [attr.transform]="'rotate('+land.rotation+'deg)'"
+        [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', 0.5, 0.5)'"
     ></use>
 </svg>
