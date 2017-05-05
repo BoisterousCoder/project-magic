@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import * as socketIo from 'socket.io-client';
 import {gameLoop, gameInit, FPS, STARTDELAY} from '../utils/game';
 import {Tile} from '../utils/Tile'
 import { Observable } from 'rxjs/Rx';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-root',
@@ -21,8 +22,8 @@ export class AppComponent {
     title = 'Project Magic';
 	board:Tile[] = [];
     socket;
-    constructor(){
-        this.socket = socketIo.connect("localhost"); 
+    constructor(@Inject(DOCUMENT) private document: any) { 
+        this.socket = socketIo.connect(this.document.location.href); 
     }
     ngOnInit(){
         this.board = gameInit(this.board, this.socket);
@@ -43,5 +44,10 @@ export class AppComponent {
         }else{
             this.isWindowVertical=false;
         }
+    }
+    onTileClick(event){
+        let target = event.target || event.srcElement || event.currentTarget;
+        let id = target.attributes.tileId;
+        this.board[id].onClick(this.socket);
     }
 }

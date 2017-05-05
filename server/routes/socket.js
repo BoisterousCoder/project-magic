@@ -11,6 +11,9 @@ module.exports = function(io) {
             //io.emit('disconnector', socket.id);
             peopleConected.set(peopleConected.get() - 1);
         });
+        socket.on('clickedElement', function(res) {
+            console.log('You clicked tile ' + id);
+        });
 
         //brodcast example
         // socket.on('joinRequest', function(res) {
