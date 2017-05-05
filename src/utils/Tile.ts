@@ -11,7 +11,17 @@ export class Tile extends Point{
         return this.__displayId;
     }
     get rotation(){
+<<<<<<< HEAD
         return this.__rotation;
+=======
+        return 270;
+    }
+    get printX(){
+        return this.x*Math.sin((this.rotation/180)*Math.PI);
+    }
+    get printY(){
+        return this.y*Math.cos((this.rotation/180)*Math.PI);
+>>>>>>> origin/master
     }
     get entrances(){
         return this.__entrances
