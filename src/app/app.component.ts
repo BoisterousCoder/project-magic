@@ -25,7 +25,7 @@ export class AppComponent {
         this.socket = socketIo.connect("localhost"); 
     }
     ngOnInit(){
-        this.board = gameInit(this.board);
+        this.board = gameInit(this.board, this.socket);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
         timer.subscribe(t=>this.ticks = gameLoop(t, this.board));
     }

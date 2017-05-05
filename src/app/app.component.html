@@ -21,7 +21,10 @@
         xlink:href="#land_3way"
         [attr.x]="land.x"
         [attr.y]="land.y"
-        [attr.fill]="land.color" 
-        [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', 0.5, 0.5)'"
+        [attr.fill]="land.color"
+        [attr.stroke]="land.borderColor"
+        [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x) + ', ' + (0.5+land.y) + ')'"
+        stroke-linecap="square"
+        stroke-width="0.025"
     ></use>
 </svg>
