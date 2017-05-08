@@ -17,7 +17,7 @@ export class AppComponent {
     boardSize:number = 100;
     landSize:number;
     ticks:number = 0;
-    boardZoom:number = 4;
+    boardZoom:number = 16;
     isWindowVertical:boolean;
     title = 'Project Magic';
 	board:Tile[] = [];

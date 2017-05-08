@@ -16,7 +16,26 @@ module.exports = function(io) {
         });
         socket.on('getTiles', function(res){
             console.log('setting tiles');
-            socket.emit('setTile', JSON.stringify({x:1, y:1, id:0}))
+            let id = 0;
+            for(let x = 0; x < 16; x++){
+                for(let y = 0; y < 16; y++){
+                    let tileData = JSON.stringify({
+                        x:x, 
+                        y:y, 
+                        id:id,
+                        color:'green',
+                        entrances:[
+                            Math.round(Math.random()), 
+                            Math.round(Math.random()), 
+                            Math.round(Math.random()), 
+                            Math.round(Math.random())
+                        ]
+                    });
+                    socket.emit('setTile', tileData);
+                    id++;
+                }
+            }
+            
         });
 
 

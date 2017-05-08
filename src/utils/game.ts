@@ -4,31 +4,22 @@ export const FPS = 30;
 export const STARTDELAY = 2000;
 
 export function gameInit(board:Tile[], socket){
-    let boardSize = 4;
-    for(let x = 0; x < boardSize; x++){
-        for(let y = 0; y < boardSize; y++){
-            let tile = new Tile(x, y);
-            tile.entrances = [0,0,1,0];
-            tile.id = board.length;
-            board.push(tile);
-        }
-    }
-
     socket.on('setTile', function(res:string) {
-        board = tileify(res);
+        console.log('setting tile '+res);
+        let tileData = JSON.parse(res);
+        board[tileData.id] = tileify(tileData);
     });
     
     socket.emit('getTiles', socket.id);
     return board;
 }
 
-function tileify(res:string){
+function tileify(tileData){
     let board:Tile[]=[];
-    let tileData = JSON.parse(res);
     let tile = new Tile(tileData.x, tileData.y);
     tile.id = tileData.id;
-    board[tile.id] = tile;
-    return board;
+    tile.entrances = tileData.entrances;
+    return tile;
 }
 
 export function gameLoop(iteration:number, board:Tile[]){
