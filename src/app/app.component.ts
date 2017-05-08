@@ -23,6 +23,7 @@ export class AppComponent {
 	board:Tile[] = [];
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
+        console.log(this.document.location.href);
         this.socket = socketIo.connect(this.document.location.href); 
     }
     ngOnInit(){
@@ -47,7 +48,8 @@ export class AppComponent {
     }
     onTileClick(event){
         let target = event.target || event.srcElement || event.currentTarget;
-        let id = target.attributes.tileId;
+        let id = target.attributes.tileId.value;
+        id = Number(id);
         this.board[id].onClick(this.socket);
     }
 }

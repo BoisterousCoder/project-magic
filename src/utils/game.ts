@@ -13,21 +13,20 @@ export function gameInit(board:Tile[], socket){
         }
     }
 
-    socket.on('setAllPeices', function(res:string) {
-        board = boardify(res);
+    socket.on('setTile', function(res:string) {
+        board = tileify(res);
     });
     
-    socket.emit('getPeices', socket.id);
+    socket.emit('getTiles', socket.id);
     return board;
 }
 
-function boardify(res:string){
+function tileify(res:string){
     let board:Tile[]=[];
-    JSON.parse(res).board.foreach(function(tileData){
-        let tile = new Tile(tileData.x, tileData.y);
-        tile.id = tileData.id;
-        board.push(tile);
-    });
+    let tileData = JSON.parse(res);
+    let tile = new Tile(tileData.x, tileData.y);
+    tile.id = tileData.id;
+    board[tile.id] = tile;
     return board;
 }
 
