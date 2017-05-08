@@ -23,7 +23,7 @@
     </defs>
     <svg:use 
         *ngFor="let land of board"
-        xlink:href="#land_3way"
+        [attr.xlink:href]="'#'+land.dispalyId"
         [attr.x]="land.x"
         [attr.y]="land.y"
         [attr.fill]="land.color"

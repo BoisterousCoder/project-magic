@@ -8,6 +8,7 @@ export function gameInit(board:Tile[], socket){
     for(let x = 0; x < boardSize; x++){
         for(let y = 0; y < boardSize; y++){
             let tile = new Tile(x, y);
+            tile.entrances = [0,0,1,0];
             tile.id = board.length;
             board.push(tile);
         }
