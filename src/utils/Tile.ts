@@ -40,6 +40,10 @@ export class Tile extends Point{
                 this.__displayId = 'land_2way_strait';
                 this.__rotation = 0;
             break;
+            case([0,1,1,0].toString()):
+                this.__displayId = 'land_2way_curve';
+                this.__rotation = 0;
+            break;
             case([1,1,1,0].toString()):
                 this.__displayId = 'land_3way';
                 this.__rotation = 0;

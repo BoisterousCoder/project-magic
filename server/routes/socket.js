@@ -19,7 +19,7 @@ module.exports = function(io) {
             let id = 0;
             for(let x = 0; x < 16; x++){
                 for(let y = 0; y < 16; y++){
-                    let tileData = JSON.stringify({
+                    let tileData = {
                         x:x, 
                         y:y, 
                         id:id,
@@ -30,9 +30,11 @@ module.exports = function(io) {
                             Math.round(Math.random()), 
                             Math.round(Math.random())
                         ]
-                    });
-                    socket.emit('setTile', tileData);
-                    id++;
+                    };
+                    if(tileData.entrances.stringify() !== [0,0,0,0].stringify()){
+                        socket.emit('setTile', JSON.stringify(tileData));
+                        id++;
+                    }
                 }
             }
             
