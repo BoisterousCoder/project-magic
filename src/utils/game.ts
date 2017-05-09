@@ -15,9 +15,10 @@ export function gameInit(board:Tile[], socket){
 }
 
 function tileify(tileData){
-    let board:Tile[]=[];
     let tile = new Tile(tileData.x, tileData.y);
     tile.id = tileData.id;
+    tile.color = tileData.color;
+    tile.unitIds = tileData.unitIds;
     tile.entrances = tileData.entrances;
     return tile;
 }
