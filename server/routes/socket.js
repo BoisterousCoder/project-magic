@@ -16,107 +16,91 @@ module.exports = function(io) {
         });
         socket.on('getTiles', function(res){
             console.log('setting tiles');
-            genGameBoard(function(tiles){
-                tiles.map(function(tileData){
-                    socket.emit('setTile', JSON.stringify(tileData));
-                });
+            genGameBoard(function(tileData){
+                socket.emit('setTile', JSON.stringify(tileData));
             });
         });
     });
 };
 
 function genGameBoard(callback){
-    genNode(16, 16, [], function(nodes){
-        let tiles = [];
-        nodes.map(function(node, i){
-            tiles.push({
-                x:node.x,
-                y:node.y,
-                entrances:node.sides,
-                color:node.color
-            });
-        });
-        callback(tiles);
+    genNode(8, 8, [], function(node){
+        tile = {
+            x:node.x,
+            y:node.y,
+            entrances:node.sides,
+            color:'green'
+        };
+        callback(tile);
     });
 }
-// function genNodes(callback){
-//     nodes = [];
-//     nodes.push({x:8, y:8, sides:[1,1,1,1]});
-//     let isEmptySides = false;
-//     while(!isEmptySides){
-//         isEmptySides = true;
-//         nodes.map(function(node, i){
-//             if(node.sides[1] && !checkForNode(node.x, node.y-1, nodes)){
-//                 nodes.push(genNode(node.x, node.y-1));
-//                 isEmptySides = false;
-//             }
-//             if(node.sides[2] && !checkForNode(node.x+1, node.y, nodes)){
-//                 nodes.push(genNode(node.x+1, node.y));
-//                 isEmptySides = false;
-//             }
-//             if(node.sides[3] && !checkForNode(node.x, node.y+1, nodes)){
-//                 nodes.push(genNode(node.x, node.y+1));
-//                 isEmptySides = false;
-//             }
-//             if(node.sides[4] && !checkForNode(node.x-1, node.y, nodes)){
-//                 nodes.push(genNode(node.x-1, node.y));
-//                 isEmptySides = false;
-//             }
-//         });
-//         console.log('currennt number of nodes: ' + nodes.length);
-//     }
-//     callback(nodes);
-// }
 function genNode(x, y, otherNodes, callback){
     console.log('making node at '+x +':'+y)
     let thisNode = {x:x, y:y, sides:[]};
     for(let otherNode of otherNodes){
-        if(otherNode.x==(x-1)&&otherNode.y==(y)){
-            thisNode.sides[4] = 1;
-        }else{
-            thisNode = setSideValue(thisNode, 4);
+        if(otherNode.x==(x)&&otherNode.y==(y-1)){
+            thisNode.sides[0] = 1;
         }
         if(otherNode.x==(x+1)&&otherNode.y==(y)){
-            thisNode.sides[2] = 1;
-        }else{
-            thisNode = setSideValue(thisNode, 4);
-        }
-        if(otherNode.x==(x)&&otherNode.y==(y-1)){
             thisNode.sides[1] = 1;
-        }else{
-            thisNode = setSideValue(thisNode, 4);
         }
         if(otherNode.x==(x)&&otherNode.y==(y+1)){
+            thisNode.sides[2] = 1;
+        }
+        if(otherNode.x==(x-1)&&otherNode.y==(y)){
             thisNode.sides[3] = 1;
-        }else{
-            thisNode = setSideValue(thisNode, 4);
         }
     }
-    thisNode.sides.map(function(isSideAnEntrance, i){
-        if(isSideAnEntrance){
-            if(i==0){
-                
-            }
-        } 
-    });
-    return thisNode;
+    for(let i = 0; i<4; i++){
+        if(!thisNode.sides[i]){
+            thisNode = setSideValue(thisNode, otherNodes, i, callback);
+        }
+    }
+    otherNodes.push(thisNode);
+    function otherNodeCallback(node){
+        callback(node);
+    }
+    console.log(thisNode.sides);
+    // thisNode.sides.map(function(isSideAnEntrance, i){
+    //     if(isSideAnEntrance){
+            
+    //     } 
+    // });
+    callback(thisNode);
 }
-function setSideValue(node, sideNumber){
-    let rand=Math.ceil(Math.random()*100);
-    if(rand < 33){
-        node.sides[sideNumber] = 1;
+function setSideValue(node, otherNodes, sideNumber, callback){
+    console.log('genning side value')
+    if(node.x < 16 && node.x > 0 && node.y < 16 && node.y > 0){
+        let rand=Math.ceil(Math.random()*100);
+        if(rand < 66){
+            node.sides[sideNumber] = 1;
+            console.log('branching...')
+            switch(sideNumber){
+                case(0):
+                    genNode(node.x, node.y, otherNodes, callback);
+                    areAllEntrancesClosed=false;
+                    break;
+                case(1):
+                    genNode(node.x, node.y, otherNodes, callback);
+                    areAllEntrancesClosed=false;
+                    break;
+                case(2):
+                    genNode(node.x, node.y, otherNodes, callback);
+                    areAllEntrancesClosed=false;
+                    break;
+                case(3):
+                    genNode(node.x, node.y, otherNodes, callback);
+                    areAllEntrancesClosed=false;
+                    break;
+            }
+        }else{
+            node.sides[sideNumber] = 0;
+        }
+    }else{
+        node.sides = [0,0,0,0];
     }
     return node;
 }
-// function checkForNode(x, y, nodes){
-//     let returnValue = false;
-//     for(let node of nodes){
-//         if(node.x==x&&node.y==y){
-//             returnValue = node;
-//         }
-//     }
-//     return returnValue;
-// }
 
 function Wrapper(value, callback) {
     this.value = value;
