@@ -18,6 +18,13 @@ export class Point{
 		this.y *= scalar;
 		return this;
 	}
+	isAtLocation(x:number, y:number){
+		if(x==this.x&&y==this.y){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	get rad() {
 		return Math.atan2(this.y, this.x)
 	}

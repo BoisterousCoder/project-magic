@@ -52,18 +52,23 @@ function genNodes(){
     nodes.push({x:8, y:8, sides:[1,1,1,1]});
     let isEmptySides = false;
     while(!isEmptySides){
+        isEmptySides = true;
         nodes.map(function(node, i){
             if(node.sides[1] && !checkForNode(x, y-1)){
                 genNode(x, y-1);
+                isEmptySides = false;
             }
             if(node.sides[2] && !checkForNode(x+1, y)){
                 genNode(x+1, y);
+                isEmptySides = false;
             }
             if(node.sides[3] && !checkForNode(x, y+1)){
                 genNode(x, y+1);
+                isEmptySides = false;
             }
             if(node.sides[4] && !checkForNode(x-1, y)){
                 genNode(x-1, y);
+                isEmptySides = false;
             }
         });
     }
@@ -84,7 +89,13 @@ function genNode(x, y){
             thisNode.sides[3] = 1;
         }
     }
-    thisNode.map(function(node){
+    thisNode.sides.map(function(isSideAnEntrance, i){
+        if(!isSideAnEntrance){
+            let rand=Math.ceil(Math.random()*100);
+            if(rand < 33){
+                thisNode.sides[i] = 1;
+            }
+        }
         
     });
 }
