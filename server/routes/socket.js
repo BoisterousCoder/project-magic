@@ -15,66 +15,61 @@ module.exports = function(io) {
             console.log('You clicked tile ' + res);
         });
         socket.on('getTiles', function(res){
-            
             console.log('setting tiles');
-            let id = 0;
-            for(let x = 0; x < 16; x++){
-                for(let y = 0; y < 16; y++){
-                    let tileData = {
-                        x:x, 
-                        y:y, 
-                        id:id,
-                        unitIds:[],
-                        color:'green',
-                        entrances:[
-                            Math.round(Math.random()), 
-                            Math.round(Math.random()), 
-                            Math.round(Math.random()), 
-                            Math.round(Math.random())
-                        ]
-                    };
-                    if(tileData.entrances.toString() !== [0,0,0,0].toString()){
-                        socket.emit('setTile', JSON.stringify(tileData));
-                        id++;
-                    }
-                }
-            }
-            
+            genGameBoard(function(tiles){
+                tiles.map(function(tileData){
+                    socket.emit('setTile', JSON.stringify(tileData));
+                });
+            });
         });
     });
 };
 
-function genGameBoard(){
-
+function genGameBoard(callback){
+    let nodes = genNodes(function(nodes){
+        let tiles = [];
+        nodes.map(function(node, i){
+            tiles.push({
+                x:node.x,
+                y:node.y,
+                entrances:node.sides,
+                color:node.color
+            });
+        });
+        callback(tiles);
+    });
 }
-function genNodes(){
+function genNodes(callback){
     nodes = [];
     nodes.push({x:8, y:8, sides:[1,1,1,1]});
     let isEmptySides = false;
     while(!isEmptySides){
         isEmptySides = true;
         nodes.map(function(node, i){
-            if(node.sides[1] && !checkForNode(x, y-1)){
-                genNode(x, y-1);
+            if(node.sides[1] && !checkForNode(node.x, node.y-1, nodes)){
+                nodes.push(genNode(node.x, node.y-1));
                 isEmptySides = false;
             }
-            if(node.sides[2] && !checkForNode(x+1, y)){
-                genNode(x+1, y);
+            if(node.sides[2] && !checkForNode(node.x+1, node.y, nodes)){
+                nodes.push(genNode(node.x+1, node.y));
                 isEmptySides = false;
             }
-            if(node.sides[3] && !checkForNode(x, y+1)){
-                genNode(x, y+1);
+            if(node.sides[3] && !checkForNode(node.x, node.y+1, nodes)){
+                nodes.push(genNode(node.x, node.y+1));
                 isEmptySides = false;
             }
-            if(node.sides[4] && !checkForNode(x-1, y)){
-                genNode(x-1, y);
+            if(node.sides[4] && !checkForNode(node.x-1, node.y, nodes)){
+                nodes.push(genNode(node.x-1, node.y));
                 isEmptySides = false;
             }
         });
+        console.log('currennt number of nodes: ' + nodes.length);
     }
+    callback(nodes);
 }
 function genNode(x, y){
-    let thisNode = {x:x, y:y};
+    console.log('making node at '+x +':'+y)
+    let thisNode = {x:x, y:y, sides:[]};
     for(let node of nodes){
         if(node.x==(x-1)&&node.y==(y)){
             thisNode.sides[4] = 1;
@@ -95,9 +90,9 @@ function genNode(x, y){
             if(rand < 33){
                 thisNode.sides[i] = 1;
             }
-        }
-        
+        } 
     });
+    return thisNode;
 }
 function checkForNode(x, y, nodes){
     let returnValue = false;
