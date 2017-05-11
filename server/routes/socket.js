@@ -16,8 +16,14 @@ module.exports = function(io) {
         });
         socket.on('getTiles', function(res){
             console.log('setting tiles');
+            let tileId = 0;
             genGameBoard(function(tileData){
-                socket.emit('setTile', JSON.stringify(tileData));
+                if(tileData.entrances.toString() !== [0,0,0,0].toString()){
+                    console.log('sending data...');
+                    tileData.id = tileId;
+                    socket.emit('setTile', JSON.stringify(tileData));
+                    tileId++;
+                }
             });
         });
     });
@@ -57,9 +63,6 @@ function genNode(x, y, otherNodes, callback){
         }
     }
     otherNodes.push(thisNode);
-    function otherNodeCallback(node){
-        callback(node);
-    }
     console.log(thisNode.sides);
     // thisNode.sides.map(function(isSideAnEntrance, i){
     //     if(isSideAnEntrance){
@@ -72,24 +75,24 @@ function setSideValue(node, otherNodes, sideNumber, callback){
     console.log('genning side value')
     if(node.x < 16 && node.x > 0 && node.y < 16 && node.y > 0){
         let rand=Math.ceil(Math.random()*100);
-        if(rand < 66){
+        if(rand < 33){
             node.sides[sideNumber] = 1;
             console.log('branching...')
             switch(sideNumber){
                 case(0):
-                    genNode(node.x, node.y, otherNodes, callback);
+                    genNode(node.x, node.y-1, otherNodes, callback);
                     areAllEntrancesClosed=false;
                     break;
                 case(1):
-                    genNode(node.x, node.y, otherNodes, callback);
+                    genNode(node.x+1, node.y, otherNodes, callback);
                     areAllEntrancesClosed=false;
                     break;
                 case(2):
-                    genNode(node.x, node.y, otherNodes, callback);
+                    genNode(node.x, node.y+1, otherNodes, callback);
                     areAllEntrancesClosed=false;
                     break;
                 case(3):
-                    genNode(node.x, node.y, otherNodes, callback);
+                    genNode(node.x-1, node.y, otherNodes, callback);
                     areAllEntrancesClosed=false;
                     break;
             }

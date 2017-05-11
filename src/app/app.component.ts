@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import * as socketIo from 'socket.io-client';
-import {gameLoop, gameInit, FPS, STARTDELAY} from '../utils/game';
+import {gameLoop, FPS, STARTDELAY} from '../utils/game';
 import {Tile} from '../utils/Tile'
 import { Observable } from 'rxjs/Rx';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -27,9 +27,23 @@ export class AppComponent {
         this.socket = socketIo.connect(this.document.location.href); 
     }
     ngOnInit(){
-        this.board = gameInit(this.board, this.socket);
+        //this.board = gameInit(this.board, this.socket);
+        this.initSocketHandlers();
+        this.socket.emit('getTiles', this.socket.id);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
-        timer.subscribe(t=>this.ticks = gameLoop(t, this.board));
+        //timer.subscribe(t=>this.ticks = gameLoop(t, function(res){
+       // }));
+    }
+    initSocketHandlers(){
+        let self = this;
+        this.socket.on('setTile', function(res){
+            self.onTileSet(res);
+        });
+    }
+    onTileSet(res:string){
+        console.log('setting tile '+res);
+        let tileData = JSON.parse(res);
+        this.board[tileData.id] = tileify(tileData);
     }
     onResize(event) {
         this.windowWidth = event.target.defaultView.innerWidth; 
@@ -52,4 +66,13 @@ export class AppComponent {
         id = Number(id);
         this.board[id].onClick(this.socket);
     }
+}
+
+function tileify(tileData){
+    let tile = new Tile(tileData.x, tileData.y);
+    tile.id = tileData.id;
+    tile.color = tileData.color;
+    tile.unitIds = tileData.unitIds;
+    tile.entrances = tileData.entrances;
+    return tile;
 }
