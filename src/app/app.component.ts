@@ -20,7 +20,7 @@ export class AppComponent {
     boardZoom:number = 16;
     isWindowVertical:boolean;
     title = 'Project Magic';
-	board:Tile[] = [];
+    board:Tile[] = [];
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
         console.log(this.document.location.href);
@@ -46,14 +46,21 @@ export class AppComponent {
         this.board[tileData.id] = tileify(tileData);
     }
     onResize(event) {
-        this.windowWidth = event.target.defaultView.innerWidth; 
-        this.windowHeight = event.target.defaultView.innerHeight;
-		console.log('window is ' + this.windowWidth + ' by ' + this.windowHeight);
+        // console.log(event);
+        let window;
+        if(event.target.defaultView){
+            window = event.target.defaultView
+        }else{
+            window = event.target;
+        }
+        this.windowWidth = window.innerWidth; 
+        this.windowHeight = window.innerHeight;
+        // console.log('window is ' + this.windowWidth + ' by ' + this.windowHeight);
         let smallSide = Math.min(this.windowWidth, this.windowHeight);
         this.printScale = smallSide/this.boardSize;
-		console.log('print scale is ' + this.printScale);
+        // console.log('print scale is ' + this.printScale);
         this.landSize = this.printScale * (this.boardSize/this.boardZoom);
-		console.log('land size is' + this.landSize);
+        // console.log('land size is' + this.landSize);
         if(smallSide == this.windowHeight){
             this.isWindowVertical=true;
         }else{
