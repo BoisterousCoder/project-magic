@@ -45,6 +45,12 @@ export class AppComponent {
         let tileData = JSON.parse(res);
         this.board[tileData.id] = tileify(tileData);
     }
+    onWheelUp(event){
+        console.log(event);
+    }
+    onWheelDown(event){
+        console.log(event);
+    }
     onResize(event) {
         // console.log(event);
         let window;
