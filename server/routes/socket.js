@@ -20,7 +20,6 @@ module.exports = function(io) {
             let tileId = 0;
             GEN_GAME_BOARD(function(tileData){
                 if(tileData.entrances.toString() !== [0,0,0,0].toString()){
-                    // console.log('sending tile '+tileId+' to client...');
                     tileData.id = tileId;
                     socket.emit('setTile', JSON.stringify(tileData));
                     tileId++;
