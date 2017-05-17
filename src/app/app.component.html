@@ -2,3 +2,13 @@
 *ngIf='isInAGame'
 [socket]='socket'
 ></game-board>
+<div
+*ngIf='!isInAGame'>
+    <ul>
+        <li *ngFor="let gameListing of gameListings">
+            <span *ngIf="gameListing">
+                {{gameListing.name}} created {{gameListing.timeCreated}} <button>Join</button>
+            </span>
+        </li>
+    </ul>
+</div>
