@@ -10,6 +10,7 @@ import * as socketIo from 'socket.io-client';
 })
 export class AppComponent {
     isInAGame:boolean=false;
+    currentGameId:number;
     gameListings:GameListing[]=[];
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
@@ -38,6 +39,11 @@ export class AppComponent {
                 self.onRemoveGameListing(res);
             }
         });
+        this.socket.on('joinGame', function(res){
+            if(!self.isInAGame){
+                self.onJoinGame(Number(res));
+            }
+        });
     }
     onMakeGameListing(res){
         res = JSON.parse(res);
@@ -53,5 +59,12 @@ export class AppComponent {
     onRemoveGameListing(res){
         res = JSON.parse(res);
         this.gameListings[res.id] = undefined;
+    }
+    onJoinButton(gameId){
+        this.socket.emit('JoinGame', gameId);
+    }
+    onJoinGame(gameId){
+        this.isInAGame = true;
+        this.currentGameId = gameId;
     }
 }

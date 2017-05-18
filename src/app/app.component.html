@@ -7,7 +7,7 @@
     <ul>
         <li *ngFor="let gameListing of gameListings">
             <span *ngIf="gameListing">
-                {{gameListing.name}} created {{gameListing.timeCreated}} <button>Join</button>
+                {{gameListing.name}} created {{gameListing.timeCreated}} <button (click)='onJoinButton(gameListing.id)'>Join</button>
             </span>
         </li>
     </ul>
