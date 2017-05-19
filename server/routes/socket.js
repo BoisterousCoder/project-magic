@@ -1,7 +1,7 @@
 const GEN_GAME_BOARD = require('../game/genGameBoard.js');
 module.exports = function(io) {
-    var gameListings = [{name:'test', id:0, time:new Date().getTime()}];
-
+    var gameListings = [{name:'test', id:0, players:0, time:new Date().getTime()}];
+    var games = [{id:0, players:[], board:[]}]
     var peopleConected = new Wrapper(0, function() {
         console.log('There are now ' + peopleConected.get() + ' people conected.');
     });
@@ -32,6 +32,14 @@ module.exports = function(io) {
                     tileId++;
                 }
             });
+        });
+        socket.on('joinGame', function(gameId){
+            let game = games[gameId];
+            game.players.push({
+                socket:socket,
+                id:game.players.length
+            });
+            gameListings[gameId].players = game.players.length;
         });
     });
 };

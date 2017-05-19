@@ -61,7 +61,7 @@ export class AppComponent {
         this.gameListings[res.id] = undefined;
     }
     onJoinButton(gameId){
-        this.socket.emit('JoinGame', gameId);
+        this.socket.emit('joinGame', gameId);
     }
     onJoinGame(gameId){
         this.isInAGame = true;
