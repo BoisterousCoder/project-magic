@@ -1,6 +1,7 @@
 <game-board 
 *ngIf='isInAGame'
 [socket]='socket'
+[gameId]='currentGameId'
 ></game-board>
 <div
 *ngIf='!isInAGame'>

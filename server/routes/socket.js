@@ -23,15 +23,22 @@ module.exports = function(io) {
             console.log('You clicked tile ' + res);
         });
         socket.on('getTiles', function(res){
-            console.log('Genning tiles...');
+            let game = games[Number(res)];
+            console.log('Genning tiles for game ' + gameId);
             let tileId = 0;
-            GEN_GAME_BOARD(function(tileData){
-                if(tileData.entrances.toString() !== [0,0,0,0].toString()){
-                    tileData.id = tileId;
-                    socket.emit('setTile', JSON.stringify(tileData));
-                    tileId++;
-                }
-            });
+            if(game.board.length < 5){
+                GEN_GAME_BOARD(function(tileData){
+                    if(tileData.entrances.toString() !== [0,0,0,0].toString()){
+                        tileData.id = tileId;
+                        socket.emit('setTile', JSON.stringify(tileData));
+                        tileId++;
+                    }
+                });
+            }else{
+                game.board.forEach(function(tileData){
+                     socket.emit('setTile', JSON.stringify(tileData));
+                 });
+            }
         });
         socket.on('joinGame', function(gameId){
             let game = games[gameId];

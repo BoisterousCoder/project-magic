@@ -20,6 +20,7 @@ export class GameBoardComponent implements OnInit {
     title = 'Project Magic';
     board:Tile[] = [];
     @Input() socket;
+    @Input() gameId;
     ngOnInit(){
         this.initSocketHandlers();
         this.socket.emit('getTiles', this.socket.id);
