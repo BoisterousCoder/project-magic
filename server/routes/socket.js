@@ -24,7 +24,7 @@ module.exports = function(io) {
         });
         socket.on('getTiles', function(res){
             let game = games[Number(res)];
-            console.log('Genning tiles for game ' + gameId);
+            console.log('Genning tiles for game ' + game.id);
             let tileId = 0;
             if(game.board.length < 5){
                 GEN_GAME_BOARD(function(tileData){
@@ -41,12 +41,14 @@ module.exports = function(io) {
             }
         });
         socket.on('joinGame', function(gameId){
+            console.log('sending to player to game ' + gameId);
             let game = games[gameId];
             game.players.push({
                 socket:socket,
                 id:game.players.length
             });
             gameListings[gameId].players = game.players.length;
+            socket.emit('joinGame', gameId);
         });
     });
 };
