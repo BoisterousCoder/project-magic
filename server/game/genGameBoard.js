@@ -1,4 +1,5 @@
 const GENCHANCE = 53;
+const BOARDSIZE = 32;
 
 module.exports = function(callback){
     let tiles = [];
@@ -128,7 +129,7 @@ function setSideValue(thisNode, otherNodes, sideNumber){
 
 function checkForNode(x, y, nodes){
     let isNodeAtLocation = false;
-    if(x <= 15 && x >= 0 && y <= 15 && y >= 0){
+    if(x < BOARDSIZE && x >= 0 && y < BOARDSIZE && y >= 0){
         for(let node of nodes){
             if(node.x == x && node.y == y){
                 isNodeAtLocation = true;

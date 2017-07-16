@@ -1,4 +1,10 @@
-<svg id='viewbox' width='100%' height='100%' (window:resize)="onResize($event)" (window:load)="onResize($event)" (mouseWheelUp)="onWheelUp(event)" (mouseWheelDown)="onWheelDown(event)">
+<svg id='viewbox' 
+    width='100%' height='100%' 
+    (window:resize)="onResize($event)"
+    (window:scroll)="onScroll($event)"
+    (mousedown)="mouse.onDown($event)"
+    (mousemove)="mouse.onMove($event, 1/landSize)"
+    (mouseup)="mouse.onUp($event)">
     <defs>
         <g id='land_4way'>
             <path stroke='none' style="fill: inherit;" d="M 0 0 L 0 1 L 1 1 L 1 0 Z" class="land"/>
@@ -24,11 +30,14 @@
     <svg:use 
         *ngFor="let land of board"
         [attr.xlink:href]="'#'+land.dispalyId"
-        [attr.x]="land.x"
-        [attr.y]="land.y"
+        [attr.x]="land.x + viewOffset.x"
+        [attr.y]="land.y + viewOffset.y"
         [attr.fill]="land.color"
         [attr.tileId]='land.id'
-        [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x) + ', ' + (0.5+land.y) + ')'"
+        [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x+viewOffset.x) + ', ' + (0.5+land.y+viewOffset.y) + ')'"
         (click)="onTileClick($event)"
     ></use>
 </svg>
+<p id='makeScroll'>
+    Don't look at me! I'm ugly! I'm also a bug if you can see me.
+</p>

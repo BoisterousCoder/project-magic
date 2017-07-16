@@ -23,6 +23,7 @@ module.exports = function(io) {
             console.log('You clicked tile ' + res);
         });
         socket.on('getTiles', function(res){
+            //TODO check if user is assined to game
             let game = games[Number(res)];
             console.log('Genning tiles for game ' + game.id);
             let tileId = 0;
