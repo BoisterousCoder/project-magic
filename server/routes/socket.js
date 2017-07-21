@@ -1,3 +1,6 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GEN_GAME_BOARD = require('../game/genGameBoard.js');
 module.exports = function(io) {
     var gameListings = [{name:'test', id:0, players:0, time:new Date().getTime()}];

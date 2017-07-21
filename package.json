@@ -1,7 +1,7 @@
 {
   "name": "project-magic",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "MPL2",
   "scripts": {
     "ng": "ng",
     "start": "start ng build && node server/bin/www.js",
