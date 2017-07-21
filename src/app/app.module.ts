@@ -6,12 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { MouseWheelDirective } from './mousewheel.directive';
 import { GameBoardComponent } from './game-board/game-board.component';
+import { SideBoardComponent } from './side-board/side-board.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameBoardComponent, 
-    MouseWheelDirective
+    MouseWheelDirective, SideBoardComponent
   ],
   imports: [
     BrowserModule,

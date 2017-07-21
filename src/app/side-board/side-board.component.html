@@ -1,0 +1,6 @@
+<svg
+    [attr.width]='isWindowVertical?maxWindowSize-minWindowSize:minWindowSize'
+    [attr.height]='isWindowVertical?minWindowSize:maxWindowSize-minWindowSize'
+    [style.top]='(isWindowVertical?0:minWindowSize)+"px"'
+    [style.left]='(isWindowVertical?minWindowSize:0)+"px"'>
+</svg>

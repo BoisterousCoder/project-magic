@@ -1,6 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { GameListing } from '../utils/GameListing';
+import { GameBoardComponent } from './game-board/game-board.component'
 import * as socketIo from 'socket.io-client';
 
 @Component({
@@ -9,12 +10,18 @@ import * as socketIo from 'socket.io-client';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+    @ViewChild('gameBoard') gameBoard:GameBoardComponent;
     isInAGame:boolean=false;
     currentGameId:number;
     gameListings:GameListing[]=[];
+    windowWidth:number;
+    windowHeight:number;
+    minWindowSize:number;
+    maxWindowSize:number;
+    isWindowVertical:boolean;
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
-        console.log(this.document.location.href);
+        console.log('loading on ' + this.document.location.href);
         this.socket = socketIo.connect(this.document.location.href); 
     }
     ngOnInit(){
@@ -27,7 +34,6 @@ export class AppComponent {
             if(!self.isInAGame){
                 self.onMakeGameListing(res);
             }
-            
         });
         this.socket.on('updateGameListing', function(res){
             if(!self.isInAGame){
@@ -44,6 +50,28 @@ export class AppComponent {
                 self.onJoinGame(Number(res));
             }
         });
+    }
+    onResize(event){
+        let window;
+        if(event.target.defaultView){
+            window = event.target.defaultView
+        }else{
+            window = event.target;
+        }
+        console.log(event);
+        window.scrollTo(0, 20);
+        this.windowWidth = window.innerWidth; 
+        this.windowHeight = window.innerHeight;
+        this.minWindowSize = Math.min(this.windowWidth, this.windowHeight);
+        this.maxWindowSize = Math.max(this.windowWidth, this.windowHeight);
+        if(this.minWindowSize == this.windowHeight){
+            this.isWindowVertical=true;
+        }else{
+            this.isWindowVertical=false;
+        }
+        if(this.isInAGame){
+            this.gameBoard.refreshTileSizes();
+        }
     }
     onMakeGameListing(res){
         res = JSON.parse(res);

@@ -1,10 +1,26 @@
-<game-board 
-*ngIf='isInAGame'
-[socket]='socket'
-[gameId]='currentGameId'
+<game-board #gameBoard
+    *ngIf='isInAGame'
+    [style.width]='minWindowSize+"px"' 
+    [style.height]='minWindowSize+"px"'
+    [socket]='socket'
+    [gameId]='currentGameId'
+    [minWindowSize]='minWindowSize'
+    [maxWindowSize]='maxWindowSize'
+    [windowWidth]='windowWidth'
+    [windowHeight]='windowHeight'
+    [isWindowVertical]='isWindowVertical'>
 ></game-board>
-<div
-*ngIf='!isInAGame'>
+<side-board 
+    *ngIf='isInAGame'
+    [socket]='socket'
+    [gameId]='currentGameId'
+    [minWindowSize]='minWindowSize'
+    [maxWindowSize]='maxWindowSize'
+    [windowWidth]='windowWidth'
+    [windowHeight]='windowHeight'
+    [isWindowVertical]='isWindowVertical'>
+</side-board>
+<div *ngIf='!isInAGame'>
     <ul>
         <li *ngFor="let gameListing of gameListings">
             <span *ngIf="gameListing">
@@ -12,4 +28,8 @@
             </span>
         </li>
     </ul>
+</div>
+<div id='windowEvents'
+    (window:resize)="onResize($event)"
+    (window:load)="onResize($event)">
 </div>

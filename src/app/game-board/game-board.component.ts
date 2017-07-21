@@ -11,43 +11,50 @@ import { Observable } from 'rxjs/Rx';
     styleUrls: ['./game-board.component.css']
 })
 export class GameBoardComponent implements OnInit {
-    windowWidth:number;
-    windowHeight:number;
-    minWindowSize:number;
     printScale:number;
     boardSize:number = 100;
     landSize:number;
     ticks:number = 0;
     boardZoom:number = MAXZOOM;
-    isWindowVertical:boolean;
     viewOffset:Point = new Point();
     mouse:Mouse = new Mouse();
     title:String = 'Project Magic';
     board:Tile[] = [];
     @Input() socket;
     @Input() gameId;
+    @Input() windowWidth;
+    @Input() windowHeight;
+    @Input() minWindowSize;
+    @Input() maxWindowSize;
+    @Input() isWindowVertical;
     ngOnInit(){
         this.initSocketHandlers();
         console.log(this.gameId);
         this.socket.emit('getTiles', this.gameId);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
+        this.mouse.boundsStart = new Point();
+        this.mouse.boundsEnd = new Point(100, 100);
         let self = this;
         this.mouse.onMove = function(distance, mouse){
-            if(mouse.isDragging){
+            if(mouse.isDragging && mouse.isInBounds){
                 self.viewOffset = distance.combine(self.viewOffset);
-                let max = 0;
-                let min = self.boardZoom-MAXZOOM;
-                if(self.viewOffset.x > max){
-                    self.viewOffset.x = max;
-                }else if(self.viewOffset.x < min){
-                    self.viewOffset.x = min;
-                }
-                if(self.viewOffset.y > max){
-                    self.viewOffset.y = max;
-                }else if(self.viewOffset.y < min){
-                    self.viewOffset.y = min;
-                }
+                self.boundVeiwOffset();
             }
+        }
+        this.refreshTileSizes();
+    }
+    boundVeiwOffset(){
+        let max = 0;
+        let min = this.boardZoom-MAXZOOM;
+        if(this.viewOffset.x > max){
+            this.viewOffset.x = max;
+        }else if(this.viewOffset.x < min){
+            this.viewOffset.x = min;
+        }
+        if(this.viewOffset.y > max){
+            this.viewOffset.y = max;
+        }else if(this.viewOffset.y < min){
+            this.viewOffset.y = min;
         }
     }
     initSocketHandlers(){
@@ -61,38 +68,21 @@ export class GameBoardComponent implements OnInit {
         this.landSize = this.printScale * (this.boardSize/this.boardZoom);
     }
     onTileSet(res:string){
-        // console.log('setting tile '+res);
         let tileData = JSON.parse(res);
         this.board[tileData.id] = tileify(tileData);
     }
     onScroll(event){
-        let scrollAmount = 20 - event.pageY;
-        event.view.scrollTo(0, 20);
+        let target = event.target || event.srcElement || event.currentTarget;
+        let scrollAmount = 20 - target.scrollTop;
+        scrollTo(target, 20);
         this.boardZoom -= scrollAmount;
-        this.viewOffset.r += 0.5 * scrollAmount;
+        this.viewOffset.r += scrollAmount;
+        this.boundVeiwOffset();
         if(this.boardZoom > MAXZOOM){
             this.boardZoom = MAXZOOM;
         }
         this.refreshTileSizes();
         return false;
-    }
-    onResize(event) {
-        let window;
-        if(event.target.defaultView){
-            window = event.target.defaultView
-        }else{
-            window = event.target;
-        }
-        window.scrollTo(0, 20);
-        this.windowWidth = window.innerWidth; 
-        this.windowHeight = window.innerHeight;
-        this.minWindowSize = Math.min(this.windowWidth, this.windowHeight);
-        if(this.minWindowSize == this.windowHeight){
-            this.isWindowVertical=true;
-        }else{
-            this.isWindowVertical=false;
-        }
-        this.refreshTileSizes();
     }
     onTileClick(event){
         let target = event.target || event.srcElement || event.currentTarget;
@@ -109,4 +99,13 @@ function tileify(tileData){
     tile.unitIds = tileData.unitIds;
     tile.entrances = tileData.entrances;
     return tile;
+}
+
+function scrollTo(target, location){
+    try{
+        target.scrollTo(0, location);
+    }catch(e){
+        target.scrollTop = location;
+        target.scrollLeft = 0;
+    }
 }

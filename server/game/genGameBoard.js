@@ -1,5 +1,5 @@
 const GENCHANCE = 53;
-const BOARDSIZE = 32;
+const BOARDSIZE = 24;
 
 module.exports = function(callback){
     let tiles = [];

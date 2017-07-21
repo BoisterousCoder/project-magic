@@ -16,7 +16,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `npm server` to just start the server. The client will remain unchanged from the last build.
 
-##Code sructure
+## Code sructure
 
 All client source files is located in the `src/` directory, and all server source files are located in the `server/` directory. 
 

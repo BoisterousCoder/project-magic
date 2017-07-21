@@ -5,6 +5,19 @@ export class Mouse{
     locStart:Point;
     viewOffset:Point = new Point();
     moveCallback:any;
+    boundsStart:Point;
+    boundsEnd:Point;
+    get isInBounds(){
+        if(this.boundsStart && this.boundsEnd){
+            if(this.loc.isInBounds(this.boundsStart, this.boundsEnd)){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
+        }
+    }
     get onMove(){
         let self = this;
         return function(event, scale=1){

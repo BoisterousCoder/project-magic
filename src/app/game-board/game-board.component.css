@@ -1,8 +1,8 @@
 #viewbox{
     display: block;
-    position: absolute;
-    top: 20px;
-    left: 0;
+    position: static;
+    padding-bottom: 20px;
+    padding-top: 20px;
     background-image: url('../../assets/background.jpg');
     background-position-x: center;
     background-position-y: center;
@@ -10,9 +10,9 @@
     background-size: auto;
 }
 
-#makeScroll{
+#scrollContainer{
     display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
+    position: static;
+    overflow-y: scroll;
+    padding-right: 17px;
 }
