@@ -19,8 +19,12 @@ module.exports = function(io) {
         let game;
         let on = function(title, callback){
             socket.on(title, function(res){
-                if(game.isPlayerInGame(socket.id)){
-                    callback(res);
+                if(game){
+                    if(game.isPlayerInGame(socket.id)){
+                        callback(res);
+                    }
+                }else{
+                    console.warn('Person accessed game data of a game they weren\'t in. It could be a bug or it could be a... HACKER???')
                 }
             });
         }
