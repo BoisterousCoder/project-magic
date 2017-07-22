@@ -45,6 +45,7 @@ module.exports = function(io) {
                     socket:socket,
                     id:game.players.length
                 });
+                io.emit('updateGameListing', JSON.stringify(game.listing));
                 socket.emit('joinGame', gameId);
             }else{ 
                 socket.emit('alertUser', 'Game ' + (gameId+1) + ' is full with ' + games[gameId].players.length + '/' + games[gameId].maxPlayers + 'players');

@@ -39,9 +39,7 @@ export class AppComponent {
             }
         });
         this.socket.on('updateGameListing', function(res){
-            if(!self.isInAGame){
-                self.onUpdateGameListing(res);
-            }
+            self.onUpdateGameListing(res);
         });
         this.socket.on('removeGameListing', function(res){
             if(!self.isInAGame){
@@ -55,6 +53,13 @@ export class AppComponent {
         });
         this.socket.on('alertUser', function(res){
             alert(res);
+        });
+        this.socket.on('reload', function(res){
+            /*
+                TODO fix this
+            */
+            console.info(res);
+            this.onReloadRequest();
         });
     }
     onResize(event){
@@ -86,8 +91,10 @@ export class AppComponent {
         }
     }
     onUpdateGameListing(res){
-        res = JSON.parse(res);
-        this.gameListings[res.id][res.property] = res.value; 
+        this.gameListings[res.id] = JSON.parse(res);
+    }
+    onReloadRequest(){
+        window.location.reload();
     }
     onRemoveGameListing(res){
         res = JSON.parse(res);

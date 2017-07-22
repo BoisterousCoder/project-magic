@@ -7,7 +7,10 @@ class Game{
         this.players=[];
         this.board=[];
         this.maxPlayers=2;
-
+        this.genBoard();
+    }
+    genBoard(){
+        this.board = [];
         let tileId = 0;
         let self = this;
         GEN_GAME_BOARD(function(tileData){
@@ -20,15 +23,14 @@ class Game{
     }
     disconect(socketId){
         let self = this;
-        this.players.map(function(player, i){
+        this.players.map(function(player){
             if(player.socket.id == socketId){
-                self.players = self.players.splice(1, i);
+                self.emit('reload', 'other player disconected');
+                self.players = [];
                 self.io.emit('updateGameListing', JSON.stringify(self.listing));
-                /*
-                    TODO: Reset board and bump user
-                */
             }
         });
+        this.genBoard();
     }
     setTile(tileId, property, value){
         if(value == undefined){
