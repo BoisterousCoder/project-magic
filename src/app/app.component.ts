@@ -53,6 +53,9 @@ export class AppComponent {
                 self.onJoinGame(Number(res));
             }
         });
+        this.socket.on('alertUser', function(res){
+            alert(res);
+        });
     }
     onResize(event){
         let window;
@@ -61,8 +64,7 @@ export class AppComponent {
         }else{
             window = event.target;
         }
-        console.log(event);
-        window.scrollTo(0, 20);
+        // window.scrollTo(0, 20); TODO: Fix this
         this.windowWidth = window.innerWidth; 
         this.windowHeight = window.innerHeight;
         this.minWindowSize = Math.min(this.windowWidth, this.windowHeight);
@@ -95,7 +97,7 @@ export class AppComponent {
         this.socket.emit('joinGame', gameId);
     }
     onJoinGame(gameId){
-        this.isInAGame = true;
         this.currentGameId = gameId;
+        this.isInAGame = true;
     }
 }

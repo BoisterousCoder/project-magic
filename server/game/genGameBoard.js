@@ -6,7 +6,8 @@ const BOARDSIZE = 24;
 
 module.exports = function(callback){
     let tiles = [];
-    let nodes = [genNode(8, 8, [], [1, 1, 1, 1])];
+    let midPoint = Math.round(BOARDSIZE/2);
+    let nodes = [genNode(midPoint, midPoint, [], [1, 1, 1, 1])];
     while(true){
         let output = iterateNodes(nodes);
         nodes = output[0];
@@ -14,10 +15,9 @@ module.exports = function(callback){
             break;
         }
     }
-    console.log('Finnished genning tiles.');
-    console.log('Sending Tiles to user...');
+    console.log('Finnished genning tiles for a Game.');
     for(let node of nodes){
-        let entrances = []
+        let entrances = [];
         node.sides.map(function(side, i){
             let isNodeThere;
             switch(i){
@@ -49,7 +49,6 @@ module.exports = function(callback){
         tiles.push(tile);
         callback(tile);
     }
-    console.log('Tiles sent to user.');
 }
 
 function genNode(x, y, otherNodes, sidesOverride){
@@ -81,7 +80,6 @@ function genNode(x, y, otherNodes, sidesOverride){
         }
     }
     otherNodes.push(thisNode);
-    // console.log(thisNode.sides);
     return thisNode;
 }
 

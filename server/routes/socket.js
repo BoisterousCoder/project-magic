@@ -1,10 +1,14 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-const GEN_GAME_BOARD = require('../game/genGameBoard.js');
+const Game = require('../game/Game.js');
+const NUM_OF_GAMES = 10;
+
 module.exports = function(io) {
-    var gameListings = [{name:'test', id:0, players:0, time:new Date().getTime()}];
-    var games = [{id:0, players:[], board:[]}]
+    var games = []
+    for(let i = 0; i < NUM_OF_GAMES; i++){
+        games[i] = new Game(i, io);
+    }
     var peopleConected = new Wrapper(0, function() {
         console.log('There are now ' + peopleConected.get() + ' people conected.');
     });
@@ -12,47 +16,51 @@ module.exports = function(io) {
     io.on('connection', function(socket) {
         //connect to client
         peopleConected.set(peopleConected.get() + 1);
+        let game;
+        let on = function(title, callback){
+            socket.on(title, function(res){
+                if(game.isPlayerInGame(socket.id)){
+                    callback(res);
+                }
+            });
+        }
 
         socket.on('disconnect', function() {
             peopleConected.set(peopleConected.get() - 1);
+            if(game){
+                game.disconect(socket.id)
+            }
         });
         socket.on('getGameListings', function() {
-            gameListings.forEach(function(gameListing){
-                data = JSON.stringify(gameListing);
+            games.forEach(function(game){
+                let data = JSON.stringify(game.listing);
                 socket.emit('makeGameListing', data);
             })
         });
-        socket.on('clickedTile', function(res) {
-            console.log('You clicked tile ' + res);
-        });
-        socket.on('getTiles', function(res){
-            //TODO check if user is assined to game
-            let game = games[Number(res)];
-            console.log('Genning tiles for game ' + game.id);
-            let tileId = 0;
-            if(game.board.length < 5){
-                GEN_GAME_BOARD(function(tileData){
-                    if(tileData.entrances.toString() !== [0,0,0,0].toString()){
-                        tileData.id = tileId;
-                        socket.emit('setTile', JSON.stringify(tileData));
-                        tileId++;
-                    }
+        socket.on('joinGame', function(gameId){
+            if(games[gameId].players.length < games[gameId].maxPlayers){
+                game = games[gameId];
+                console.log('sending to player to game ' + gameId);
+                game.players.push({
+                    socket:socket,
+                    id:game.players.length
                 });
-            }else{
-                game.board.forEach(function(tileData){
-                     socket.emit('setTile', JSON.stringify(tileData));
-                 });
+                socket.emit('joinGame', gameId);
+            }else{ 
+                socket.emit('alertUser', 'Game ' + (gameId+1) + ' is full with ' + games[gameId].players.length + '/' + games[gameId].maxPlayers + 'players');
             }
         });
-        socket.on('joinGame', function(gameId){
-            console.log('sending to player to game ' + gameId);
-            let game = games[gameId];
-            game.players.push({
-                socket:socket,
-                id:game.players.length
+
+        on('clickedTile', function(res) {
+            console.log('You clicked tile ' + res);
+            game.setTile(res, 'color', 'yellow');
+        });
+        on('getTiles', function(res){
+            console.log('Fetching tiles for game ' + game.id);
+            let tileId = 0;
+            game.board.forEach(function(tileData){
+                socket.emit('setTile', JSON.stringify(tileData));
             });
-            gameListings[gameId].players = game.players.length;
-            socket.emit('joinGame', gameId);
         });
     });
 };

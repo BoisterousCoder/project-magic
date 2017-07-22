@@ -27,7 +27,7 @@
     <ul>
         <li *ngFor="let gameListing of gameListings">
             <span *ngIf="gameListing">
-                {{gameListing.name}} created {{gameListing.timeCreated}} <button (click)='onJoinButton(gameListing.id)'>Join</button>
+                {{gameListing.name}} <button (click)='onJoinButton(gameListing.id)'>Join</button>  ({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}}) 
             </span>
         </li>
     </ul>

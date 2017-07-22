@@ -31,7 +31,7 @@ export class GameBoardComponent implements OnInit {
     @Input() isWindowVertical;
     ngOnInit(){
         this.initSocketHandlers();
-        console.log(this.gameId);
+        console.log('Joining Game '+this.gameId);
         this.socket.emit('getTiles', this.gameId);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
         this.mouse.boundsStart = new Point();
