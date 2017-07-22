@@ -1,0 +1,7 @@
+{
+    "name":"Shock",
+    "desc":"A small electical spike in a system is harmless a big one can destroy a whole facility",
+    "isUnit":false,
+    "cardImage":"card.svg",
+    "unitImage":"card.svg"
+}
