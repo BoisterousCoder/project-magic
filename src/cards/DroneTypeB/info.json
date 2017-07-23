@@ -1,7 +1,0 @@
-{
-    "name":"Drone Type B",
-    "decription":"A large drone with 4 insectile legs it has two guns on its sides which it uses as a light attack. It's improved armor allows it to take more damage but, it lacks in any major fire power.",
-    "isUnit": true,
-    "cardImage": "card.svg",
-    "unitImage": "unit.svg"
-}

@@ -1,0 +1,7 @@
+{
+    "name":"Scavenger Swarm",
+    "desc":"Scavengers are small spider like machines and though alone they aren't usefull large groups can collect enough spice to fuel an army and tear enemy's apart",
+    "isUnit":true,
+    "cardImage":"card.svg",
+    "unitImage":"unit.svg"
+}
