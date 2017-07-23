@@ -7,7 +7,7 @@
     "start": "start ng build && node server/bin/www.js",
     "server": "node server/bin/www.js",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng node server/bin/www.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

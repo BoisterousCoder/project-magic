@@ -6,6 +6,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { GameListing } from '../utils/GameListing';
 import { GameBoardComponent } from './game-board/game-board.component'
 import * as socketIo from 'socket.io-client';
+import { getJSON } from '../utils/getJSON';
 
 @Component({
     selector: 'app-root',
@@ -21,11 +22,18 @@ export class AppComponent {
     windowHeight:number;
     minWindowSize:number;
     maxWindowSize:number;
+    scale:number;
     isWindowVertical:boolean;
+    layout;
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
         console.log('loading on ' + this.document.location.href);
         this.socket = socketIo.connect(this.document.location.href); 
+        let self = this;
+        getJSON('layout.json', function(data){
+            self.layout = data;
+            console.log(this.scale*this.layout.width)
+        });
     }
     ngOnInit(){
         this.initSocketHandlers();
@@ -74,6 +82,7 @@ export class AppComponent {
         this.windowHeight = window.innerHeight;
         this.minWindowSize = Math.min(this.windowWidth, this.windowHeight);
         this.maxWindowSize = Math.max(this.windowWidth, this.windowHeight);
+        this.scale = this.minWindowSize/100;
         if(this.minWindowSize == this.windowHeight){
             this.isWindowVertical=true;
         }else{

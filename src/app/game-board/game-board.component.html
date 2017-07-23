@@ -2,10 +2,10 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <div id='scrollContainer'
-    [style.width]='minWindowSize+"px"' [style.height]='minWindowSize+"px"'
+    [style.width]='(scale*layout.viewBox.width)+"px"' [style.height]='(scale*layout.viewBox.height)+"px"'
     (scroll)="onScroll($event)">
     <svg id='viewbox' 
-        [style.width]='minWindowSize+"px"' [style.height]='minWindowSize+"px"'
+        [style.width]='(scale*layout.viewBox.width)+"px"' [style.height]='(scale*layout.viewBox.height)+"px"'
         (mousedown)="mouse.onDown($event)"
         (mousemove)="mouse.onMove($event, 1/landSize)"
         (mouseup)="mouse.onUp($event)">

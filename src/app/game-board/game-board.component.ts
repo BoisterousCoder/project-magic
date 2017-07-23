@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */import { Component, OnInit, Input} from '@angular/core';
-import {gameLoop, FPS, STARTDELAY, MAXZOOM} from '../../utils/game';
-import {Mouse} from '../../utils/Mouse';
-import {Point} from '../../utils/Point';
-import {Tile} from '../../utils/Tile';
+import { gameLoop, FPS, STARTDELAY, MAXZOOM } from '../../utils/game';
+import { Mouse } from '../../utils/Mouse';
+import { Point } from '../../utils/Point';
+import { Tile } from '../../utils/Tile';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -24,8 +24,8 @@ export class GameBoardComponent implements OnInit {
     board:Tile[] = [];
     @Input() socket;
     @Input() gameId;
-    @Input() windowWidth;
-    @Input() windowHeight;
+    @Input() scale;
+    @Input() layout;
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() isWindowVertical;

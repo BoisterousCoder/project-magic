@@ -3,24 +3,25 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <game-board #gameBoard
     *ngIf='isInAGame'
-    [style.width]='minWindowSize+"px"' 
-    [style.height]='minWindowSize+"px"'
+    [style.width]='(scale*layout.viewBox.width)+"px"' 
+    [style.height]='(scale*layout.viewBox.height)+"px"'
+    [style.margin-left]='(scale*layout.viewBox.x)+"px"' 
+    [style.margin-top]='(scale*layout.viewBox.y)+"px"'
     [socket]='socket'
     [gameId]='currentGameId'
+    [scale]='scale'
+    [layout]='layout'
     [minWindowSize]='minWindowSize'
     [maxWindowSize]='maxWindowSize'
-    [windowWidth]='windowWidth'
-    [windowHeight]='windowHeight'
     [isWindowVertical]='isWindowVertical'>
 ></game-board>
 <side-board 
     *ngIf='isInAGame'
     [socket]='socket'
     [gameId]='currentGameId'
+    [scale]='scale'
     [minWindowSize]='minWindowSize'
     [maxWindowSize]='maxWindowSize'
-    [windowWidth]='windowWidth'
-    [windowHeight]='windowHeight'
     [isWindowVertical]='isWindowVertical'>
 </side-board>
 <div *ngIf='!isInAGame'>

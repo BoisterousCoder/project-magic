@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { MouseWheelDirective } from './mousewheel.directive';
 import { GameBoardComponent } from './game-board/game-board.component';
 import { SideBoardComponent } from './side-board/side-board.component';
 
@@ -15,14 +14,14 @@ import { SideBoardComponent } from './side-board/side-board.component';
   declarations: [
     AppComponent,
     GameBoardComponent, 
-    MouseWheelDirective, SideBoardComponent
+    SideBoardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: []
 })
 export class AppModule { }

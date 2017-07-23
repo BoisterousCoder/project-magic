@@ -11,8 +11,7 @@ import { Component, OnInit, Input} from '@angular/core';
 export class SideBoardComponent implements OnInit {
     @Input() socket;
     @Input() gameId;
-    @Input() windowWidth;
-    @Input() windowHeight;
+    @Input() scale;
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() isWindowVertical;
