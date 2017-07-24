@@ -13,7 +13,56 @@ export class SideBoardComponent implements OnInit {
     @Input() scale;
     @Input() minWindowSize;
     @Input() maxWindowSize;
+    @Input() layout
     @Input() isWindowVertical;
+    get divX(){
+        if(this.isFullWindow){
+            return this.layout.viewBox.x * this.scale;
+        }else{
+            if(this.isWindowVertical){
+                return 0;
+            }else{
+                return this.minWindowSize;
+            }
+        }
+    }
+    get divY(){
+        if(this.isFullWindow){
+            return this.layout.viewBox.y * this.scale;
+        }else{
+            if(!this.isWindowVertical){
+                return 0;
+            }else{
+                return this.minWindowSize;
+            }
+        }
+    }
+    get divWidth(){
+        if(this.isFullWindow){
+            if(this.isWindowVertical){
+                return this.maxWindowSize - 2*this.layout.viewBox.x*this.scale;
+            }else{
+                return this.minWindowSize - 2*this.layout.viewBox.x*this.scale;
+            }
+        }else{
+            if(this.isWindowVertical){
+                return this.maxWindowSize-this.minWindowSize;
+            }else{
+                return this.minWindowSize
+            }
+        }
+    }
+    get divHeight(){
+        if(this.isFullWindow){
+            return this.layout.viewBox.height*this.scale;
+        }else{
+            if(!this.isWindowVertical){
+                return this.maxWindowSize-this.minWindowSize;
+            }else{
+                return this.minWindowSize
+            }
+        }
+    }
     ngOnInit() {
 
     }

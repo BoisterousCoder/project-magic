@@ -1,9 +1,10 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<svg
-    [attr.width]='isWindowVertical?maxWindowSize-minWindowSize:minWindowSize'
-    [attr.height]='isWindowVertical?minWindowSize:maxWindowSize-minWindowSize'
-    [style.top]='(isWindowVertical?0:minWindowSize)+"px"'
-    [style.left]='(isWindowVertical?minWindowSize:0)+"px"'>
-</svg>
+<div
+    [style.width]='divWidth+"px"'
+    [style.height]='divHeight+"px"'
+    [style.top]='divX+"px"'
+    [style.left]='divY+"px"'>
+</div>
+
