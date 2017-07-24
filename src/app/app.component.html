@@ -1,39 +1,47 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<game-board #gameBoard
-    *ngIf='isInAGame'
-    [style.width]='(scale*layout.viewBox.width)+"px"' 
-    [style.height]='(scale*layout.viewBox.height)+"px"'
-    [style.margin-left]='(scale*layout.viewBox.x)+"px"' 
-    [style.margin-top]='(scale*layout.viewBox.y)+"px"'
-    [socket]='socket'
-    [gameId]='currentGameId'
-    [scale]='scale'
-    [layout]='layout'
-    [minWindowSize]='minWindowSize'
-    [maxWindowSize]='maxWindowSize'
-    [isWindowVertical]='isWindowVertical'>
-></game-board>
-<side-board 
-    *ngIf='isInAGame'
-    [socket]='socket'
-    [gameId]='currentGameId'
-    [scale]='scale'
-    [minWindowSize]='minWindowSize'
-    [maxWindowSize]='maxWindowSize'
-    [isWindowVertical]='isWindowVertical'>
-</side-board>
-<div *ngIf='!isInAGame'>
-    <ul>
-        <li *ngFor="let gameListing of gameListings">
-            <span *ngIf="gameListing">
-                {{gameListing.name}} <button (click)='onJoinButton(gameListing.id)'>Join</button>  ({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}}) 
-            </span>
-        </li>
-    </ul>
-</div>
-<div id='windowEvents'
-    (window:resize)="onResize($event)"
-    (window:load)="onResize($event)">
+<div id='wrapper'
+    [style.background]='layout?layout.mainBackground:"none"'>
+    <div id='gameWrapper'>
+        <game-board #gameBoard
+            *ngIf='isInAGame'
+            [style.width]='(scale*layout.viewBox.width)+"px"' 
+            [style.height]='(scale*layout.viewBox.height)+"px"'
+            [style.margin-left]='(scale*layout.viewBox.x)+"px"' 
+            [style.margin-top]='(scale*layout.viewBox.y)+"px"'
+            [socket]='socket'
+            [gameId]='currentGameId'
+            [scale]='scale'
+            [layout]='layout'
+            [minWindowSize]='minWindowSize'
+            [maxWindowSize]='maxWindowSize'
+            [isWindowVertical]='isWindowVertical'>
+        </game-board>
+        <side-board 
+            *ngIf='isInAGame'
+            [socket]='socket'
+            [gameId]='currentGameId'
+            [scale]='scale'
+            [minWindowSize]='minWindowSize'
+            [maxWindowSize]='maxWindowSize'
+            [isWindowVertical]='isWindowVertical'>
+        </side-board>
+        <div id='navMenuWrapper'>
+            
+        </div>
+    </div>
+    <div id='gameSelectWrapper' *ngIf='!isInAGame'>
+        <ul>
+            <li *ngFor="let gameListing of gameListings">
+                <span *ngIf="gameListing">
+                    {{gameListing.name}} <button (click)='onJoinButton(gameListing.id)'>Join</button>  ({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}}) 
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div id='windowEvents'
+        (window:resize)="onResize($event)"
+        (window:load)="onResize($event)">
+    </div>
 </div>

@@ -9,12 +9,16 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { GameBoardComponent } from './game-board/game-board.component';
 import { SideBoardComponent } from './side-board/side-board.component';
+import { GoToButtonComponent } from './go-to-button/go-to-button.component';
+import { InfoBoardComponent } from './info-board/info-board.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameBoardComponent, 
-    SideBoardComponent
+    SideBoardComponent, 
+    GoToButtonComponent, 
+    InfoBoardComponent
   ],
   imports: [
     BrowserModule,

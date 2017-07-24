@@ -14,9 +14,27 @@
       overflow-x: hidden;
       overflow-y: hidden;
     }
+    .loadingScreen{
+      top:0;
+      left:0;
+      position: fixed;
+      display: block;
+      height: 100%;
+      text-align: center;
+    }
+    .loadingScreen img{
+      position: static;
+      display: block;
+      height: 100%;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
-  <app-root>Loading...</app-root>
+  <app-root>
+    <div class='loadingScreen'>
+      <img src='assets/loading.gif'/>
+    </div>
+  </app-root>
 </body>
 </html>

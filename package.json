@@ -5,9 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "start ng build && node server/bin/www.js",
-    "server": "node server/bin/www.js",
     "build": "ng build",
-    "test": "ng node server/bin/www.js",
+    "test": "node server/bin/www.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
