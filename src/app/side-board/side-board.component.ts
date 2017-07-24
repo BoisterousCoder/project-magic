@@ -9,8 +9,7 @@ import { Component, OnInit, Input} from '@angular/core';
     styleUrls: ['./side-board.component.css']
 })
 export class SideBoardComponent implements OnInit {
-    @Input() socket;
-    @Input() gameId;
+    @Input() isFullWindow;
     @Input() scale;
     @Input() minWindowSize;
     @Input() maxWindowSize;

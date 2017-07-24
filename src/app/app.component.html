@@ -3,9 +3,8 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <div id='wrapper'
     [style.background]='layout?layout.mainBackground:"none"'>
-    <div id='gameWrapper'>
-        <game-board #gameBoard
-            *ngIf='isInAGame'
+    <div id='gameWrapper' *ngIf='isInAGame'>
+        <game-board *ngIf='boards[0]' #gameBoard
             [style.width]='(scale*layout.viewBox.width)+"px"' 
             [style.height]='(scale*layout.viewBox.height)+"px"'
             [style.margin-left]='(scale*layout.viewBox.x)+"px"' 
@@ -19,16 +18,16 @@
             [isWindowVertical]='isWindowVertical'>
         </game-board>
         <side-board 
-            *ngIf='isInAGame'
-            [socket]='socket'
-            [gameId]='currentGameId'
+            [isFullWindow]='boards[1]'
             [scale]='scale'
             [minWindowSize]='minWindowSize'
             [maxWindowSize]='maxWindowSize'
             [isWindowVertical]='isWindowVertical'>
         </side-board>
         <div id='navMenuWrapper'>
-            
+            <go-to-button [scale]='scale' [locations]="boards" [location]="0" [layout]='layout.gameBoard.goToButton'></go-to-button>
+            <go-to-button [scale]='scale' [locations]="boards" [location]="1" [layout]='layout.cardBoard.goToButton'></go-to-button>
+            <go-to-button [scale]='scale' [locations]="boards" [location]="2" [layout]='layout.infoBoard.goToButton'></go-to-button>
         </div>
     </div>
     <div id='gameSelectWrapper' *ngIf='!isInAGame'>

@@ -9,28 +9,34 @@
     "gameBoard":{
         "goToButton":{
             "text":"Game Board",
+            "textColor":"white",
+            "background":"darkgray",
             "width":15,
             "height":5,
             "x":3,
-            "y":96
+            "y":95
         }
     },
     "cardBoard":{
         "goToButton":{
             "text":"Cards",
+            "textColor":"white",
+            "background":"darkgray",
             "width":15,
             "height":5,
-            "x":18,
-            "y":96
+            "x":21,
+            "y":95
         }
     },
     "infoBoard":{
         "goToButton":{
             "text":"Expand Info",
+            "textColor":"white",
+            "background":"darkgray",
             "width":15,
             "height":5,
-            "x":33,
-            "y":96
+            "x":38,
+            "y":95
         }
     }
 }

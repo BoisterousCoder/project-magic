@@ -18,6 +18,7 @@ export class AppComponent {
     isInAGame:boolean=false;
     currentGameId:number;
     gameListings:GameListing[]=[];
+    boards:boolean[]=[true, false, false];
     windowWidth:number;
     windowHeight:number;
     minWindowSize:number;
