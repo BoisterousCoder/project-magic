@@ -1,6 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */import { Component, OnInit, Input} from '@angular/core';
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+import { Component, OnInit, Input} from '@angular/core';
 import { gameLoop, FPS, STARTDELAY, MAXZOOM, MINZOOM } from '../../utils/game';
 import { Mouse } from '../../utils/Mouse';
 import { Point } from '../../utils/Point';
