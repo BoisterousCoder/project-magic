@@ -16,6 +16,18 @@ export class Point{
         var sum = new Point(this.x + otherPoint.x, this.y + otherPoint.y);
         return sum;
     }
+    roundUp(scale=1){
+        var roundedNum = new Point(Math.ceil(this.x/scale)*scale, Math.ceil(this.y/scale)*scale);
+        return roundedNum;
+    }
+    roundDown(scale=1){
+        var roundedNum = new Point(Math.floor(this.x/scale)*scale, Math.floor(this.y/scale)*scale);
+        return roundedNum;
+    }
+    round(scale=1){
+        var roundedNum = new Point(Math.round(this.x/scale)*scale, Math.round(this.y/scale)*scale);
+        return roundedNum;
+    }
     scale(scalar:number) {
         this.x *= scalar;
         this.y *= scalar;

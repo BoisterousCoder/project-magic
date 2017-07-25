@@ -76,12 +76,13 @@ export class GameBoardComponent implements OnInit {
         let scrollAmount = 20 - target.scrollTop;
         scrollTo(target, 20);
         this.boardZoom -= scrollAmount;
-        this.viewOffset.r += scrollAmount;
-        this.boundVeiwOffset();
         if(this.boardZoom > MAXZOOM){
             this.boardZoom = MAXZOOM;
         }else if(this.boardZoom < MINZOOM){
             this.boardZoom = MINZOOM;
+        }else{
+            //TODO: fix scroll centering
+            this.boundVeiwOffset();
         }
         this.refreshTileSizes();
         return false;
