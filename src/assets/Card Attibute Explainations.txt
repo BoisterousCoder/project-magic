@@ -1,0 +1,39 @@
+movementMap
+    A place that a unit can move is represented by a 1 and where they cant is a 0.
+    The unit's current location is the center of the map, and will be represent as a - for example puroses.
+    A movement map is made of an array of arrays.
+    Each of the arrays that are contained in the larger array represent a layer.
+    Each Layer is a square moving away from the center.
+    The unit's current location does not count as a layer will.
+    Below is a figure showing which tiles are represented by which layers.
+    2222222
+    2111112
+    2100012
+    210-012
+    2100012
+    2111112
+    2222222
+    This patter continues indefinately.
+    Any tile left undefined will default to 0.
+    The location of the tile in the layer's array starts at the bottom and follows the circle counter clockwise, as demonstated below.
+    543
+    602
+    701
+    Here is an example map.
+    [
+        [0,1,1,1,0,1,0,1],
+        [1,0,1,0,0,0,1,0,1,0,1,0,1,0,1,0]
+    ]
+    This is what the map is attemoting to represent.
+    10101
+    01010
+    10-10
+    01010
+    10101
+    Try to make these maps interesting but symetrical. 
+    A map the is not symetrical could give one player an advantage over the other.
+ability[x].map
+    Dictates all locations an ability can be used.
+    Use on own tile is a seperate variable
+ability[x].mapFuction
+    String of javascript that returns whether or not a tile can be used

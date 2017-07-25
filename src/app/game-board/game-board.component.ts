@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */import { Component, OnInit, Input} from '@angular/core';
-import { gameLoop, FPS, STARTDELAY, MAXZOOM } from '../../utils/game';
+import { gameLoop, FPS, STARTDELAY, MAXZOOM, MINZOOM } from '../../utils/game';
 import { Mouse } from '../../utils/Mouse';
 import { Point } from '../../utils/Point';
 import { Tile } from '../../utils/Tile';
@@ -34,11 +34,9 @@ export class GameBoardComponent implements OnInit {
         console.log('Joining Game '+this.gameId);
         this.socket.emit('getTiles', this.gameId);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
-        this.mouse.boundsStart = new Point();
-        this.mouse.boundsEnd = new Point(100, 100);
         let self = this;
         this.mouse.onMove = function(distance, mouse){
-            if(mouse.isDragging && mouse.isInBounds){
+            if(mouse.isDragging){
                 self.viewOffset = distance.combine(self.viewOffset);
                 self.boundVeiwOffset();
             }
@@ -82,6 +80,8 @@ export class GameBoardComponent implements OnInit {
         this.boundVeiwOffset();
         if(this.boardZoom > MAXZOOM){
             this.boardZoom = MAXZOOM;
+        }else if(this.boardZoom < MINZOOM){
+            this.boardZoom = MINZOOM;
         }
         this.refreshTileSizes();
         return false;
