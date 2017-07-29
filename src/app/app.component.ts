@@ -64,11 +64,8 @@ export class AppComponent {
             alert(res);
         });
         this.socket.on('reload', function(res){
-            /*
-                TODO fix this
-            */
             console.info(res);
-            this.onReloadRequest();
+            self.onReloadRequest();
         });
     }
     onResize(event){
