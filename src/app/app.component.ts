@@ -14,7 +14,7 @@ import { getJSON } from '../utils/getJSON';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    @ViewChild('gameBoard') gameBoard:GameBoardComponent;
+    @ViewChild(GameBoardComponent) gameBoard:GameBoardComponent;
     isInAGame:boolean=false;
     currentGameId:number;
     gameListings:GameListing[]=[];
