@@ -7,6 +7,7 @@ import { GameListing } from '../utils/GameListing';
 import { GameBoardComponent } from './game-board/game-board.component'
 import * as socketIo from 'socket.io-client';
 import { getJSON } from '../utils/getJSON';
+import { getUnitTypes } from '../utils/Unit';
 
 @Component({
     selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent {
     maxWindowSize:number;
     scale:number;
     isWindowVertical:boolean;
+    unitTypes;
     layout;
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
@@ -34,6 +36,10 @@ export class AppComponent {
         getJSON('layout.json', function(data){
             self.layout = data;
             console.log(this.scale*this.layout.width)
+        });
+        getUnitTypes(function(unitTypes){
+            self.unitTypes =  unitTypes;
+            console.log(unitTypes);
         });
     }
     ngOnInit(){
