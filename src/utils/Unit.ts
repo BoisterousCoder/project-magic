@@ -25,11 +25,14 @@ export class Unit extends Point{
     cardImage:string;
     unitImage:string;
     folderPath:string;
-    constructor(x:number, y:number, typeData){
+    rotation:number = 0;
+    constructor(x:number, y:number, typeData = undefined){
         super(x, y);
-        for(let propertyName in typeData){
-            if (typeData.hasOwnProperty(propertyName)) {
-                this[propertyName] = typeData[propertyName];
+        if(typeData){
+            for(let propertyName in typeData){
+                if (typeData.hasOwnProperty(propertyName)) {
+                    this[propertyName] = typeData[propertyName];
+                }
             }
         }
     }

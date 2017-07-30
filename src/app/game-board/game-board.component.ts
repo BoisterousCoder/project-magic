@@ -6,6 +6,7 @@ import { gameLoop, FPS, STARTDELAY, MAXZOOM, MINZOOM } from '../../utils/game';
 import { Mouse } from '../../utils/Mouse';
 import { Point } from '../../utils/Point';
 import { Tile } from '../../utils/Tile';
+import { Unit } from '../../utils/Unit';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -23,6 +24,7 @@ export class GameBoardComponent implements OnInit {
     mouse:Mouse = new Mouse();
     title:String = 'Project Magic';
     board:Tile[] = [];
+    units:Unit[] = [];
     @Input() socket;
     @Input() gameId;
     @Input() scale;
@@ -33,7 +35,7 @@ export class GameBoardComponent implements OnInit {
     ngOnInit(){
         this.initSocketHandlers();
         console.log('Joining Game '+this.gameId);
-        this.socket.emit('getTiles', this.gameId);
+        this.socket.emit('getGameData', this.gameId);
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
         let self = this;
         this.mouse.onMove = function(distance, mouse){
@@ -63,6 +65,9 @@ export class GameBoardComponent implements OnInit {
         this.socket.on('setTile', function(res){
             self.onTileSet(res);
         });
+        this.socket.on('setUnit', function(res){
+            self.onUnitSet(res);
+        });
     }
     refreshTileSizes(){
         this.printScale = this.minWindowSize/this.boardSize;
@@ -70,7 +75,11 @@ export class GameBoardComponent implements OnInit {
     }
     onTileSet(res:string){
         let tileData = JSON.parse(res);
-        this.board[tileData.id] = tileify(tileData);
+        this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);;
+    }
+    onUnitSet(res:string){
+        let unitData = JSON.parse(res);
+        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData);
     }
     onScroll(event){
         let target = event.target || event.srcElement || event.currentTarget;
@@ -94,15 +103,6 @@ export class GameBoardComponent implements OnInit {
         id = Number(id);
         this.board[id].onClick(this.socket);
     }
-}
-
-function tileify(tileData){
-    let tile = new Tile(tileData.x, tileData.y);
-    tile.id = tileData.id;
-    tile.color = tileData.color;
-    tile.unitIds = tileData.unitIds;
-    tile.entrances = tileData.entrances;
-    return tile;
 }
 
 function scrollTo(target, location){

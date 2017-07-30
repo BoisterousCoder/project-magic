@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-const Game = require('../game/Game.js');
+const Game = require('../utils/Game.js');
 const NUM_OF_GAMES = 10;
 
 module.exports = function(io) {
@@ -60,11 +60,14 @@ module.exports = function(io) {
             console.log('You clicked tile ' + res);
             game.setTile(res, 'color', 'yellow');
         });
-        on('getTiles', function(res){
+        on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
             let tileId = 0;
             game.board.forEach(function(tileData){
                 socket.emit('setTile', JSON.stringify(tileData));
+            });
+            game.units.forEach(function(unitData){
+                socket.emit('setUnit', JSON.stringify(unitData));
             });
         });
     });

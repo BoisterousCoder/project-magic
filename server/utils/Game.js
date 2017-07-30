@@ -1,5 +1,8 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GEN_GAME_BOARD = require('./genGameBoard.js');
-const UNIT_TYPES = require('./getUnitTypes.js')();
+const Unit = require('./Unit.js');
 
 class Game{
     constructor(id, io){
@@ -14,6 +17,9 @@ class Game{
     genBoard(){
         this.board = [];
         let tileId = 0;
+        let testUnit = new Unit(12, 12, 0); //Testing Only
+        testUnit.id = 0                     //Testing Only
+        this.units[0] = testUnit;           //Testing Only
         let self = this;
         GEN_GAME_BOARD(function(tileData){
             if(tileData.entrances.toString() !== [0,0,0,0].toString()){
@@ -42,6 +48,15 @@ class Game{
             this.board[tileId][property] = value;
         }
         this.emit('setTile', JSON.stringify(this.board[tileId]));
+    }
+    setUnit(unitId, property, value){
+        if(value == undefined){
+            value = property;
+            this.units[unitId] = value;
+        }else{
+            this.units[unitId][property] = value;
+        }
+        this.emit('setUnit', JSON.stringify(this.units[unitId]));
     }
     isPlayerInGame(socketId){
         let isPlayerInGame = false;

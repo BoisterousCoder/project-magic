@@ -9,6 +9,16 @@ export class Tile extends Point{
     private __displayId:string = 'land_3way';
     private __rotation:number = 0;
     private __entrances:number[]=[1,1,1,0];
+    constructor(x:number, y:number, typeData = undefined){
+        super(x, y);
+        if(typeData){
+            for(let propertyName in typeData){
+                if (typeData.hasOwnProperty(propertyName)) {
+                    this[propertyName] = typeData[propertyName];
+                }
+            }
+        }
+    }
     onClick(socket){
         socket.emit('clickedTile', this.id);
     }
