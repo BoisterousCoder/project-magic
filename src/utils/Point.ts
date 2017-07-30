@@ -9,23 +9,23 @@ export class Point{
         this.y = y;
     }
     distance(otherPoint:Point) {
-        var distance = new Point(this.x - otherPoint.x, this.y - otherPoint.y);
+        let distance = new Point(this.x - otherPoint.x, this.y - otherPoint.y);
         return distance;
     }
     combine(otherPoint:Point){
-        var sum = new Point(this.x + otherPoint.x, this.y + otherPoint.y);
+        let sum = new Point(this.x + otherPoint.x, this.y + otherPoint.y);
         return sum;
     }
     roundUp(scale=1){
-        var roundedNum = new Point(Math.ceil(this.x/scale)*scale, Math.ceil(this.y/scale)*scale);
+        let roundedNum = new Point(Math.ceil(this.x/scale)*scale, Math.ceil(this.y/scale)*scale);
         return roundedNum;
     }
     roundDown(scale=1){
-        var roundedNum = new Point(Math.floor(this.x/scale)*scale, Math.floor(this.y/scale)*scale);
+        let roundedNum = new Point(Math.floor(this.x/scale)*scale, Math.floor(this.y/scale)*scale);
         return roundedNum;
     }
     round(scale=1){
-        var roundedNum = new Point(Math.round(this.x/scale)*scale, Math.round(this.y/scale)*scale);
+        let roundedNum = new Point(Math.round(this.x/scale)*scale, Math.round(this.y/scale)*scale);
         return roundedNum;
     }
     scale(scalar:number) {
@@ -60,18 +60,18 @@ export class Point{
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
     }
     set rad(rad:number) {
-        var x = this.r * Math.cos(rad)
-        var y = this.r * Math.sin(rad)
+        let x = this.r * Math.cos(rad)
+        let y = this.r * Math.sin(rad)
         this.x = x
         this.y = y
     }
     set deg(deg:number) {
-        var rad = (Math.PI * deg) / 180
+        let rad = (Math.PI * deg) / 180
         this.rad = rad
     }
     set r(r) {
-        var x = r * Math.cos(this.rad)
-        var y = r * Math.sin(this.rad)
+        let x = r * Math.cos(this.rad)
+        let y = r * Math.sin(this.rad)
         this.x = x
         this.y = y
     }

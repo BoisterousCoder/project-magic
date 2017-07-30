@@ -1,4 +1,5 @@
 const GEN_GAME_BOARD = require('./genGameBoard.js');
+const UNIT_TYPES = require('./getUnitTypes.js')();
 
 class Game{
     constructor(id, io){
@@ -6,6 +7,7 @@ class Game{
         this.io=io;
         this.players=[];
         this.board=[];
+        this.units=[];
         this.maxPlayers=2;
         this.genBoard();
     }

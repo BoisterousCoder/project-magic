@@ -6,8 +6,10 @@ export function getUnitTypes(callback){
         let unitTypeList = data.cards;
         let unitTypes = [];
         for(let unitName of unitTypeList){
-            getJSON('cards/'+unitName+'/info.json', function(unitType){
-                unitType.id = unitTypes.length;
+            let folderPath = 'cards/'+unitName+'/'
+            getJSON(folderPath+'info.json', function(unitType){
+                unitType.typeId = unitTypes.length;
+                unitType.folderPath = 'assets/' + folderPath;
                 unitTypes.push(unitType);
                 callback(unitTypes)
             });
@@ -22,13 +24,13 @@ export class Unit extends Point{
     isUnit:boolean;
     cardImage:string;
     unitImage:string;
+    folderPath:string;
     constructor(x:number, y:number, typeData){
         super(x, y);
-        this.name = typeData.name;
-        this.desc = typeData.desc;
-        this.typeId = typeData.id;
-        this.isUnit = typeData.isUnit;
-        this.cardImage = typeData.cardImage;
-        this.unitImage = typeData.unitImage || '';
+        for(let propertyName in typeData){
+            if (typeData.hasOwnProperty(propertyName)) {
+                this[propertyName] = typeData[propertyName];
+            }
+        }
     }
 }

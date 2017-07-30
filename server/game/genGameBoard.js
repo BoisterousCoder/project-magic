@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GENCHANCE = 53;
 const BOARDSIZE = 24;
+const DEFAULTCOLOR = 'green';
 
 module.exports = function(callback){
     let tiles = [];
@@ -10,8 +11,8 @@ module.exports = function(callback){
     let nodes = [genNode(midPoint, midPoint, [], [1, 1, 1, 1])];
     while(true){
         let output = iterateNodes(nodes);
-        nodes = output[0];
-        if(!output[1]){
+        nodes = output.nodes;
+        if(!output.isThereNewNode){
             break;
         }
     }
@@ -43,7 +44,7 @@ module.exports = function(callback){
             x:node.x,
             y:node.y,
             entrances:entrances,
-            color:'green'
+            color:DEFAULTCOLOR
         };
         
         tiles.push(tile);
@@ -110,7 +111,10 @@ function iterateNodes(nodes){
             }
         });
     });
-    return [nodes, isThereNewNode];
+    return {
+        nodes:nodes,
+        isThereNewNode:isThereNewNode
+    }
 }
 
 function setSideValue(thisNode, otherNodes, sideNumber){
