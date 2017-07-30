@@ -6,5 +6,10 @@
     [style.height]='divHeight+"px"'
     [style.top]='divX+"px"'
     [style.left]='divY+"px"'>
+    <div *ngIf='selectedCard'>
+        <h1>{{selectedCard.name}}</h1>  
+        <img [src]='imgSrc'/> 
+        <p>{{selectedCard.desc}}</p>  
+    </div>
 </div>
 

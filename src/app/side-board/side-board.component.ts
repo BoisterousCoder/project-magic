@@ -14,7 +14,11 @@ export class SideBoardComponent implements OnInit {
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() layout
+    @Input() selectedCard;
     @Input() isWindowVertical;
+    get imgSrc(){
+        return this.selectedCard.folderPath + this.selectedCard.cardImg;
+    }
     get divX(){
         if(this.isFullWindow){
             return this.layout.viewBox.x * this.scale;

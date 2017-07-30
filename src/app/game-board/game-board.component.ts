@@ -29,6 +29,7 @@ export class GameBoardComponent implements OnInit {
     @Input() gameId;
     @Input() scale;
     @Input() layout;
+    @Input() selectedCard;
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() isWindowVertical;
@@ -80,6 +81,18 @@ export class GameBoardComponent implements OnInit {
     onUnitSet(res:string){
         let unitData = JSON.parse(res);
         this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData);
+        for(let tile of this.board){
+            let isInSameLoc = (tile.x==unitData.x && tile.y==unitData.y);
+            if(tile.unitId || tile.unitId==0){
+                if(tile.unitId == unitData.id && !isInSameLoc){
+                    tile.unitId = undefined;
+                }
+            }else{
+                if(isInSameLoc){
+                    tile.unitId = unitData.id;
+                }
+            }
+        }
     }
     onScroll(event){
         let target = event.target || event.srcElement || event.currentTarget;
@@ -101,7 +114,13 @@ export class GameBoardComponent implements OnInit {
         let target = event.target || event.srcElement || event.currentTarget;
         let id = target.attributes.tileId.value;
         id = Number(id);
-        this.board[id].onClick(this.socket);
+        let tile = this.board[id];
+        if(tile.unitId || tile.unitId==0){
+            this.selectedCard = this.units[tile.unitId].card;
+            console.log(this.selectedCard);
+        }else{
+            this.socket.emit('clickedTile', tile.id);
+        }
     }
 }
 

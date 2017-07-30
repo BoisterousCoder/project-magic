@@ -5,7 +5,7 @@ import {Point} from './Point';
 export class Tile extends Point{
     color:string='blue';
     id:number;
-    unitIds:Number[] = [];
+    unitId:number;
     private __displayId:string = 'land_3way';
     private __rotation:number = 0;
     private __entrances:number[]=[1,1,1,0];
@@ -18,9 +18,6 @@ export class Tile extends Point{
                 }
             }
         }
-    }
-    onClick(socket){
-        socket.emit('clickedTile', this.id);
     }
     get dispalyId(){
         return this.__displayId;

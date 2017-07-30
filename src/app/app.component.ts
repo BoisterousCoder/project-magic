@@ -24,6 +24,7 @@ export class AppComponent {
     minWindowSize:number;
     maxWindowSize:number;
     scale:number;
+    selectedCard;
     isWindowVertical:boolean;
     unitTypes;
     layout;
