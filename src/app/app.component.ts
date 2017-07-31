@@ -5,6 +5,7 @@ import { Component, Inject, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { GameListing } from '../utils/GameListing';
 import { GameBoardComponent } from './game-board/game-board.component'
+import { SideBoardComponent } from './side-board/side-board.component'
 import * as socketIo from 'socket.io-client';
 import { getJSON } from '../utils/getJSON';
 
@@ -15,6 +16,7 @@ import { getJSON } from '../utils/getJSON';
 })
 export class AppComponent {
     @ViewChild(GameBoardComponent) gameBoard:GameBoardComponent;
+    @ViewChild(SideBoardComponent) sideBoard:SideBoardComponent
     isInAGame:boolean=false;
     currentGameId:number;
     gameListings:GameListing[]=[];
@@ -24,7 +26,6 @@ export class AppComponent {
     minWindowSize:number;
     maxWindowSize:number;
     scale:number;
-    selectedCard;
     isWindowVertical:boolean;
     unitTypes;
     layout;
@@ -37,6 +38,12 @@ export class AppComponent {
             self.layout = data;
             console.log(this.scale*this.layout.width)
         });
+    }
+    setSelectedCard(card){
+        let self = this;
+        return function(card){
+            self.sideBoard.selectedCard = card;
+        }
     }
     ngOnInit(){
         this.initSocketHandlers();

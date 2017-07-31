@@ -44,6 +44,7 @@
         <image 
             *ngFor="let unit of units"
             [attr.xlink:href]="unit.img" 
+            [attr.class]='unit.isSelected?"blink":""'
             [attr.x]="(unit.x + viewOffset.x + 0.15)/0.70" 
             [attr.y]="(unit.y + viewOffset.y + 0.15)/0.70"
             [attr.transform]="'scale('+landSize*0.70+', '+landSize*0.70+')'"

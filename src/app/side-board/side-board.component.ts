@@ -14,8 +14,15 @@ export class SideBoardComponent implements OnInit {
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() layout
-    @Input() selectedCard;
+    selectedCard;
     @Input() isWindowVertical;
+    get isCardSelected(){
+        if(this.selectedCard){
+            return true;
+        }else{
+            return false;
+        }
+    }
     get imgSrc(){
         return this.selectedCard.folderPath + this.selectedCard.cardImg;
     }

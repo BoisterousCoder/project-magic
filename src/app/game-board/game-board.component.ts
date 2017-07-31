@@ -25,11 +25,12 @@ export class GameBoardComponent implements OnInit {
     title:String = 'Project Magic';
     board:Tile[] = [];
     units:Unit[] = [];
+    selectedUnit;
     @Input() socket;
     @Input() gameId;
     @Input() scale;
     @Input() layout;
-    @Input() selectedCard;
+    @Input() setSelectedCard;
     @Input() minWindowSize;
     @Input() maxWindowSize;
     @Input() isWindowVertical;
@@ -76,7 +77,7 @@ export class GameBoardComponent implements OnInit {
     }
     onTileSet(res:string){
         let tileData = JSON.parse(res);
-        this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);;
+        this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);
     }
     onUnitSet(res:string){
         let unitData = JSON.parse(res);
@@ -116,8 +117,16 @@ export class GameBoardComponent implements OnInit {
         id = Number(id);
         let tile = this.board[id];
         if(tile.unitId || tile.unitId==0){
-            this.selectedCard = this.units[tile.unitId].card;
-            console.log(this.selectedCard);
+            let unit = this.units[tile.unitId];
+            if(unit == this.selectedUnit){
+                this.selectedUnit = undefined;
+                unit.isSelected = false;
+                this.setSelectedCard(undefined);
+            }else{
+                this.selectedUnit = unit;
+                unit.isSelected = true;
+                this.setSelectedCard(unit.card);
+            }
         }else{
             this.socket.emit('clickedTile', tile.id);
         }

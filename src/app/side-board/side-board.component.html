@@ -6,10 +6,17 @@
     [style.height]='divHeight+"px"'
     [style.top]='divX+"px"'
     [style.left]='divY+"px"'>
-    <div *ngIf='selectedCard'>
-        <h1>{{selectedCard.name}}</h1>  
-        <img [src]='imgSrc'/> 
-        <p>{{selectedCard.desc}}</p>  
+    <div *ngIf='isCardSelected'>
+        <h1 [style.font-size]='(layout.textSize.title*scale)+"px"'>
+            {{selectedCard.name}}
+        </h1>  
+        <img [src]='imgSrc'
+            [style.width]='(this.maxWindowSize-this.minWindowSize)+"px"'
+            [style.max-width]='(layout.infoBoard.img.maxWidth*scale)+"px"'
+            [style.max-height]='(layout.infoBoard.img.maxHeight*scale)+"px"'/> 
+        <p [style.font-size]='(layout.textSize.desctiption*scale)+"px"'>
+            {{selectedCard.desc}}
+        </p>  
     </div>
 </div>
 

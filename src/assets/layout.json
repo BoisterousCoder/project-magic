@@ -10,7 +10,7 @@
         "goToButton":{
             "text":"Game Board",
             "textColor":"white",
-            "background":"darkgray",
+            "background":"gray",
             "width":15,
             "height":5,
             "x":3,
@@ -21,7 +21,7 @@
         "goToButton":{
             "text":"Cards",
             "textColor":"white",
-            "background":"darkgray",
+            "background":"gray",
             "width":15,
             "height":5,
             "x":21,
@@ -29,14 +29,25 @@
         }
     },
     "infoBoard":{
+        "background":"darkgray",
+        "img":{
+            "maxWidth":50,
+            "maxHeight":50   
+        },
         "goToButton":{
             "text":"Expand Info",
             "textColor":"white",
-            "background":"darkgray",
+            "background":"gray",
             "width":15,
             "height":5,
             "x":38,
             "y":95
         }
+    },
+    "textSize":{
+        "desctiption":3,
+        "tooltip":1,
+        "button":4,
+        "title":14
     }
 }

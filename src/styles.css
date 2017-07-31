@@ -7,6 +7,18 @@
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+    cursor: default;
+    user-select: none;
+    font-size: inherit;
+}
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+.blink {
+  animation: blinker 1s linear infinite;
+}
+button{
+    cursor: pointer;
 }
 .loadingScreen{
     top:0;
