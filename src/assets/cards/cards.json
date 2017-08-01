@@ -7,5 +7,9 @@
         "DroneTypeB",
         "ScavengerSwarm",
         "Shock"
+    ],
+    "actions":[
+        "moventment",
+        "attack"
     ]
 }

@@ -15,10 +15,10 @@ movementMap
     2222222
     This patter continues indefinately.
     Any tile left undefined will default to 0.
-    The location of the tile in the layer's array starts at the bottom and follows the circle counter clockwise, as demonstated below.
-    543
-    602
+    The location of the tile in the layer's array starts at the top and follows the square clockwise, as demonstated below.
     701
+    6-2
+    543
     Here is an example map.
     [
         [0,1,1,1,0,1,0,1],
@@ -37,3 +37,6 @@ ability[x].map
     Use on own tile is a seperate variable
 ability[x].mapFuction
     String of javascript that returns whether or not a tile can be used
+
+Notes:
+    The movement action must always be included.

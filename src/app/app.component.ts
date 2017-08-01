@@ -36,7 +36,6 @@ export class AppComponent {
         let self = this;
         getJSON('layout.json', function(data){
             self.layout = data;
-            console.log(this.scale*this.layout.width)
         });
     }
     setSelectedCard(card){

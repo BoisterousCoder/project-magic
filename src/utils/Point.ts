@@ -40,6 +40,13 @@ export class Point{
             return false;
         }
     }
+    isAt(point:Point){
+        if(point.x==this.x&&point.y==this.y){
+            return true;
+        }else{
+            return false;
+        }
+    }
     isInBounds(boundsStart:Point, boundsEnd:Point){
         if(
             this.x > boundsStart.x && this.y > boundsStart.y &&

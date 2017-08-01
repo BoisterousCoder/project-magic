@@ -81,7 +81,14 @@ export class GameBoardComponent implements OnInit {
     }
     onUnitSet(res:string){
         let unitData = JSON.parse(res);
-        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData);
+        let self = this;
+        function changeBoard(callback){
+            let board = callback(self.board);
+            if(board){
+                self.board = board;
+            }
+        }
+        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, changeBoard);
         for(let tile of this.board){
             let isInSameLoc = (tile.x==unitData.x && tile.y==unitData.y);
             if(tile.unitId || tile.unitId==0){
@@ -120,15 +127,13 @@ export class GameBoardComponent implements OnInit {
             let unit = this.units[tile.unitId];
             if(unit == this.selectedUnit){
                 this.selectedUnit = undefined;
-                unit.isSelected = false;
+                this.units[tile.unitId].isSelected = false;
                 this.setSelectedCard(undefined);
             }else{
                 this.selectedUnit = unit;
-                unit.isSelected = true;
+                this.units[tile.unitId].isSelected = true;
                 this.setSelectedCard(unit.card);
             }
-        }else{
-            this.socket.emit('clickedTile', tile.id);
         }
     }
 }

@@ -14,6 +14,9 @@
 @keyframes blinker {  
   50% { opacity: 0; }
 }
+@keyframes flasher {  
+  50% { fill: inherit; }
+}
 .blink {
   animation: blinker 1s linear infinite;
 }
