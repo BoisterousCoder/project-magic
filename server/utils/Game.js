@@ -3,14 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GEN_GAME_BOARD = require('./genGameBoard.js');
 const Unit = require('./Unit.js');
-// let assetsFolder = 'src/assets/'
-// let actionNameList;
-// try{
-//     actionNameList = JSON.parse(fs.readFileSync(assetsFolder+'cards/cards.json', 'utf8'));
-// }catch(err){
-//     assetsFolder = 'public/assets/'
-//     actionNameList = JSON.parse(fs.readFileSync(assetsFolder+'cards/cards.json', 'utf8'));
-// }
 
 class Game{
     constructor(id, io){

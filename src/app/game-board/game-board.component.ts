@@ -124,7 +124,9 @@ export class GameBoardComponent implements OnInit {
         let id = target.attributes.tileId.value;
         id = Number(id);
         let tile = this.board[id];
-        if(tile.unitId || tile.unitId==0){
+        if(tile.highlight){
+            this.selectedUnit.requestAction(this.socket, tile.id);
+        }else if(tile.unitId || tile.unitId==0){
             let unit = this.units[tile.unitId];
             if(unit == this.selectedUnit){
                 this.selectedUnit = undefined;

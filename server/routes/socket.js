@@ -3,6 +3,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const Game = require('../utils/Game.js');
 const NUM_OF_GAMES = 10;
+const fs = require('fs');
+
+let assetsFolder = 'src/assets/'
+let actionNameList = [];
+let actions = {};
+try{
+    actionNameList = JSON.parse(fs.readFileSync(assetsFolder+'actions/actions.json', 'utf8')).actions;
+}catch(err){
+    assetsFolder = 'public/assets/'
+    actionNameList = JSON.parse(fs.readFileSync(assetsFolder+'actions/actions.json', 'utf8')).actions;
+}
+for(let actionName of actionNameList){
+    actions[actionName] = require('../../'+assetsFolder+'actions/'+actionName+'.js');
+}
+delete actionNameList;
 
 module.exports = function(io) {
     var games = []
@@ -69,6 +84,15 @@ module.exports = function(io) {
             game.units.forEach(function(unitData){
                 socket.emit('setUnit', JSON.stringify(unitData));
             });
+        });
+        on('requestAction', function(res){
+            let data = JSON.parse(res);
+            const target = game.board[data.target];
+            const source = game.units[data.source];
+            const BOARD = game.board;
+            const UNITS = game.units;
+            const action = actions[data.action];
+            action.useAction(target, source, BOARD, UNITS);
         });
     });
 };

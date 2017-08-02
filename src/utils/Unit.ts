@@ -9,26 +9,27 @@ export class Unit extends Point{
     actionsLeft:number;
     highlightedAction:string = 'movement';
     img:string;
+    id:number
     private _highlightedTiles:Point[] = [];
     private _isSelected:boolean = false;
     constructor(x:number, y:number, unitData, private changeBoard, private unitActions){
         super(x, y);
         let card = unitData.card;
+        this.id = unitData.id;
         this.img = card.folderPath + card.unitImg;
         this.card = card;
-        this.actionsLeft = card.action.perTurn;
+        this.actionsLeft = unitData.actionsLeft;
     }
     private mapToPointList(map):Point[]{
         let pointList:Point[] = [];
         let self = this;
-        map.map((layerPoints, _depth) => {
-            let depth = _depth+1;
+        map.map((layerPoints, depth) => {
             let topRight = 0; 
             let bottomRight = depth*2;
             let bottomLeft = depth*4;
             let topLeft = depth*6; 
             layerPoints.map((possiblePoint, _i) => {
-                if(possiblePoint){
+                if(possiblePoint && depth != 0){
                     let i = _i - depth;
                     let point:Point;
                     if(i <= topRight){
@@ -51,24 +52,41 @@ export class Unit extends Point{
                     }
                     point = point.combine(self);
                     pointList.push(point);
+                }else if(possiblePoint){
+                    let point = new Point(self.x, self.y);
+                    pointList.push(point);
                 }
             });
         });
         return pointList;
+    }
+    private checkHighlight(_tile, _board, _units):boolean{
+        let action = this.unitActions[this.highlightedAction];
+        const self = this;
+        const board = _board;
+        const units = _units;
+        const tile = _tile;
+        return action.allowActionUse(tile, self, board, units)
+    }
+    requestAction(socket, targetTileId){
+        socket.emit("requestAction", JSON.stringify({
+            action:this.highlightedAction,
+            target:targetTileId,
+            source:this.id
+        }));
     }
     get highlightedTiles():Point[]{
         return this._highlightedTiles;
     }
     set highlightedTiles(tilesToHighlight:Point[]){
         this._highlightedTiles = tilesToHighlight;
-        let self = this;
         this.changeBoard((board, units) => {
             for(let tile of board){
                 board[tile.id].highlight = null;
                 for(let point of tilesToHighlight){
                     if(tile.isAt(point)){
                         let action = this.unitActions[this.highlightedAction];
-                        let highlightTile:boolean = action.allowActionUse(tile, this, board, units)
+                        let highlightTile:boolean = this.checkHighlight(tile, board, units)
                         if(highlightTile){
                             board[tile.id].highlight = action.color;
                         }
