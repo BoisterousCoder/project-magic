@@ -1,15 +1,20 @@
-function allowActionUse(targetTile, sourceUnit, board, units){
-    if(!targetTile.unitId && targetTile.unitId != 0 && sourceUnit.actionsLeft >= 1){
+function checkIfValidTarget(targetTile, sourceUnit, board, units){
+    if(!targetTile.unitId && targetTile.unitId != 0 && sourceUnit.actionsLeft > 0){
         return true;
     }else{
         return false;
     }
 }
-function useAction(targetTile, sourceUnit, board, units){
-
+function useAction(targetTile, sourceUnit, game){
+    console.log('Moving Unit');
+    game.setUnit(sourceUnit.id, {
+        x:targetTile.x,
+        y:targetTile.y,
+        actionsLeft:sourceUnit.actionsLeft-1
+    });
 }
 module.exports={
-    allowActionUse:allowActionUse,
+    checkIfValidTarget:checkIfValidTarget,
     useAction:useAction,
     color:"white"
 }

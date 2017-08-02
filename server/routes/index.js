@@ -8,5 +8,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     res.render('index');
 });
+router.get('/license', function(req, res, next) {
+    res.render('assets/LICENSE');
+});
 
 module.exports = router;

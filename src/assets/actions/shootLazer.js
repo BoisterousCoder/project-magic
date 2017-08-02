@@ -1,11 +1,11 @@
-function allowActionUse(targetTile, sourceTile, board, units){
+function checkIfValidTarget(targetTile, sourceTile, board, units){
     return true;
 }
 function useAction(targetTile, sourceTile, board, units){
 
 }
 module.exports={
-    allowActionUse:allowActionUse,
+    checkIfValidTarget:checkIfValidTarget,
     useAction:useAction,
     color:"red"
 }

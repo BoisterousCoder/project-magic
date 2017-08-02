@@ -14,11 +14,12 @@ export class Unit extends Point{
     private _isSelected:boolean = false;
     constructor(x:number, y:number, unitData, private changeBoard, private unitActions){
         super(x, y);
-        let card = unitData.card;
-        this.id = unitData.id;
-        this.img = card.folderPath + card.unitImg;
-        this.card = card;
-        this.actionsLeft = unitData.actionsLeft;
+        for(let property in unitData){
+            if(unitData.hasOwnProperty(property)){
+                this[property] = unitData[property];
+            }
+        }
+        this.img = this.card.folderPath + this.card.unitImg;
     }
     private mapToPointList(map):Point[]{
         let pointList:Point[] = [];
@@ -66,7 +67,7 @@ export class Unit extends Point{
         const board = _board;
         const units = _units;
         const tile = _tile;
-        return action.allowActionUse(tile, self, board, units)
+        return action.checkIfValidTarget(tile, self, board, units)
     }
     requestAction(socket, targetTileId){
         socket.emit("requestAction", JSON.stringify({

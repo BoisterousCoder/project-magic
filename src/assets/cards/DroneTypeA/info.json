@@ -7,6 +7,10 @@
     "isUnit": true,
     "cardImg":"card.svg",
     "unitImg":"unit.svg",
+    "unit":{
+        "health":2,
+        "armor":0
+    },
     "action":{
         "perTurn":2,
         "movement":{

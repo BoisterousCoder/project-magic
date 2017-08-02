@@ -44,20 +44,36 @@ class Game{
         this.genBoard();
     }
     setTile(tileId, property, value){
-        if(value == undefined){
-            value = property;
-            this.board[tileId] = value;
-        }else{
+        if(value || value == 0 || value == ''){
+            console.log('setting a tile\'s'  + property + ' to ' + value);
             this.board[tileId][property] = value;
+        }else if(property.id){
+            console.log('setting an entire tile\'s value');
+            this.board[unitId] = property;
+        }else{
+            for(let property in value){
+                if (value.hasOwnProperty(property)) {
+                    console.log('setting ' + key + ' of tile ' + tileId +' to ' + property[key]);
+                    this.board[tileId][property] = value[property];
+                }
+            }
         }
         this.emit('setTile', JSON.stringify(this.board[tileId]));
     }
     setUnit(unitId, property, value){
-        if(value == undefined){
-            value = property;
-            this.units[unitId] = value;
-        }else{
+        if(value || value == 0 || value == ''){
+            console.log('setting a unit\'s ' + property + ' to ' + value);
             this.units[unitId][property] = value;
+        }else if(property.id){
+            console.log('setting an entire unit\'s value');
+            this.units[unitId] = property;
+        }else{
+            for(let key in property){
+                if (property.hasOwnProperty(key)) {
+                    console.log('setting ' + key + ' of unit ' + unitId +' to ' + property[key]);
+                    this.units[unitId][key] = property[key];
+                }
+            }
         }
         this.emit('setUnit', JSON.stringify(this.units[unitId]));
     }

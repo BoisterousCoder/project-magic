@@ -89,10 +89,13 @@ module.exports = function(io) {
             let data = JSON.parse(res);
             const target = game.board[data.target];
             const source = game.units[data.source];
-            const BOARD = game.board;
-            const UNITS = game.units;
+            const GAME = game;
             const action = actions[data.action];
-            action.useAction(target, source, BOARD, UNITS);
+            let isTagetInRange = source.checkIfInRange(target, data.action);
+            let isValidAction = action.checkIfValidTarget(target, source, GAME.board, GAME.units);
+            if(isTagetInRange && isValidAction){
+                action.useAction(target, source, GAME);
+            }
         });
     });
 };

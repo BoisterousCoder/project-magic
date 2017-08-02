@@ -89,6 +89,13 @@ export class GameBoardComponent implements OnInit {
                 self.board = board;
             }
         }
+        let isUnitSelected = false;
+        if(this.units[unitData.id]){
+            if(this.units[unitData.id].isSelected){
+                this.units[unitData.id].isSelected=false;
+                isUnitSelected = true;
+            }
+        }
         this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, changeBoard, this.unitActions);
         for(let tile of this.board){
             let isInSameLoc = (tile.x==unitData.x && tile.y==unitData.y);
@@ -101,6 +108,9 @@ export class GameBoardComponent implements OnInit {
                     tile.unitId = unitData.id;
                 }
             }
+        }
+        if(isUnitSelected){
+            this.units[unitData.id].isSelected=true;
         }
     }
     onScroll(event){
