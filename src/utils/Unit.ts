@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 import { getJSON } from './getJSON';
 import { Point } from './Point'
+
 export class Unit extends Point{
     card;
     actionsLeft:number;
@@ -10,7 +11,7 @@ export class Unit extends Point{
     img:string;
     private _highlightedTiles:Point[] = [];
     private _isSelected:boolean = false;
-    constructor(x:number, y:number, unitData, private changeBoard){
+    constructor(x:number, y:number, unitData, private changeBoard, private unitActions){
         super(x, y);
         let card = unitData.card;
         this.img = card.folderPath + card.unitImg;
@@ -60,12 +61,17 @@ export class Unit extends Point{
     }
     set highlightedTiles(tilesToHighlight:Point[]){
         this._highlightedTiles = tilesToHighlight;
-        this.changeBoard((board) => {
+        let self = this;
+        this.changeBoard((board, units) => {
             for(let tile of board){
-                board[tile.id].isHighlighted = false;
+                board[tile.id].highlight = null;
                 for(let point of tilesToHighlight){
                     if(tile.isAt(point)){
-                        board[tile.id].isHighlighted = true;
+                        let action = this.unitActions[this.highlightedAction];
+                        let highlightTile:boolean = action.allowActionUse(tile, this, board, units)
+                        if(highlightTile){
+                            board[tile.id].highlight = action.color;
+                        }
                     }
                 }
             }

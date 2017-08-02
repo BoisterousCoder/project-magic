@@ -27,6 +27,7 @@ export class AppComponent {
     maxWindowSize:number;
     scale:number;
     isWindowVertical:boolean;
+    unitActions = {};
     unitTypes;
     layout;
     socket;
@@ -36,6 +37,13 @@ export class AppComponent {
         let self = this;
         getJSON('layout.json', function(data){
             self.layout = data;
+        });
+        getJSON('actions/actions.json', function(data){
+            for(let actionName of data.actions){
+                let action = require('../assets/actions/'+actionName+'.js')
+                self.unitActions[actionName] = action;
+                console.log(self.unitActions);
+            }
         });
     }
     setSelectedCard(card){

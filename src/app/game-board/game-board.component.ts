@@ -30,6 +30,7 @@ export class GameBoardComponent implements OnInit {
     @Input() gameId;
     @Input() scale;
     @Input() layout;
+    @Input() unitActions;
     @Input() setSelectedCard;
     @Input() minWindowSize;
     @Input() maxWindowSize;
@@ -83,12 +84,12 @@ export class GameBoardComponent implements OnInit {
         let unitData = JSON.parse(res);
         let self = this;
         function changeBoard(callback){
-            let board = callback(self.board);
+            let board = callback(self.board, self.units);
             if(board){
                 self.board = board;
             }
         }
-        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, changeBoard);
+        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, changeBoard, this.unitActions);
         for(let tile of this.board){
             let isInSameLoc = (tile.x==unitData.x && tile.y==unitData.y);
             if(tile.unitId || tile.unitId==0){

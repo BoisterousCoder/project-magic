@@ -36,8 +36,7 @@
             [attr.xlink:href]="'#'+land.dispalyId"
             [attr.x]="land.x + viewOffset.x"
             [attr.y]="land.y + viewOffset.y"
-            [attr.class]='land.isHighlighted?"blink":""'
-            [attr.fill]="land.color"
+            [attr.fill]="land.highlight?land.highlight:land.color"
             [attr.tileId]='land.id'
             [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x+viewOffset.x) + ', ' + (0.5+land.y+viewOffset.y) + ')'"
             (click)="onTileClick($event)"

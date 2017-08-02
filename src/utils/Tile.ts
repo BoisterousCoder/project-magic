@@ -6,7 +6,7 @@ export class Tile extends Point{
     color:string='blue';
     id:number;
     unitId:number;
-    isHighlighted:boolean = false;
+    highlight = false;
     private __displayId:string = 'land_3way';
     private __rotation:number = 0;
     private __entrances:number[]=[1,1,1,0];
