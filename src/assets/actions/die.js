@@ -12,5 +12,7 @@ function useAction(targetTile, sourceUnit, game){
 module.exports={
     checkIfValidTarget:checkIfValidTarget,
     useAction:useAction,
-    name:"die"
+    name:"die",
+    ref:"die",
+    img:"move.svg"
 }

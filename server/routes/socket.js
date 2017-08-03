@@ -87,15 +87,20 @@ module.exports = function(io) {
         });
         on('requestAction', function(res){
             let data = JSON.parse(res);
-            const target = game.board[data.target];
-            const source = game.units[data.source];
+            const TARGET = game.board[data.target];
+            const SOURCE = game.units[data.source];
             const GAME = game;
             const action = actions[data.action];
-            let isTagetInRange = source.checkIfInRange(target, data.action);
-            let isValidAction = action.checkIfValidTarget(target, source, GAME.board, GAME.units);
+            let isTagetInRange;
+            if(SOURCE.card.action[data.action].hasNoRange){
+                isTagetInRange = true;
+            }else{
+                isTagetInRange = SOURCE.checkIfInRange(TARGET, data.action);
+            }
+            let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units);
             console.log('a user is attempting to perform the action ' + data.action)
             if(isTagetInRange && isValidAction){
-                action.useAction(target, source, GAME);
+                action.useAction(TARGET, SOURCE, GAME);
             }else{
                 console.log('that action was impossible');
                 console.log('in range: ' + isTagetInRange);

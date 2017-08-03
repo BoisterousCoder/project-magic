@@ -2,16 +2,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const CARD_TYPES = require('./getCardTypes.js')();
+const fs = require('fs');
 let Point = require('./Point.js')
+
+let assetsFolder = 'src/assets/'
+let universalActions = {};
+try{
+    universalActions = JSON.parse(fs.readFileSync(assetsFolder+'actions/actions.json', 'utf8')).universalActions;
+}catch(err){
+    assetsFolder = 'public/assets/'
+    universalActions = JSON.parse(fs.readFileSync(assetsFolder+'actions/actions.json', 'utf8')).universalActions;
+}
 
 class Unit extends Point{
     constructor(x, y, cardTypeId){
         super(x, y);
         this.card = CARD_TYPES[cardTypeId];
+        this.isDead = false;
         for(let property in this.card.unit){
             if(this.card.unit.hasOwnProperty(property)){
                 this[property] = this.card.unit[property];
             }
+        }
+        for(let actionName in universalActions){
+            this.card.action[actionName] = universalActions[actionName];
         }
         this.actionsLeft = this.card.action.perTurn;
     }

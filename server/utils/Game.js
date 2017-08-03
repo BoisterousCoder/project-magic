@@ -61,27 +61,32 @@ class Game{
         this.emit('setTile', JSON.stringify(this.board[tileId]));
     }
     setUnit(unitId, property, value){
-        if(value || value == 0 || value == ''){
-            console.log('setting a unit\'s ' + property + ' to ' + value);
-            this.units[unitId][property] = value;
-        }else if(property.id){
-            console.log('setting an entire unit\'s value');
-            this.units[unitId] = property;
-        }else{
-            for(let key in property){
-                if (property.hasOwnProperty(key)) {
-                    console.log('setting ' + key + ' of unit ' + unitId +' to ' + property[key]);
-                    this.units[unitId][key] = property[key];
+        let unit;
+        if(property != undefined){
+            if(value || value == 0 || value == ''){
+                console.log('setting a unit\'s ' + property + ' to ' + value);
+                this.units[unitId][property] = value;
+            }else if(property.id){
+                console.log('setting an entire unit\'s value');
+                this.units[unitId] = property;
+            }else{
+                for(let key in property){
+                    if (property.hasOwnProperty(key)) {
+                        console.log('setting ' + key + ' of unit ' + unitId +' to ' + property[key]);
+                        this.units[unitId][key] = property[key];
+                    }
                 }
             }
-        }
-        let unit = this.units[unitId];
-        for(let tile of this.board){
-            if(unit.isAt(tile)){
-                tile.unitId = unit.id;
-            }else if(tile.unitId == unit.id){
-                tile.unitId = undefined;
+            unit = this.units[unitId];
+            for(let tile of this.board){
+                if(unit.isAt(tile)){
+                    tile.unitId = unit.id;
+                }else if(tile.unitId == unit.id){
+                    tile.unitId = undefined;
+                }
             }
+        }else{
+            this.units[unitId] = {isDead:true};
         }
         this.emit('setUnit', JSON.stringify(unit));
     }
