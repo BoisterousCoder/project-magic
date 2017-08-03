@@ -106,6 +106,9 @@ export class AppComponent {
             this.gameBoard.refreshTileSizes();
         }
     }
+    onEndTurn(event){
+        this.socket.emit('endTurn')
+    }
     onMakeGameListing(res){
         res = JSON.parse(res);
         this.gameListings[res.id] = new GameListing(res.name, res.id, res.time);

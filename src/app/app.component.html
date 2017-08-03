@@ -32,6 +32,16 @@
             <go-to-button [scale]='scale' [locations]="boards" [location]="0" [layout]='layout.gameBoard.goToButton'></go-to-button>
             <go-to-button [scale]='scale' [locations]="boards" [location]="1" [layout]='layout.cardBoard.goToButton'></go-to-button>
             <go-to-button [scale]='scale' [locations]="boards" [location]="2" [layout]='layout.infoBoard.goToButton'></go-to-button>
+            <button id='endTurn'
+                [style.background]='layout.endTurnButton.background'
+                [style.color]='layout.endTurnButton.textColor'
+                [style.top]='(layout.endTurnButton.y * scale)+"px"'
+                [style.left]='(layout.endTurnButton.x * scale)+"px"'
+                [style.width]='(layout.endTurnButton.width * scale)+"px"'
+                [style.height]='(layout.endTurnButton.height * scale)+"px"'
+                (click)='onEndTurn($event)'>
+                {{layout.endTurnButton.text}}
+            </button>
         </div>
     </div>
     <div id='gameSelectWrapper' *ngIf='!isInAGame'>

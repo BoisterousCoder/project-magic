@@ -52,3 +52,17 @@
         />
     </svg>
 </div>
+<div *ngIf='selectedUnit'>
+    <button
+        *ngFor="let actionName of selectedUnit.card.action.buttons; let i = index"
+        [style.width]='(scale*layout.actionButtons.width)+"px"' 
+        [style.height]='(scale*layout.actionButtons.height)+"px"'
+        [style.left]='(scale*layout.actionButtons.x)+"px"' 
+        [style.top]='(scale*(layout.actionButtons.y+i*layout.actionButtons.height))+"px"'
+        [style.background]='layout.actionButtons.background'
+        (click)='selectedUnit.highlightedAction = unitActions[actionName].ref'>
+        <img 
+            [attr.src]='"assets/actions/"+unitActions[actionName].img'
+            [style.height]='(scale*layout.actionButtons.height)+"px"'/>
+    </button>
+</div>

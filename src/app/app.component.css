@@ -7,3 +7,7 @@ game-board{
     display: block;
     position: absolute;
 }
+#endTurn{
+    display: block;
+    position: absolute;
+}

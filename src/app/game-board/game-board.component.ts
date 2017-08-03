@@ -144,6 +144,9 @@ export class GameBoardComponent implements OnInit {
                 this.setSelectedCard(undefined);
             }else{
                 this.selectedUnit = unit;
+                for(let unit of this.units){
+                    unit.isSelected = false;
+                }
                 this.units[tile.unitId].isSelected = true;
                 this.setSelectedCard(unit.card);
             }

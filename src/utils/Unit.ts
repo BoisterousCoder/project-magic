@@ -7,9 +7,9 @@ import { Point } from './Point'
 export class Unit extends Point{
     card;
     actionsLeft:number;
-    highlightedAction:string = 'movement';
     img:string;
-    id:number
+    id:number;
+    private _highlightedAction:string = '';
     private _highlightedTiles:Point[] = [];
     private _isSelected:boolean = false;
     constructor(x:number, y:number, unitData, private changeBoard, private unitActions){
@@ -44,7 +44,7 @@ export class Unit extends Point{
                     }else if(i <= topLeft){
                         i -= bottomLeft;
                         point = new Point(-depth, depth-i);
-                    }else if(i < topLeft+depth-1){
+                    }else if(i <= topLeft+depth-1){
                         i -= topLeft;
                         point = new Point(i-depth, -depth);
                     }else{
@@ -96,18 +96,27 @@ export class Unit extends Point{
             }
             return board;
         });
-        this._highlightedTiles = tilesToHighlight;
+    }
+    private get highlightedAction():string{
+        return this._highlightedAction;
+    }
+    private set highlightedAction(highlightedAction:string){
+        this._highlightedAction = highlightedAction;
+        if(highlightedAction && this.isSelected){
+            this.highlightedTiles = this.mapToPointList(this.card.action[this.highlightedAction].map);
+        }else{
+            this.highlightedTiles = [];
+        }
     }
     get isSelected():boolean{
         return this._isSelected;
     }
     set isSelected(val:boolean){
-        this._isSelected = true;
-        if(val){
+        this._isSelected = val;
+        if(val && this.highlightedAction){
             this.highlightedTiles = this.mapToPointList(this.card.action[this.highlightedAction].map);
-            console.log(this.highlightedTiles);
-        }else{
-            this.highlightedTiles = [];
+        }else if(this.highlightedAction){
+            this.highlightedAction = '';
         }
     }
 }

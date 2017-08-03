@@ -44,9 +44,24 @@
             "y":95
         }
     },
+    "actionButtons":{
+        "background":"gray",
+        "width":4,
+        "height":4,
+        "x":96,
+        "y":1
+    },
+    "endTurnButton":{
+        "text":"End Turn",
+        "textColor":"red",
+        "background":"gray",
+        "width":15,
+        "height":5,
+        "x":80,
+        "y":95
+    },
     "textSize":{
         "desctiption":3,
-        "tooltip":1,
         "button":4,
         "title":14
     }

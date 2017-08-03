@@ -38,7 +38,7 @@ class Unit extends Point{
                     }else if(i <= topLeft){
                         i -= bottomLeft;
                         point = new Point(-depth, depth-i);
-                    }else if(i < topLeft+depth-1){
+                    }else if(i <= topLeft+depth-1){
                         i -= topLeft;
                         point = new Point(i-depth, -depth);
                     }else{

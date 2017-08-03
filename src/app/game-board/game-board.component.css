@@ -23,3 +23,11 @@
 image{
     pointer-events: none;
 }
+button{
+    position: absolute;
+    display: block;
+}
+button image{
+    display: block;
+    height: 100%;
+}
