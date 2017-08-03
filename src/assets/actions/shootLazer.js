@@ -10,8 +10,9 @@ function useAction(targetTile, sourceUnit, game){
     game.setUnit(sourceUnit.id, {
         actionsLeft:sourceUnit.actionsLeft-1
     });
-    let targetUnit = game.board[targetTile];
-    let damage = Math.max(0, 1 - targetUnit.armor);
+    let targetUnit = game.units[targetTile.unitId];
+    let unitAction = sourceUnit.card.action['shootLazer'];
+    let damage = Math.max(0, unitAction.damage - targetUnit.armor);
     game.setUnit(targetTile.unitId, {
         health: targetUnit.health - damage
     });

@@ -10,7 +10,7 @@ class Unit extends Point{
         this.card = CARD_TYPES[cardTypeId];
         for(let property in this.card.unit){
             if(this.card.unit.hasOwnProperty(property)){
-                this[property] = this.card.unit;
+                this[property] = this.card.unit[property];
             }
         }
         this.actionsLeft = this.card.action.perTurn;

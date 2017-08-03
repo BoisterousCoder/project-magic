@@ -93,8 +93,13 @@ module.exports = function(io) {
             const action = actions[data.action];
             let isTagetInRange = source.checkIfInRange(target, data.action);
             let isValidAction = action.checkIfValidTarget(target, source, GAME.board, GAME.units);
+            console.log('a user is attempting to perform the action ' + data.action)
             if(isTagetInRange && isValidAction){
                 action.useAction(target, source, GAME);
+            }else{
+                console.log('that action was impossible');
+                console.log('in range: ' + isTagetInRange);
+                console.log('is valid: ' + isValidAction);
             }
         });
     });

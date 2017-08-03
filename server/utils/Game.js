@@ -75,7 +75,15 @@ class Game{
                 }
             }
         }
-        this.emit('setUnit', JSON.stringify(this.units[unitId]));
+        let unit = this.units[unitId];
+        for(let tile of this.board){
+            if(unit.isAt(tile)){
+                tile.unitId = unit.id;
+            }else if(tile.unitId == unit.id){
+                tile.unitId = undefined;
+            }
+        }
+        this.emit('setUnit', JSON.stringify(unit));
     }
     isPlayerInGame(socketId){
         let isPlayerInGame = false;

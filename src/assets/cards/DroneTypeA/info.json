@@ -9,7 +9,7 @@
     "unitImg":"unit.svg",
     "unit":{
         "health":2,
-        "armor":0
+        "armor":1
     },
     "action":{
         "buttons":["move","shootLazer"],
@@ -23,6 +23,7 @@
             ]
         },
         "shootLazer":{
+            "damage":2,
             "map":[
                 [0],
                 [0,0,0,0,0,0,0,0],
