@@ -8,7 +8,7 @@
         "shootLazer"
     ],
     "universalActions":{
-        "die":{
+        "kill":{
             "map":[[1]]
         }
     }

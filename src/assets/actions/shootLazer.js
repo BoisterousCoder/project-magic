@@ -1,3 +1,5 @@
+let dealDamage = require('./utils/dealDamage.js')
+
 function checkIfValidTarget(targetTile, sourceUnit, board, units){
     if((targetTile.unitId || targetTile.unitId == 0) && sourceUnit.actionsLeft >= 1){
         return true;
@@ -10,12 +12,7 @@ function useAction(targetTile, sourceUnit, game){
     game.setUnit(sourceUnit.id, {
         actionsLeft:sourceUnit.actionsLeft-1
     });
-    let targetUnit = game.units[targetTile.unitId];
-    let unitAction = sourceUnit.card.action['shootLazer'];
-    let damage = Math.max(0, unitAction.damage - targetUnit.armor);
-    game.setUnit(targetTile.unitId, {
-        health: targetUnit.health - damage
-    });
+    dealDamage(targetTile, sourceUnit, game, false);
 }
 module.exports={
     checkIfValidTarget:checkIfValidTarget,

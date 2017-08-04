@@ -86,7 +86,13 @@ class Game{
                 }
             }
         }else{
+            for(let tile of this.board){
+                if(tile.unitId == unit.id){
+                    tile.unitId = undefined;
+                }
+            }
             this.units[unitId] = {isDead:true};
+            unit = this.units[unitId];
         }
         this.emit('setUnit', JSON.stringify(unit));
     }
