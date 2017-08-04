@@ -10,13 +10,13 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Compile The Client
 
-Run `ng build` to build the project. The build artifacts will be stored in the `public/` directory. Use the `-prod` flag for a production build.
+Run `ng build` in the root directory, to build the project. The build artifacts will be stored in the `public/` directory. Use the `-prod` flag for a production build.
 
-## Running Just The Server
+## Running Server side
 
-Run `npm test` to just start the server. The client will remain unchanged from the last build.
+Run `npm test` in the root directory, to start the server. The client will remain unchanged from the last build.
 
-## Code sructure
+## Code Structure
 
 All client source files is located in the `src/` directory, and all server source files are located in the `server/` directory. 
 
@@ -24,7 +24,7 @@ All client source files is located in the `src/` directory, and all server sourc
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-##Install instructions
+## Install instructions
 
 1. Download version 6 of [Node JS](https://nodejs.org/) 
 2. Install Angular CLI with the command `npm install -g @angular/cli`
