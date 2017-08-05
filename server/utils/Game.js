@@ -16,7 +16,6 @@ class Game{
     }
     genBoard(){
         this.board = [];
-        let tileId = 0;
         let testUnit1 = new Unit(12, 12, 0); //Testing Only
         testUnit1.id = 0                     //Testing Only
         this.units[0] = testUnit1;           //Testing Only
@@ -24,12 +23,8 @@ class Game{
         testUnit2.id = 1                     //Testing Only
         this.units[1] = testUnit2;           //Testing Only
         let self = this;
-        GEN_GAME_BOARD(function(tileData){
-            if(tileData.entrances.toString() !== [0,0,0,0].toString()){
-                tileData.id = tileId;
-                self.board[tileId] = tileData;
-                tileId++;
-            }
+        GEN_GAME_BOARD(function(tiles){
+            self.board = tiles;
         });
     }
     disconect(socketId){
@@ -91,7 +86,7 @@ class Game{
                     tile.unitId = undefined;
                 }
             }
-            this.units[unitId] = {isDead:true};
+            this.units[unitId] = {isDead:true, id:unitId};
             unit = this.units[unitId];
         }
         this.emit('setUnit', JSON.stringify(unit));

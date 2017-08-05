@@ -42,7 +42,6 @@ export class AppComponent {
             for(let actionName of data.actions){
                 let action = require('../assets/actions/'+actionName+'.js')
                 self.unitActions[actionName] = action;
-                console.log(self.unitActions);
             }
         });
     }

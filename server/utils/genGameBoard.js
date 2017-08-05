@@ -4,6 +4,7 @@
 const GENCHANCE = 53;
 const BOARDSIZE = 24;
 const DEFAULTCOLOR = 'green';
+const Tile = require('./Tile');
 
 module.exports = function(callback){
     let tiles = [];
@@ -16,40 +17,54 @@ module.exports = function(callback){
             break;
         }
     }
-    console.log('Finnished genning tiles for a Game.');
-    for(let node of nodes){
-        let entrances = [];
-        node.sides.map(function(side, i){
-            let isNodeThere;
-            switch(i){
-                case(0):
-                    isNodeThere = checkForNode(node.x, node.y-1, nodes);
-                    isNodeThere?entrances[i]=1:entrances[i]=0;
-                    break;
-                case(1):
-                    isNodeThere = checkForNode(node.x+1, node.y, nodes);
-                    isNodeThere?entrances[i]=1:entrances[i]=0;
-                    break;
-                case(2):
-                    isNodeThere = checkForNode(node.x, node.y+1, nodes);
-                    isNodeThere?entrances[i]=1:entrances[i]=0;
-                    break;
-                case(3):
-                    isNodeThere = checkForNode(node.x-1, node.y, nodes);
-                    isNodeThere?entrances[i]=1:entrances[i]=0;
-                    break;
+    for(let id in nodes){
+        let node = nodes[id]
+        let isDuplicate = false;
+        for(let tile of tiles){
+            if(tile.isAt(node)){
+                isDuplicate = true;
+                break;
             }
-        });
-        tile = {
-            x:node.x,
-            y:node.y,
-            entrances:entrances,
-            color:DEFAULTCOLOR
-        };
-        
-        tiles.push(tile);
-        callback(tile);
+        }
+        if(!isDuplicate){
+            let entrances = [];
+            node.sides.map(function(side, i){
+                let isNodeThere;
+                switch(i){
+                    case(0):
+                        isNodeThere = checkForNode(node.x, node.y-1, nodes);
+                        isNodeThere?entrances[i]=1:entrances[i]=0;
+                        break;
+                    case(1):
+                        isNodeThere = checkForNode(node.x+1, node.y, nodes);
+                        isNodeThere?entrances[i]=1:entrances[i]=0;
+                        break;
+                    case(2):
+                        isNodeThere = checkForNode(node.x, node.y+1, nodes);
+                        isNodeThere?entrances[i]=1:entrances[i]=0;
+                        break;
+                    case(3):
+                        isNodeThere = checkForNode(node.x-1, node.y, nodes);
+                        isNodeThere?entrances[i]=1:entrances[i]=0;
+                        break;
+                }
+            });
+
+            if(entrances.toString() !== [0,0,0,0].toString()){
+                let tile = new Tile({
+                    x:node.x,
+                    y:node.y,
+                    id:tiles.length,
+                    entrances:entrances,
+                    color:DEFAULTCOLOR
+                });
+
+                tiles[tile.id] = tile;
+            }
+        }
     }
+    console.log('Finnished gennerating tiles for a Game.');
+    callback(tiles);
 }
 
 function genNode(x, y, otherNodes, sidesOverride){

@@ -1,6 +1,8 @@
+const checkIfPathClear = require('./utils/checkIfPathClear');
+
 function checkIfValidTarget(targetTile, sourceUnit, board, units){
-    if(!targetTile.unitId && targetTile.unitId != 0 && sourceUnit.actionsLeft >= 2){
-        return true;
+    if(targetTile.isPassable && sourceUnit.actionsLeft >= 2){
+        return checkIfPathClear(targetTile, sourceUnit, board);
     }else{
         return false;
     }

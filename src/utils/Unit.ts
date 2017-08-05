@@ -67,7 +67,7 @@ export class Unit extends Point{
         const board = _board;
         const units = _units;
         const tile = _tile;
-        return action.checkIfValidTarget(tile, self, board, units)
+        return action.checkIfValidTarget(tile, self, board, units);
     }
     requestAction(socket, targetTileId){
         socket.emit("requestAction", JSON.stringify({
@@ -82,16 +82,34 @@ export class Unit extends Point{
     set highlightedTiles(tilesToHighlight:Point[]){
         this._highlightedTiles = tilesToHighlight;
         this.changeBoard((board, units) => {
-            for(let tile of board){
-                board[tile.id].highlight = null;
-                for(let point of tilesToHighlight){
-                    if(tile.isAt(point)){
+            if(this.highlightedAction){
+                if(this.card.action[this.highlightedAction].hasNoRange){
+                    for(let tile of board){
                         let action = this.unitActions[this.highlightedAction];
                         let highlightTile:boolean = this.checkHighlight(tile, board, units)
                         if(highlightTile){
                             board[tile.id].highlight = action.color;
+                        }else{
+                            board[tile.id].highlight = null;
                         }
                     }
+                }else{
+                    for(let tile of board){
+                        board[tile.id].highlight = null;
+                        for(let point of tilesToHighlight){
+                            if(tile.isAt(point)){
+                                let action = this.unitActions[this.highlightedAction];
+                                let highlightTile:boolean = this.checkHighlight(tile, board, units)
+                                if(highlightTile){
+                                    board[tile.id].highlight = action.color;
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                for(let tile of board){
+                    board[tile.id].highlight = null;
                 }
             }
             return board;

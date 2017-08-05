@@ -73,44 +73,54 @@ export class GameBoardComponent implements OnInit {
         });
     }
     refreshTileSizes(){
-        this.printScale = this.minWindowSize/this.boardSize;
+        this.printScale = (this.minWindowSize * (this.layout.viewBox.width/100))/this.boardSize;
         this.landSize = this.printScale * (this.boardSize/this.boardZoom);
     }
     onTileSet(res:string){
         let tileData = JSON.parse(res);
         this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);
     }
-    onUnitSet(res:string){
-        let unitData = JSON.parse(res);
+    get changeBoard(){
         let self = this;
-        function changeBoard(callback){
+        return function changeBoard(callback){
             let board = callback(self.board, self.units);
             if(board){
                 self.board = board;
             }
         }
-        let isUnitSelected = false;
-        if(this.units[unitData.id]){
-            if(this.units[unitData.id].isSelected){
-                this.units[unitData.id].isSelected=false;
-                isUnitSelected = true;
-            }
-        }
-        this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, changeBoard, this.unitActions);
-        for(let tile of this.board){
-            let isInSameLoc = (tile.x==unitData.x && tile.y==unitData.y);
-            if(tile.unitId || tile.unitId==0){
-                if(tile.unitId == unitData.id && !isInSameLoc){
-                    tile.unitId = undefined;
+    }
+    onUnitSet(res:string){
+        let unitData = JSON.parse(res);
+        if(!unitData.isDead){
+            let isUnitSelected = false;
+            if(this.units[unitData.id]){
+                if(this.units[unitData.id].isSelected){
+                    this.units[unitData.id].isSelected=false;
+                    isUnitSelected = true;
                 }
-            }else{
-                if(isInSameLoc){
+            }
+            this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, this.changeBoard, this.unitActions);
+            for(let tile of this.board){
+                if(tile.unitId || tile.unitId==0){
+                    if(tile.unitId == unitData.id && !tile.isAt(unitData)){
+                        tile.unitId = undefined;
+                    }
+                }else if(tile.isAt(unitData)){
                     tile.unitId = unitData.id;
                 }
             }
-        }
-        if(isUnitSelected){
-            this.units[unitData.id].isSelected=true;
+            if(isUnitSelected){
+                this.units[unitData.id].isSelected=true;
+            }
+        }else{
+            this.units[unitData.id] = unitData;
+            for(let tile of this.board){
+                if(tile.unitId || tile.unitId==0){
+                    if(tile.unitId == unitData.id){
+                        tile.unitId = undefined;
+                    }
+                }
+            }
         }
     }
     onScroll(event){

@@ -7,6 +7,7 @@ export class Tile extends Point{
     id:number;
     unitId:number;
     highlight = false;
+    private __isPassable:boolean = true;
     private __displayId:string = 'land_3way';
     private __rotation:number = 0;
     private __entrances:number[]=[1,1,1,0];
@@ -19,6 +20,13 @@ export class Tile extends Point{
                 }
             }
         }
+    }
+    get isPassable(){
+        let isUnitBlocking = (this.unitId || this.unitId == 0);
+        return (!isUnitBlocking) && this.__isPassable;
+    }
+    set isPassable(isPassible){
+        this.__isPassable = isPassible;
     }
     get dispalyId(){
         return this.__displayId;
