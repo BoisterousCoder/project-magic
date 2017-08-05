@@ -33,11 +33,6 @@ movementMap
     10101
     Try to make these maps interesting but symetrical. 
     A map the is not symetrical could give one player an advantage over the other.
-ability[x].map
-    Dictates all locations an ability can be used.
-    Use on own tile is a seperate variable
-ability[x].mapFuction
-    String of javascript that returns whether or not a tile can be used
 
 Notes:
     The movement action must always be included.

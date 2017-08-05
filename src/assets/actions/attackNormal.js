@@ -18,7 +18,7 @@ module.exports={
     checkIfValidTarget:checkIfValidTarget,
     useAction:useAction,
     color:"red",
-    name:"Shoot A Lazer",
-    ref:"shootLazer",
-    img:"shootLazer.svg"
+    name:"Attack",
+    ref:"attackNormal",
+    img:"attackNormal.svg"
 }

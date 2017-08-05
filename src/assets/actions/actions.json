@@ -5,7 +5,7 @@
     "actions":[
         "move",
         "kill",
-        "shootLazer"
+        "attackNormal"
     ],
     "universalActions":{
         "kill":{
