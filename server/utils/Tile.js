@@ -4,7 +4,7 @@ class Tile extends Point{
     constructor(tileData){
         super(tileData.x, tileData.y);
         this.__isPassable = true;
-        // this.entrances = tileData.entrances;
+        this.entrances = tileData.entrances;
         this.color = tileData.color;
         this.id = tileData.id
         this.isWater = tileData.isWater;

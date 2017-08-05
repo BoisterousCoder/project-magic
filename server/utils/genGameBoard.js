@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GENCHANCE = 53;
-const BOARDSIZE = 24;
+const BOARDSIZE = 25;
 const DEFAULTCOLOR = 'green';
 const WATERCOLOR = 'none';
 const Tile = require('./Tile');
@@ -56,7 +56,7 @@ module.exports = function(callback){
                     x:node.x,
                     y:node.y,
                     id:tiles.length,
-                    // entrances:entrances,
+                    entrances:entrances,
                     color:DEFAULTCOLOR,
                     isWater:false
                 });
@@ -72,6 +72,7 @@ module.exports = function(callback){
             x:tile.x,
             y:tile.y,
             id:tiles.length,
+            entrances: [1, 1, 1, 1],
             color:WATERCOLOR,
             isWater:true
         });

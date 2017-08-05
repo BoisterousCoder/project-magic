@@ -19,7 +19,7 @@ class Game{
         let testUnit1 = new Unit(12, 12, 0); //Testing Only
         testUnit1.id = 0                     //Testing Only
         this.units[0] = testUnit1;           //Testing Only
-        let testUnit2 = new Unit(11, 12, 0); //Testing Only
+        let testUnit2 = new Unit(13, 12, 0); //Testing Only
         testUnit2.id = 1                     //Testing Only
         this.units[1] = testUnit2;           //Testing Only
         let self = this;
