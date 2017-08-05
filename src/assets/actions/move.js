@@ -19,7 +19,7 @@ function useAction(targetTile, sourceUnit, game){
     game.setUnit(sourceUnit.id, {
         x:targetTile.x,
         y:targetTile.y,
-        actionsLeft:sourceUnit.actionsLeft-2
+        actionsLeft:sourceUnit.actionsLeft-sourceUnit.card.action.move.cost
     });
 }
 module.exports={

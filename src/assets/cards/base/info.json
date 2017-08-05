@@ -1,0 +1,26 @@
+{
+    "_commentLine1":"This Source Code Form is subject to the terms of the Mozilla Public",
+    "_commentLine2":"License, v. 2.0. If a copy of the MPL was not distributed with this",
+    "_commentLine3":"file, You can obtain one at http://mozilla.org/MPL/2.0/.",
+    "name":"Home Base",
+    "desc" : "This is your main base. You should probably protect it",
+    "isUnit": true,
+    "cardImg":"card.svg",
+    "unitImg":"unit.svg",
+    "unit":{
+        "damage":30,
+        "health":200,
+        "armor":15
+    },
+    "action":{
+        "buttons":["attackNormal"],
+        "perTurn":1,
+        "attackNormal":{
+            "cost":1,
+            "map":[
+                [0],
+                [1,1,1,1,1,1,1,1]
+            ]
+        }
+    }
+}

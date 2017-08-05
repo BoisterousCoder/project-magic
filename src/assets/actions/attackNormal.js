@@ -10,7 +10,7 @@ function checkIfValidTarget(targetTile, sourceUnit, board, units){
 function useAction(targetTile, sourceUnit, game){
     console.log('Attacking Unit');
     game.setUnit(sourceUnit.id, {
-        actionsLeft:sourceUnit.actionsLeft-1
+        actionsLeft:sourceUnit.actionsLeft-sourceUnit.card.action.attackNormal.cost
     });
     dealDamage(targetTile, sourceUnit, game, false);
 }
