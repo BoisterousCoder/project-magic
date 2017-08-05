@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const Game = require('../utils/Game.js');
-const NUM_OF_GAMES = 10;
+const NUM_OF_GAMES = 3;
 const fs = require('fs');
 
 let assetsFolder = 'src/assets/'

@@ -3,17 +3,18 @@ const Point = require('./Point');
 class Tile extends Point{
     constructor(tileData){
         super(tileData.x, tileData.y);
-        this._isPassable = true;
-        this.entrances = tileData.entrances;
+        this.__isPassable = true;
+        // this.entrances = tileData.entrances;
         this.color = tileData.color;
         this.id = tileData.id
+        this.isWater = tileData.isWater;
     }
     get isPassable(){
         let isUnitBlocking = (this.unitId || this.unitId == 0);
-        return (!isUnitBlocking) && this._isPassable;
+        return (!isUnitBlocking && !this.isWater) && this.__isPassable;
     }
-    set isPassable(isPassible){
-        this._isPassable = isPassible;
+    set isPassable(isPassable){
+        this.__isPassable = isPassable;
     }
 }
 

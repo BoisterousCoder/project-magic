@@ -4,6 +4,7 @@
 const GENCHANCE = 53;
 const BOARDSIZE = 24;
 const DEFAULTCOLOR = 'green';
+const WATERCOLOR = 'none';
 const Tile = require('./Tile');
 
 module.exports = function(callback){
@@ -55,8 +56,9 @@ module.exports = function(callback){
                     x:node.x,
                     y:node.y,
                     id:tiles.length,
-                    entrances:entrances,
-                    color:DEFAULTCOLOR
+                    // entrances:entrances,
+                    color:DEFAULTCOLOR,
+                    isWater:false
                 });
 
                 tiles[tile.id] = tile;
@@ -64,7 +66,41 @@ module.exports = function(callback){
         }
     }
     console.log('Finnished gennerating tiles for a Game.');
+    let missingTiles = findMissingTiles(tiles);
+    for(let tile of missingTiles){
+        tiles[tiles.length] = new Tile({
+            x:tile.x,
+            y:tile.y,
+            id:tiles.length,
+            color:WATERCOLOR,
+            isWater:true
+        });
+    }
     callback(tiles);
+}
+
+function findMissingTiles(idBoard){
+    let coordBoard = []
+    let missingTiles = [];
+    for(let tile of idBoard){
+        if(coordBoard[tile.x]){
+            coordBoard[tile.x][tile.y] = true;
+        }else{
+            coordBoard[tile.x] = [];
+            coordBoard[tile.x][tile.y] = true;
+        }
+    }
+    for(let x = 0; x < BOARDSIZE; x++){
+        if(!coordBoard[x]){
+            coordBoard[x] = [];
+        }
+        for(let y = 0; y < BOARDSIZE; y++){
+            if(!coordBoard[x][y]){
+                missingTiles.push({x:x, y:y})
+            }
+        }
+    }
+    return missingTiles;
 }
 
 function genNode(x, y, otherNodes, sidesOverride){

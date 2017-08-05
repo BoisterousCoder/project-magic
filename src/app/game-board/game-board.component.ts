@@ -110,7 +110,10 @@ export class GameBoardComponent implements OnInit {
                 }
             }
             if(isUnitSelected){
-                this.units[unitData.id].isSelected=true;
+                this.selectedUnit.isSelected = false;
+                let unit = this.units[unitData.id];
+                this.selectedUnit = unit;
+                unit.isSelected = true;
             }
         }else{
             this.units[unitData.id] = unitData;

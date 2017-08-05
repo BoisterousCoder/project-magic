@@ -16,6 +16,7 @@
         "buttons":["move","attackNormal"],
         "perTurn":20,
         "move":{
+            "hasNoRange":true,
             "map":[
                 [0],
                 [1,1,1,1,1,1,1,1],
