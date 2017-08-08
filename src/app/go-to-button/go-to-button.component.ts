@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'go-to-button',
-  templateUrl: './go-to-button.component.html',
+  templateUrl: './go-to-button.component.pug',
   styleUrls: ['./go-to-button.component.css']
 })
 export class GoToButtonComponent implements OnInit {

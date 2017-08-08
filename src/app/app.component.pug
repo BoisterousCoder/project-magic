@@ -1,0 +1,57 @@
+//
+  This Source Code Form is subject to the terms of the Mozilla Public
+  - License, v. 2.0. If a copy of the MPL was not distributed with this
+  - file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#wrapper('[style.background]'='layout?layout.mainBackground:"none"')
+    #gameWrapper('*ngif'='isInAGame')
+        game-board(
+            '[style.display]'="boards[0]?'block':'none'", 
+            '[style.width]'='(scale*layout.viewBox.width)+"px"', 
+            '[style.height]'='(scale*layout.viewBox.height)+"px"', 
+            '[style.margin-left]'='(scale*layout.viewBox.x)+"px"', 
+            '[style.margin-top]'='(scale*layout.viewBox.y)+"px"', 
+            '[socket]'='socket', 
+            '[gameid]'='currentGameId', 
+            '[scale]'='scale', 
+            '[layout]'='layout', 
+            '[setselectedcard]'='setSelectedCard()', 
+            '[minwindowsize]'='minWindowSize', 
+            '[maxwindowsize]'='maxWindowSize', 
+            '[iswindowvertical]'='isWindowVertical', 
+            '[unitactions]'='unitActions')
+        side-board(
+           '[isfullwindow]'='boards[2]', 
+           '[scale]'='scale', 
+           '[layout]'='layout', 
+           '[minwindowsize]'='minWindowSize', 
+           '[maxwindowsize]'='maxWindowSize', 
+           '[iswindowvertical]'='isWindowVertical')
+        #navMenuWrapper
+            go-to-button('[scale]'='scale','[locations]'='boards','[location]'='0','[layout]'='layout.gameBoard.goToButton')
+            go-to-button('[scale]'='scale','[locations]'='boards','[location]'='1','[layout]'='layout.cardBoard.goToButton')
+            go-to-button('[scale]'='scale','[locations]'='boards','[location]'='2','[layout]'='layout.infoBoard.goToButton')
+            button#endTurn(
+                '[style.background]'='layout.endTurnButton.background', 
+                '[style.color]'='layout.endTurnButton.textColor', 
+                '[style.top]'='(layout.endTurnButton.y * scale)+"px"', 
+                '[style.left]'='(layout.endTurnButton.x * scale)+"px"', 
+                '[style.width]'='(layout.endTurnButton.width * scale)+"px"', 
+                '[style.height]'='(layout.endTurnButton.height * scale)+"px"', 
+                '(click)'='onEndTurn($event)')
+                | {{layout.endTurnButton.text}}
+    #gameSelectWrapper('*ngif'='!isInAGame')
+        ul
+            li('*ngfor'='let gameListing of gameListings')
+                span('*ngif'='gameListing')
+                | {{gameListing.name}} 
+                button('(click)'='onJoinButton(gameListing.id)') Join
+                |   '({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}})
+        footer
+            | If you would like to see my license for most of this program's source code, go 
+            a(href='/license') here
+            | . 
+            br
+            |             You can also get a copy of the source code 
+            a(href='https://github.com/BoisterousCoder/project-magic') here
+            | .
+    #windowEvents('(window:resize)'='onResize($event)', '(window:load)'='onResize($event)')

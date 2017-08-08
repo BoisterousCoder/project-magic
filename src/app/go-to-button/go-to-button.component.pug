@@ -1,0 +1,13 @@
+//
+    This Source Code Form is subject to the terms of the Mozilla Public
+    - License, v. 2.0. If a copy of the MPL was not distributed with this
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/.
+button(
+    '[style.background]'='layout.background', 
+    '[style.color]'='layout.textColor', 
+    '[style.top]'='(layout.y * scale)+"px"', 
+    '[style.left]'='(layout.x * scale)+"px"', 
+    '[style.width]'='(layout.width * scale)+"px"', 
+    '[style.height]'='(layout.height * scale)+"px"', 
+    '(click)'='onClick($event)')
+    | {{layout.text}}

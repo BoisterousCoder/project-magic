@@ -1,0 +1,55 @@
+//
+  This Source Code Form is subject to the terms of the Mozilla Public
+  - License, v. 2.0. If a copy of the MPL was not distributed with this
+  - file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#scrollContainer(
+    '[style.width]'='(scale*layout.viewBox.width)+"px"', 
+    '[style.height]'='(scale*layout.viewBox.height)+"px"', 
+    '(scroll)'='onScroll($event)')
+    svg#viewbox(
+        '[style.width]'='(scale*layout.viewBox.width)+"px"', 
+        '[style.height]'='(scale*layout.viewBox.height)+"px"', 
+        '(mousedown)'='mouse.onDown($event)', 
+        '(mousemove)'='mouse.onMove($event, 1/landSize)', 
+        '(mouseup)'='mouse.onUp($event)')
+    defs
+        g#land_4way
+            path.land(stroke='none', style='fill: inherit;', d='M 0 0 L 0 1 L 1 1 L 1 0 Z')
+            // <rect width='0.9875' height='0.9875' stroke-width='0.025' stroke-linecap="square"fill='none' stroke='black'/>
+        g#land_3way
+            path.land(stroke='none', style='fill: inherit;', d='M 0 0 L 0 1 L 1 1 L 1 0 L 0.85 0.15 L 0.15 0.15 Z')
+            // <rect width='0.9875' height='0.9875' stroke-width='0.025' stroke-linecap="square"fill='none' stroke='black'/>
+        g#land_2way_curve
+            path.land(stroke='none', style='fill: inherit;', d='M 0 1 L 1 1 L 1 0 L 0.85 0.15 L 0.15 0.15 L 0.15 0.85 Z')
+            // <rect width='0.9875' height='0.9875' stroke-width='0.025' stroke-linecap="square"fill='none' stroke='black'/>
+        g#land_2way_strait
+            path.land(stroke='none', style='fill: inherit;', d='M 0 0 L 0.15 0.15 L 0.85 0.15 L 1 0 L 1 1 L 0.85 0.85 L 0.15 0.85 L 0 1 Z')
+            // <rect width='0.9875' height='0.9875' stroke-width='0.025' stroke-linecap="square"fill='none' stroke='black'/>
+        g#land_1way
+            path.land(stroke='none', style='fill: inherit;', d='M 0 1 L 0.15 0.85 L 0.15 0.15 L 0.85 0.15 L 0.85 0.85 L 1 1 Z')
+            // <rect width='0.9875' height='0.9875' stroke-width='0.025' stroke-linecap="square"fill='none' stroke='black'/>
+    svg:use('*ngfor'='let land of board', 
+        '[attr.xlink:href]'="'#'+land.dispalyId", 
+        '[attr.x]'='land.x + viewOffset.x', 
+        '[attr.y]'='land.y + viewOffset.y', 
+        '[attr.fill]'='land.highlight?land.highlight:land.color', 
+        '[attr.tileid]'='land.id', 
+        '[attr.transform]'="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x+viewOffset.x) + ', ' + (0.5+land.y+viewOffset.y) + ')'", 
+        '(click)'='onTileClick($event)')
+    image('*ngfor'='let unit of units', 
+        '[attr.xlink:href]'='unit.img', 
+        '[attr.class]'='unit.isSelected?"blink":""', 
+        '[attr.x]'='(unit.x + viewOffset.x + 0.15)/0.70', 
+        '[attr.y]'='(unit.y + viewOffset.y + 0.15)/0.70', 
+        '[attr.transform]'="'scale('+landSize*0.70+', '+landSize*0.70+')'", 
+        height='1', width='1')
+div('*ngif'='selectedUnit')
+    button('*ngfor'='let actionName of selectedUnit.card.action.buttons; let i = index', 
+        '[style.width]'='(scale*layout.actionButtons.width)+"px"', 
+        '[style.height]'='(scale*layout.actionButtons.height)+"px"', 
+        '[style.left]'='(scale*layout.actionButtons.x)+"px"', 
+        '[style.top]'='(scale*(layout.actionButtons.y+i*layout.actionButtons.height))+"px"', 
+        '[style.background]'='layout.actionButtons.background', 
+        '(click)'='selectedUnit.highlightedAction = unitActions[actionName].ref')
+        img('[attr.src]'='"assets/actions/"+unitActions[actionName].img', 
+            '[style.height]'='(scale*layout.actionButtons.height)+"px"')

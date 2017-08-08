@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'game-board',
-    templateUrl: './game-board.component.html',
+    templateUrl: './game-board.component.pug',
     styleUrls: ['./game-board.component.css']
 })
 export class GameBoardComponent implements OnInit {

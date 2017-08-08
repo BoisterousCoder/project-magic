@@ -1,0 +1,14 @@
+//
+    This Source Code Form is subject to the terms of the Mozilla Public
+    - License, v. 2.0. If a copy of the MPL was not distributed with this
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/.
+div('[style.width]'='divWidth+"px"', '[style.height]'='divHeight+"px"', '[style.top]'='divX+"px"', '[style.left]'='divY+"px"')
+    div('*ngif'='isCardSelected')
+        h1('[style.font-size]'='(layout.textSize.title*scale)+"px"')
+            | {{selectedCard.name}}
+        img('[src]'='imgSrc', 
+            '[style.width]'='(this.maxWindowSize-this.minWindowSize)+"px"', 
+            '[style.max-width]'='(layout.infoBoard.img.maxWidth*scale)+"px"',
+            '[style.max-height]'='(layout.infoBoard.img.maxHeight*scale)+"px"')
+        p('[style.font-size]'='(layout.textSize.desctiption*scale)+"px"')
+            | {{selectedCard.desc}}

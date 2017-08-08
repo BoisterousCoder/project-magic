@@ -5,7 +5,7 @@ import { Component, OnInit, Input} from '@angular/core';
 
 @Component({
     selector: 'side-board',
-    templateUrl: './side-board.component.html',
+    templateUrl: './side-board.component.pug',
     styleUrls: ['./side-board.component.css']
 })
 export class SideBoardComponent implements OnInit {
