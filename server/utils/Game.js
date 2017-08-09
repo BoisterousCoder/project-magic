@@ -3,16 +3,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GEN_GAME_BOARD = require('./genGameBoard.js');
 const Unit = require('./Unit.js');
+const EMPTINESS_UPDATE_DELAY = 60 * 1000;//In miliseconds
 
 class Game{
     constructor(id, io){
         this.id=id;
+        this.name = 'Game ' + (id + 1)
         this.io=io;
         this.players=[];
         this.board=[];
         this.units=[];
+        this.password='';
+        this._destroyFunc = false;
         this.maxPlayers=2;
         this.genBoard();
+    }
+    set destroyFunc(func){
+        this._destroyFunc = func;
+        setTimeout(this.destroyIfEmpty(), EMPTINESS_UPDATE_DELAY);
+    }
+    destroyIfEmpty(){
+        let self = this;
+        return function(){        
+            if(self.players.length > 0){
+                console.log('Private game ' + self.name + ' will not be destroyed for now, as there are still players inside');
+                setTimeout(self.destroyIfEmpty(), EMPTINESS_UPDATE_DELAY);
+            }else{
+                self._destroyFunc(self.id);
+            }
+        }
+
     }
     genBoard(){
         this.board = [];
@@ -109,7 +129,7 @@ class Game{
         });
     }
     get listing(){
-        return {name:'Game '+(this.id+1), id:this.id, players:this.players.length, maxPlayers:this.maxPlayers};
+        return {name:this.name, id:this.id, players:this.players.length, maxPlayers:this.maxPlayers};
     }
 }
 

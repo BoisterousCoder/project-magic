@@ -6,8 +6,11 @@ var router = express.Router();
 
 /* GET home page. */
 
-router.get('/game/:gameId', function(req, res, next) {
-    res.render('index', req.params);
+router.get('/', function(req, res, next) {
+    res.render('game');
+});
+router.get('/game/:gameId/', function(req, res, next) {
+    res.render('game', req.params);
 });
 router.get('/license', function(req, res, next) {
     res.render('assets/LICENSE');

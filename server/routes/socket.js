@@ -20,13 +20,18 @@ for(let actionName of actionNameList){
 delete actionNameList;
 
 module.exports = function(io) {
-    var games = []
+    let publicGames = [];
+    let privateGames = {};
     for(let i = 0; i < NUM_OF_GAMES; i++){
-        games[i] = new Game(i, io);
+        publicGames[i] = new Game(i, io);
     }
-    var peopleConected = new Wrapper(0, function() {
+    let peopleConected = new Wrapper(0, function() {
         console.log('There are now ' + peopleConected.get() + ' people conected.');
     });
+    function deletePrivateGame(gameId){
+        console.log('deleting game ' + gameId);
+        privateGames[gameId] = undefined;
+    }
 
     io.on('connection', function(socket) {
         //connect to client
@@ -53,23 +58,50 @@ module.exports = function(io) {
             }
         });
         socket.on('getGameListings', function() {
-            games.forEach(function(game){
+            publicGames.forEach(function(game){
                 let data = JSON.stringify(game.listing);
                 socket.emit('makeGameListing', data);
             })
         });
         socket.on('joinGame', function(gameId){
-            if(games[gameId].players.length < games[gameId].maxPlayers){
-                game = games[gameId];
-                console.log('sending to player to game ' + gameId);
-                game.players.push({
-                    socket:socket,
-                    id:game.players.length
-                });
-                io.emit('updateGameListing', JSON.stringify(game.listing));
-                socket.emit('joinGame', gameId);
-            }else{ 
-                socket.emit('alertUser', 'Game ' + (gameId+1) + ' is full with ' + games[gameId].players.length + '/' + games[gameId].maxPlayers + 'players');
+            let attemptedGame;
+            if(publicGames[gameId]){
+                attemptedGame = publicGames[gameId];
+            }else if(privateGames[gameId]){
+                attemptedGame = privateGames[gameId];
+            }else{
+                console.error('someone attempted to join a non existant game called ' + gameId);
+                socket.emit('alertUser', 'There is no game with the id ' + gameId);
+            }
+            if(attemptedGame){
+                if(attemptedGame.players.length < attemptedGame.maxPlayers){
+                    game = attemptedGame;
+                    console.log('sending to player to ' + attemptedGame.name);
+                    game.players.push({
+                        socket:socket,
+                        id:game.players.length
+                    });
+                    io.emit('updateGameListing', JSON.stringify(game.listing));
+                    socket.emit('joinGame', gameId)
+                }else{ 
+                    socket.emit('alertUser', attemptedGame.name + ' is full with ' + attemptedGame.players.length + '/' + attemptedGame.maxPlayers + 'players');
+                }
+            }
+        });
+        socket.on('requestPrivateGame', function(gameName){
+            if(gameName){
+                console.log('creating private game ' + gameName);
+                if(!privateGames[gameName]){
+                    privateGames[gameName] = new Game(gameName, io);
+                    privateGames[gameName].name = gameName;
+                    socket.emit('confirmPrivateGame', gameName);
+                    privateGames[gameName].destroyFunc = deletePrivateGame;
+                }else{
+                    socket.emit('confirmPrivateGame', gameName);
+                }
+                console.log('created private game ' + gameName);
+            }else{
+                socket.emit('alertUser', gameName + 'is not a valid name');
             }
         });
 

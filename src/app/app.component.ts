@@ -27,13 +27,14 @@ export class AppComponent {
     maxWindowSize:number;
     scale:number;
     isWindowVertical:boolean;
+    gameToJoin;
     unitActions = {};
     unitTypes;
     layout;
     socket;
     constructor(@Inject(DOCUMENT) private document: any) { 
-        console.log('loading on ' + this.document.location.href);
-        this.socket = socketIo.connect(this.document.location.href); 
+        console.log('loading on ' + this.document.location.origin);
+        this.socket = socketIo.connect(this.document.location.origin); 
         let self = this;
         getJSON('layout.json', function(data){
             self.layout = data;
@@ -53,35 +54,22 @@ export class AppComponent {
     }
     ngOnInit(){
         this.initSocketHandlers();
-        this.socket.emit('getGameListings');
+        this.gameToJoin = window.document.getElementById('body').attributes.getNamedItem('game').value;
+        if(this.gameToJoin){
+            console.info('attempting to join the private game ' + this.gameToJoin);
+            this.socket.emit('joinGame', this.gameToJoin);
+        }else{
+            this.socket.emit('getGameListings');
+        }
     }
     initSocketHandlers(){
-        let self = this;
-        this.socket.on('makeGameListing', function(res){
-            if(!self.isInAGame){
-                self.onMakeGameListing(res);
-            }
-        });
-        this.socket.on('updateGameListing', function(res){
-            self.onUpdateGameListing(res);
-        });
-        this.socket.on('removeGameListing', function(res){
-            if(!self.isInAGame){
-                self.onRemoveGameListing(res);
-            }
-        });
-        this.socket.on('joinGame', function(res){
-            if(!self.isInAGame){
-                self.onJoinGame(Number(res));
-            }
-        });
-        this.socket.on('alertUser', function(res){
-            alert(res);
-        });
-        this.socket.on('reload', function(res){
-            console.info(res);
-            self.onReloadRequest();
-        });
+        this.socket.on('makeGameListing', res => this.onMakeGameListing(res));
+        this.socket.on('updateGameListing', res => this.onUpdateGameListing(res));
+        this.socket.on('removeGameListing', res => this.onRemoveGameListing(res));
+        this.socket.on('joinGame', res => this.onJoinGame(Number(res)));
+        this.socket.on('alertUser', res => alert(res));
+        this.socket.on('confirmPrivateGame', res => this.onConfirmPrivateGame(res));
+        this.socket.on('reload', res => this.onReloadRequest(res));
     }
     onResize(event){
         let window;
@@ -106,7 +94,14 @@ export class AppComponent {
         }
     }
     onEndTurn(event){
-        this.socket.emit('endTurn')
+        this.socket.emit('endTurn');
+    }
+    onRequestPrivateGame(event){
+        this.socket.emit('requestPrivateGame', this.socket.id);
+        console.log('attemping to create private game:' +  this.socket.id);
+    }
+    onConfirmPrivateGame(res){
+        window.location.href += 'game/' + res;
     }
     onMakeGameListing(res){
         res = JSON.parse(res);
@@ -118,7 +113,9 @@ export class AppComponent {
     onUpdateGameListing(res){
         this.gameListings[res.id] = JSON.parse(res);
     }
-    onReloadRequest(){
+    onReloadRequest(res){
+        console.info(res);
+        window.location.href = window.location.origin;
         window.location.reload();
     }
     onRemoveGameListing(res){
@@ -129,7 +126,9 @@ export class AppComponent {
         this.socket.emit('joinGame', gameId);
     }
     onJoinGame(gameId){
-        this.currentGameId = gameId;
-        this.isInAGame = true;
+        if(!this.isInAGame){
+            this.currentGameId = gameId;
+            this.isInAGame = true;
+        }
     }
 }

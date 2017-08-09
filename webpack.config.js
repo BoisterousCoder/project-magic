@@ -207,8 +207,8 @@ module.exports = {
     }),
     new ProgressPlugin(),
     new HtmlWebpackPlugin({
-      "template": "./src\\index.html",
-      "filename": "./index.html",
+      "template": "./src\\game.hjs",
+      "filename": "./game.hjs",
       "hash": false,
       "inject": true,
       "compile": true,

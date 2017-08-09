@@ -40,12 +40,25 @@
                 (click)='onEndTurn($event)')
                 | {{layout.endTurnButton.text}}
     #gameSelectWrapper(*ngIf='!isInAGame')
-        ul
-            li(*ngFor='let gameListing of gameListings')
-                span(*ngIf='gameListing')
-                | {{gameListing.name}} 
-                button((click)='onJoinButton(gameListing.id)') Join
-                |   ({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}})
+        div
+            h3 Public Games
+            ul
+                li(*ngFor='let gameListing of gameListings')
+                    span(*ngIf='gameListing')
+                    | {{gameListing.name}} 
+                    button((click)='onJoinButton(gameListing.id)') Join
+                    |   ({{gameListing.currentPlayers}}/{{gameListing.maxPlayers}})
+        br
+        hr
+        br
+        div
+            h3 Private Games
+            | Gives you a unque url that you can use to let anyone join you
+            br
+            button((click)='onRequestPrivateGame($event)') Create Private Game
+        br
+        hr
+        br
         footer
             | If you would like to see my license for most of this program's source code, go 
             a(href='/license') here

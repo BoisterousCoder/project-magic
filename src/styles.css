@@ -17,7 +17,7 @@
 .blink {
   animation: blinker 1s linear infinite;
 }
-button{
+button a{
     cursor: pointer;
 }
 .loadingScreen{
