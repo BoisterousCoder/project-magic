@@ -36,13 +36,14 @@
             [attr.tileId]='land.id', 
             [attr.transform]="'scale('+landSize+', '+landSize+'), rotate('+land.rotation+', ' + (0.5+land.x+viewOffset.x) + ', ' + (0.5+land.y+viewOffset.y) + ')'", 
             (click)='onTileClick($event)')
-        image(*ngFor='let unit of units', 
-            [attr.xlink:href]='unit.img', 
-            [attr.class]='unit.isSelected?"blink":""', 
-            [attr.x]='(unit.x + viewOffset.x + 0.15)/0.70', 
-            [attr.y]='(unit.y + viewOffset.y + 0.15)/0.70', 
-            [attr.transform]="'scale('+landSize*0.70+', '+landSize*0.70+')'", 
-        height='1', width='1')
+        g(*ngFor='let unit of units')
+            image(*ngIf='!unit.isDead', 
+                [attr.xlink:href]='unit.img', 
+                [attr.class]='unit.isSelected?"blink":""', 
+                [attr.x]='(unit.x + viewOffset.x + 0.15)/0.70', 
+                [attr.y]='(unit.y + viewOffset.y + 0.15)/0.70', 
+                [attr.transform]="'scale('+landSize*0.70+', '+landSize*0.70+')'", 
+                height='1', width='1')
 div(*ngIf='selectedUnit')
     button(*ngFor='let actionName of selectedUnit.card.action.buttons; let i = index', 
         [style.width]='(scale*layout.actionButtons.width)+"px"', 

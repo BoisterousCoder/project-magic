@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 const GEN_GAME_BOARD = require('./genGameBoard.js');
 const Unit = require('./Unit.js');
+const findFurthestTiles = require('./findFurthestTiles');
 const EMPTINESS_UPDATE_DELAY = 60 * 1000;//In miliseconds
 
 class Game{
@@ -36,18 +37,18 @@ class Game{
     }
     genBoard(){
         this.board = [];
-        let testUnit1 = new Unit(12, 12, 0); //Testing Only
+        let testUnit1 = new Unit(13, 12, 1); //Testing Only
         testUnit1.id = 0                     //Testing Only
         this.units[0] = testUnit1;           //Testing Only
-        let testUnit2 = new Unit(13, 12, 1); //Testing Only
-        testUnit2.id = 1                     //Testing Only
-        this.units[1] = testUnit2;           //Testing Only
-        let testUnit3 = new Unit(11, 12, 2); //Testing Only
-        testUnit3.id = 2                     //Testing Only
-        this.units[2] = testUnit3;           //Testing Only
         let self = this;
         GEN_GAME_BOARD(function(tiles){
             self.board = tiles;
+            let furthestTiles = findFurthestTiles(tiles);
+            for(let tile of furthestTiles){
+                let base = new Unit(tile.x, tile.y, 0);
+                base.id = self.units.length;
+                self.units[base.id] = base;
+            }
         });
     }
     disconect(socketId){
@@ -56,6 +57,8 @@ class Game{
             if(player.socket.id == socketId){
                 self.emit('reload', 'other player disconected');
                 self.players = [];
+                self.board = [];
+                self.units = [];
                 self.io.emit('updateGameListing', JSON.stringify(self.listing));
             }
         });
