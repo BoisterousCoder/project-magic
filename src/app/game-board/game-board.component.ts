@@ -64,13 +64,8 @@ export class GameBoardComponent implements OnInit {
         }
     }
     initSocketHandlers(){
-        let self = this;
-        this.socket.on('setTile', function(res){
-            self.onTileSet(res);
-        });
-        this.socket.on('setUnit', function(res){
-            self.onUnitSet(res);
-        });
+        this.socket.on('setTile', res => this.onTileSet(res));
+        this.socket.on('setUnit', res => this.onUnitSet(res));
     }
     refreshTileSizes(){
         this.printScale = (this.minWindowSize * (this.layout.viewBox.width/100))/this.boardSize;

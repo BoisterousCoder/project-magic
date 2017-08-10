@@ -125,12 +125,13 @@ module.exports = function(io) {
         on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
             let tileId = 0;
-            game.board.forEach(function(tileData){
+            for(let tileData of game.board){
                 socket.emit('setTile', JSON.stringify(tileData));
-            });
-            game.units.forEach(function(unitData){
+            };
+            for(let unitData of game.units){
                 socket.emit('setUnit', JSON.stringify(unitData));
-            });
+            }
+            socket.emit('finishBoard');
         }, true);
         on('requestAction', function(res){
             let data = JSON.parse(res);

@@ -67,4 +67,6 @@
             |             You can also get a copy of the source code 
             a(href='https://github.com/BoisterousCoder/project-magic') here
             | .
-    #windowEvents((window:resize)='onResize($event)', (window:load)='onResize($event)')
+    .loadingScreen(*ngIf='isLoading')
+        img(src='assets/loading.gif')
+    #windowEvents((window:resize)='onResize()', (window:load)='onResize()')

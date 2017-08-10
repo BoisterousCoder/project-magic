@@ -26,6 +26,7 @@ export class AppComponent {
     minWindowSize:number;
     maxWindowSize:number;
     scale:number;
+    isLoading:boolean = false;
     isWindowVertical:boolean;
     gameToJoin;
     unitActions = {};
@@ -71,15 +72,9 @@ export class AppComponent {
         this.socket.on('confirmPrivateGame', res => this.onConfirmPrivateGame(res));
         this.socket.on('serverError', res => this.onServerError(res));
         this.socket.on('reload', res => this.onReloadRequest(res));
+        this.socket.on('finishBoard', res => this.onFinishBoard(res));
     }
-    onResize(event){
-        let window;
-        if(event.target.defaultView){
-            window = event.target.defaultView
-        }else{
-            window = event.target;
-        }
-        // window.scrollTo(0, 20); TODO: Fix this
+    onResize(){
         this.windowWidth = window.innerWidth; 
         this.windowHeight = window.innerHeight;
         this.minWindowSize = Math.min(this.windowWidth, this.windowHeight);
@@ -93,6 +88,11 @@ export class AppComponent {
         if(this.isInAGame){
             this.gameBoard.refreshTileSizes();
         }
+    }
+    onFinishBoard(res){
+        this.gameBoard.refreshTileSizes();
+        this.isLoading = false;
+        window.document.getElementById('scrollContainer').scrollTop = 20;
     }
     onServerError(res){
         console.error(res);
@@ -134,6 +134,7 @@ export class AppComponent {
         if(!this.isInAGame){
             this.currentGameId = gameId;
             this.isInAGame = true;
+            this.isLoading = true;
         }
     }
 }
