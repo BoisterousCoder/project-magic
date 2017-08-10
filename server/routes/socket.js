@@ -37,33 +37,46 @@ module.exports = function(io) {
         //connect to client
         peopleConected.set(peopleConected.get() + 1);
         let game;
-        let on = function(title, callback){
+        function on(title, callback, isGameRequired){
             socket.on(title, function(res){
-                if(game){
-                    if(game.isPlayerInGame(socket.id)){
+                try{
+                    if(game){
+                        if(game.isPlayerInGame(socket.id)){
+                            callback(res);
+                        }else if(!isGameRequired){
+                            callback(res);
+                        }else{
+                            console.warn('Person accessed game data of a game they weren\'t in that game.')
+                        }
+                    }else if(!isGameRequired){
                         callback(res);
                     }else{
-                        console.warn('Person accessed game data of a game they weren\'t in. It could be a bug or it could be a... HACKER???')
+                        console.warn('Person accessed game data of a game they weren\'t in that game.')
                     }
-                }else{
-                    console.warn('Person accessed game data of a game they weren\'t in. It could be a bug or it could be a... HACKER???')
+                }catch(err){
+                    console.error(err);
+                    socket.emit('serverError', 'An error has occured server side. This is probably a bug. Please file a bug report on this program\'s github page with the following text:\n\n' + err.stack);
+                    callOnFunc(title, callback, isGameRequired);
                 }
             });
         }
+        function callOnFunc(title, callback, isGameRequired){
+            on(title, callback, isGameRequired);
+        }
 
-        socket.on('disconnect', function() {
+        on('disconnect', function() {
             peopleConected.set(peopleConected.get() - 1);
             if(game){
                 game.disconect(socket.id)
             }
         });
-        socket.on('getGameListings', function() {
+        on('getGameListings', function() {
             publicGames.forEach(function(game){
                 let data = JSON.stringify(game.listing);
                 socket.emit('makeGameListing', data);
             })
         });
-        socket.on('joinGame', function(gameId){
+        on('joinGame', function(gameId){
             let attemptedGame;
             if(publicGames[gameId]){
                 attemptedGame = publicGames[gameId];
@@ -88,7 +101,7 @@ module.exports = function(io) {
                 }
             }
         });
-        socket.on('requestPrivateGame', function(gameName){
+        on('requestPrivateGame', function(gameName){
             if(gameName){
                 console.log('creating private game ' + gameName);
                 if(!privateGames[gameName]){
@@ -108,7 +121,7 @@ module.exports = function(io) {
         on('clickedTile', function(res) {
             console.log('You clicked tile ' + res);
             game.setTile(res, 'color', 'yellow');
-        });
+        }, true);
         on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
             let tileId = 0;
@@ -118,7 +131,7 @@ module.exports = function(io) {
             game.units.forEach(function(unitData){
                 socket.emit('setUnit', JSON.stringify(unitData));
             });
-        });
+        }, true);
         on('requestAction', function(res){
             let data = JSON.parse(res);
             const TARGET = game.board[data.target];
@@ -140,7 +153,7 @@ module.exports = function(io) {
                 console.log('in range: ' + isTagetInRange);
                 console.log('is valid: ' + isValidAction);
             }
-        });
+        }, true);
     });
 };
 

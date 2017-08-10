@@ -69,6 +69,7 @@ export class AppComponent {
         this.socket.on('joinGame', res => this.onJoinGame(Number(res)));
         this.socket.on('alertUser', res => alert(res));
         this.socket.on('confirmPrivateGame', res => this.onConfirmPrivateGame(res));
+        this.socket.on('serverError', res => this.onServerError(res));
         this.socket.on('reload', res => this.onReloadRequest(res));
     }
     onResize(event){
@@ -92,6 +93,10 @@ export class AppComponent {
         if(this.isInAGame){
             this.gameBoard.refreshTileSizes();
         }
+    }
+    onServerError(res){
+        console.error(res);
+        alert(res);
     }
     onEndTurn(event){
         this.socket.emit('endTurn');
