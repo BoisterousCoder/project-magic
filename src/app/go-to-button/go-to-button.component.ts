@@ -10,6 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GoToButtonComponent implements OnInit {
   @Input() layout;
+  @Input() buttonLayout;
   @Input() scale;
   @Input() location;
   @Input() locations:boolean[];

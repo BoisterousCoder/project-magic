@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 import { Component, OnInit, Input} from '@angular/core';
+import { mapToPointList } from '../../utils/mapToPointList';
+import { Point } from '../../utils/Point';
 
 @Component({
     selector: 'side-board',
@@ -16,6 +18,15 @@ export class SideBoardComponent implements OnInit {
     @Input() layout
     selectedCard;
     @Input() isWindowVertical;
+    private mapToPointList(map){
+        return mapToPointList(map, new Point());
+    }
+    getTextSize(type){
+        return (this.layout.textSize[type]*this.scale)+"px"
+    }
+    ngOnInit() {
+
+    }
     get isCardSelected(){
         if(this.selectedCard){
             return true;
@@ -73,8 +84,5 @@ export class SideBoardComponent implements OnInit {
                 return this.minWindowSize
             }
         }
-    }
-    ngOnInit() {
-
     }
 }

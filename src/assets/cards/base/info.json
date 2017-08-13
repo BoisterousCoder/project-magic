@@ -12,6 +12,20 @@
         "health":200,
         "armor":15
     },
+    "propertyDisplay":[
+        {
+            "property":"health",
+            "display":"Health"
+        },
+        {
+            "property":"damage",
+            "display":"Damage"
+        },
+        {
+            "property":"armor",
+            "display":"Armor"
+        }
+    ],
     "action":{
         "buttons":["attackNormal"],
         "perTurn":1,

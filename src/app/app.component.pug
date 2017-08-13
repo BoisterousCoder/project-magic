@@ -27,9 +27,12 @@
            [maxWindowSize]='maxWindowSize', 
            [isWindowVertical]='isWindowVertical')
         #navMenuWrapper
-            go-to-button([scale]='scale',[locations]='boards',[location]='0',[layout]='layout.gameBoard.goToButton')
-            go-to-button([scale]='scale',[locations]='boards',[location]='1',[layout]='layout.cardBoard.goToButton')
-            go-to-button([scale]='scale',[locations]='boards',[location]='2',[layout]='layout.infoBoard.goToButton')
+            go-to-button([scale]='scale',[locations]='boards',[location]='0',
+                [buttonLayout]='layout.gameBoard.goToButton', [layout]='layout')
+            go-to-button([scale]='scale',[locations]='boards',[location]='1',
+                [buttonLayout]='layout.cardBoard.goToButton', [layout]='layout')
+            go-to-button([scale]='scale',[locations]='boards',[location]='2',
+                [buttonLayout]='layout.infoBoard.goToButton', [layout]='layout')
             button#endTurn(
                 [style.background]='layout.endTurnButton.background', 
                 [style.color]='layout.endTurnButton.textColor', 
