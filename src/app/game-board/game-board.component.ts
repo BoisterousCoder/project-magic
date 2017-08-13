@@ -37,8 +37,8 @@ export class GameBoardComponent implements OnInit {
     @Input() isWindowVertical;
     ngOnInit(){
         this.initSocketHandlers();
-        console.log('Joining Game '+this.gameId);
-        this.socket.emit('getGameData', this.gameId);
+        console.log('Joining Game with id '+this.gameId);
+        this.socket.emit('getGameData');
         let timer = Observable.timer(STARTDELAY, 1000/FPS);
         let self = this;
         this.mouse.onMove = function(distance, mouse){
@@ -63,9 +63,20 @@ export class GameBoardComponent implements OnInit {
             this.viewOffset.y = min;
         }
     }
+    get changeBoard(){
+        let self = this;
+        return function changeBoard(callback){
+            let board = callback(self.board, self.units);
+            if(board){
+                self.board = board;
+            }
+        }
+    }
     initSocketHandlers(){
         this.socket.on('setTile', res => this.onTileSet(res));
         this.socket.on('setUnit', res => this.onUnitSet(res));
+        this.socket.on('setOwner', res => this.onSetOwner(res));
+        this.socket.on('finishBoard', res => this.socket.emit('getBase'));
     }
     refreshTileSizes(){
         this.printScale = (this.minWindowSize * (this.layout.viewBox.width/100))/this.boardSize;
@@ -75,14 +86,9 @@ export class GameBoardComponent implements OnInit {
         let tileData = JSON.parse(res);
         this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);
     }
-    get changeBoard(){
-        let self = this;
-        return function changeBoard(callback){
-            let board = callback(self.board, self.units);
-            if(board){
-                self.board = board;
-            }
-        }
+    onSetOwner(res){
+        let unitId = Number(res);
+        this.units[unitId].isBellongingToPlayer = true;
     }
     onUnitSet(res:string){
         let unitData = JSON.parse(res);
@@ -146,17 +152,19 @@ export class GameBoardComponent implements OnInit {
             this.selectedUnit.requestAction(this.socket, tile.id);
         }else if(tile.unitId || tile.unitId==0){
             let unit = this.units[tile.unitId];
-            if(unit == this.selectedUnit){
-                this.selectedUnit = undefined;
-                this.units[tile.unitId].isSelected = false;
-                this.setSelectedCard(undefined);
-            }else{
-                this.selectedUnit = unit;
-                for(let unit of this.units){
-                    unit.isSelected = false;
+            if(unit.isBellongingToPlayer){
+                if(unit == this.selectedUnit){
+                    this.selectedUnit = undefined;
+                    this.units[tile.unitId].isSelected = false;
+                    this.setSelectedCard(undefined);
+                }else{
+                    this.selectedUnit = unit;
+                    for(let unit of this.units){
+                        unit.isSelected = false;
+                    }
+                    this.units[tile.unitId].isSelected = true;
+                    this.setSelectedCard(unit.card);
                 }
-                this.units[tile.unitId].isSelected = true;
-                this.setSelectedCard(unit.card);
             }
         }
     }

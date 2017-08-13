@@ -29,6 +29,13 @@ class Unit extends Point{
         }
         this.actionsLeft = this.card.action.perTurn;
     }
+    getIsBelongingTo(game, socketId){
+        if(game.owner[socketId][this.id]){
+            return true
+        }else{
+            return false
+        }
+    }
     mapToPointList(map){
         let pointList = [];
         let self = this;

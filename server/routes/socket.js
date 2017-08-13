@@ -71,7 +71,7 @@ module.exports = function(io) {
             }
         });
         on('getGameListings', function() {
-            publicGames.forEach(function(game){
+            publicGames.map(function(game){
                 let data = JSON.stringify(game.listing);
                 socket.emit('makeGameListing', data);
             })
@@ -89,7 +89,6 @@ module.exports = function(io) {
             if(attemptedGame){
                 if(attemptedGame.players.length < attemptedGame.maxPlayers){
                     game = attemptedGame;
-                    console.log('sending to player to ' + attemptedGame.name);
                     game.players.push({
                         socket:socket,
                         id:game.players.length
@@ -122,8 +121,14 @@ module.exports = function(io) {
             console.log('You clicked tile ' + res);
             game.setTile(res, 'color', 'yellow');
         }, true);
+        on('getBase', function(res){
+            let baseId = game.baseIds[game.getPlayer(socket.id).id];
+            game.setUnitOwner(baseId, socket.id)
+            console.log(game.units[baseId]);
+        });
         on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
+
             let tileId = 0;
             for(let tileData of game.board){
                 socket.emit('setTile', JSON.stringify(tileData));
@@ -131,6 +136,7 @@ module.exports = function(io) {
             for(let unitData of game.units){
                 socket.emit('setUnit', JSON.stringify(unitData));
             }
+
             socket.emit('finishBoard');
         }, true);
         on('requestAction', function(res){
@@ -146,7 +152,7 @@ module.exports = function(io) {
                 isTagetInRange = SOURCE.checkIfInRange(TARGET, data.action);
             }
             let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units);
-            let isBellongingToPlayer = (socket.id == SOURCE.belongsTo)||(!SOURCE.belongsTo)
+            let isBellongingToPlayer = SOURCE.getIsBelongingTo(GAME, socket.id);
             console.log('a user is attempting to perform the action ' + data.action)
             if(isTagetInRange && isValidAction && isBellongingToPlayer){
                 action.useAction(TARGET, SOURCE, GAME);

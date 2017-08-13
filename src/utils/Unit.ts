@@ -9,6 +9,7 @@ export class Unit extends Point{
     actionsLeft:number;
     img:string;
     id:number;
+    isBellongingToPlayer:boolean = false;
     private _highlightedAction:string = '';
     private _highlightedTiles:Point[] = [];
     private _isSelected:boolean = false;
@@ -67,7 +68,8 @@ export class Unit extends Point{
         const board = _board;
         const units = _units;
         const tile = _tile;
-        return action.checkIfValidTarget(tile, self, board, units);
+        let isValid = action.checkIfValidTarget(tile, self, board, units)
+        return isValid;
     }
     requestAction(socket, targetTileId){
         socket.emit("requestAction", JSON.stringify({

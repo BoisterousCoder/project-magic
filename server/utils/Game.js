@@ -13,7 +13,9 @@ class Game{
         this.io=io;
         this.players=[];
         this.board=[];
+        this.baseIds=[];
         this.units=[];
+        this.owner={};
         this.password='';
         this._destroyFunc = false;
         this.maxPlayers=2;
@@ -37,9 +39,6 @@ class Game{
     }
     genBoard(){
         this.board = [];
-        let testUnit1 = new Unit(13, 12, 1); //Testing Only
-        testUnit1.id = 0                     //Testing Only
-        this.units[0] = testUnit1;           //Testing Only
         let self = this;
         GEN_GAME_BOARD(function(tiles){
             self.board = tiles;
@@ -48,6 +47,7 @@ class Game{
                 let base = new Unit(tile.x, tile.y, 0);
                 base.id = self.units.length;
                 self.units[base.id] = base;
+                self.baseIds.push(base.id);
             }
         });
     }
@@ -117,6 +117,16 @@ class Game{
         }
         this.emit('setUnit', JSON.stringify(unit));
     }
+    setUnitOwner(unitId, socketId){
+        if(!this.owner[socketId]){
+            this.owner[socketId] = {}
+        }
+        this.owner[socketId][unitId] = true;
+
+        let player = this.getPlayer(socketId);        
+        console.log('setting unit '+unitId+' to be owned by ' + socketId)
+        player.socket.emit('setOwner', unitId);
+    }
     isPlayerInGame(socketId){
         let isPlayerInGame = false;
         this.players.map(function(player){
@@ -130,6 +140,14 @@ class Game{
         this.players.map(function(player){
             player.socket.emit(title, msg);
         });
+    }
+    getPlayer(socketId){
+        for(let player of this.players){
+            if(player.socket.id == socketId){
+                return player;
+                break;
+            }
+        }
     }
     get listing(){
         return {name:this.name, id:this.id, players:this.players.length, maxPlayers:this.maxPlayers};
