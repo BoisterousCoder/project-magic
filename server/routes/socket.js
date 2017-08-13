@@ -124,7 +124,6 @@ module.exports = function(io) {
         on('getBase', function(res){
             let baseId = game.baseIds[game.getPlayer(socket.id).id];
             game.setUnitOwner(baseId, socket.id)
-            console.log(game.units[baseId]);
         });
         on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
