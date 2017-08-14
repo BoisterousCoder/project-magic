@@ -8,15 +8,17 @@ const findFurthestTiles = require('./findFurthestTiles');
 const EMPTINESS_UPDATE_DELAY = 60 * 1000;//In miliseconds
 
 class Game{
-    constructor(id, io){
+    constructor(id, io, actions, reset){
         this.id=id;
         this.name = 'Game ' + (id + 1)
         this.io=io;
         this.players=[];
         this.board=[];
         this.baseIds=[];
+        this.actions = actions;
         this.units=[];
         this.owner={};
+        this.reset = reset;
         this.password='';
         this._destroyFunc = false;
         this.maxPlayers=2;
@@ -73,15 +75,9 @@ class Game{
         this.players.map(function(player){
             if(player.socket.id == socketId){
                 self.emit('reload', 'other player disconected');
-                self.players=[];
-                self.board = [];
-                self.units = [];
-                self.baseIds=[];
-                self.owner = {};
-                self.io.emit('updateGameListing', JSON.stringify(self.listing));
+                self.reset(self);
             }
         });
-        this.genBoard();
     }
     setTile(tileId, property, value){
         if(value || value == 0 || value == ''){
@@ -99,6 +95,38 @@ class Game{
             }
         }
         this.emit('setTile', JSON.stringify(this.board[tileId]));
+    }
+    doAction(targetTileId, sourceUnitId, actionName, socketId){
+        const TARGET = this.board[targetTileId];
+        const SOURCE = this.units[sourceUnitId];
+        const GAME = this;
+        console.log(this.actions[actionName]);
+        const action = this.actions[actionName];
+        let isTagetInRange;
+        if(SOURCE.card.action[actionName].hasNoRange){
+            isTagetInRange = true;
+        }else{
+            isTagetInRange = SOURCE.checkIfInRange(TARGET, actionName);
+        }
+        let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units, SOURCE.card.action[actionName]);
+        let isBellongingToPlayer = SOURCE.getIsBelongingTo(GAME, socketId);
+        console.log('a user is attempting to perform the action ' + actionName);
+        if(isTagetInRange && isValidAction && isBellongingToPlayer){
+            action.useAction(TARGET, SOURCE, GAME, SOURCE.card.action[actionName]);
+            let uses = SOURCE.card.action[actionName].uses;
+            if(uses){
+                if(this.units[sourceUnitId].card.action[actionName].uses <= 1){
+                    this.units[sourceUnitId].removeAction(actionName, this);
+                }else{
+                    this.units[sourceUnitId].card.action[actionName].uses -= 1;
+                }
+            }
+        }else{
+            console.log('that action was impossible');
+            console.log('in range: ' + isTagetInRange);
+            console.log('is valid: ' + isValidAction);
+            console.log('is belonging to player: ' + isBellongingToPlayer);
+        }
     }
     setUnit(unitId, property, value){
         let unit;

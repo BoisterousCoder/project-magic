@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-const CARD_TYPES = require('./getUnitTypes')();
+const UNITS_TYPES = require('./getUnitTypes')();
 const fs = require('fs');
 let Point = require('./Point')
 
@@ -15,9 +15,9 @@ try{
 }
 
 class Unit extends Point{
-    constructor(x, y, cardTypeId){
+    constructor(x, y, unitTypeId){
         super(x, y);
-        this.card = CARD_TYPES[cardTypeId];
+        this.card = JSON.parse(JSON.stringify(UNITS_TYPES[unitTypeId]));
         this.isDead = false;
         for(let property in this.card.unit){
             if(this.card.unit.hasOwnProperty(property)){
@@ -75,6 +75,15 @@ class Unit extends Point{
             });
         });
         return pointList;
+    }
+    removeAction(actionName, game){
+        console.log(`removing action `+actionName+` from unit `+this.id);
+        delete this.card.action[actionName];
+        let index = this.card.action.buttons.indexOf(actionName);
+        if (index > -1) {
+            this.card.action.buttons.splice(index, 1);
+        }
+        game.setUnit(this.id, this);
     }
     checkIfInRange(target, actionName){
         let pointList = this.mapToPointList(this.card.action[actionName].map);
