@@ -91,6 +91,14 @@ class Game{
             }
         });
     }
+    getTileAt(loc){
+        for(let tile of this.board){
+            if(tile.isAt(loc)){
+                return tile;
+                break;
+            }
+        }
+    }
     setTile(tileId, property, value){
         if(value || value == 0 || value == ''){
             console.log('setting a tile\'s'  + property + ' to ' + value);
@@ -108,11 +116,10 @@ class Game{
         }
         this.emit('setTile', JSON.stringify(this.board[tileId]));
     }
-    doAction(targetTileId, sourceUnitId, actionName, socketId){
+    doAction(targetTileId, sourceUnitId, actionName, socketId, isOverridingChecks){
         const TARGET = this.board[targetTileId];
         const SOURCE = this.units[sourceUnitId];
         const GAME = this;
-        console.log(this.actions[actionName]);
         const action = this.actions[actionName];
         let isTagetInRange;
         if(SOURCE.card.action[actionName].hasNoRange){
@@ -124,14 +131,24 @@ class Game{
         let isBellongingToPlayer = SOURCE.getIsBelongingTo(GAME, socketId);
         let isPlayersTurn = (this.turn == socketId);
         console.log('a user is attempting to perform the action ' + actionName);
-        if(isTagetInRange && isValidAction && isBellongingToPlayer && isPlayersTurn){
+        if((isTagetInRange && isValidAction && isBellongingToPlayer && isPlayersTurn) || isOverridingChecks){
             action.useAction(TARGET, SOURCE, GAME, SOURCE.card.action[actionName]);
             let uses = SOURCE.card.action[actionName].uses;
-            if(uses){
-                if(this.units[sourceUnitId].card.action[actionName].uses <= 1){
-                    this.units[sourceUnitId].removeAction(actionName, this);
-                }else{
-                    this.units[sourceUnitId].card.action[actionName].uses -= 1;
+            if(this.units[sourceUnitId]){
+                if(uses){
+                    if(this.units[sourceUnitId].card.action[actionName].uses <= 1){
+                        this.units[sourceUnitId].removeAction(actionName, this);
+                    }else{
+                        this.units[sourceUnitId].card.action[actionName].uses -= 1;
+                    }
+                }
+            }
+            if(this.board[targetTileId].unitId){
+                let targetUnitId = this.board[targetTileId].unitId
+                if(this.units[targetUnitId].health <= 0){
+                    console.log('killing unit' + targetUnitId)
+                    let target = this.units[targetUnitId];
+                    this.doAction(targetTileId, targetUnitId, 'kill', socketId, true);
                 }
             }
         }else{
@@ -169,7 +186,7 @@ class Game{
             }
         }else{
             for(let tile of this.board){
-                if(tile.unitId == unit.id){
+                if(tile.unitId == unitId){
                     tile.unitId = undefined;
                 }
             }

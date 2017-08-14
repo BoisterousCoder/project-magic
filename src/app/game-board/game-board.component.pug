@@ -42,16 +42,19 @@
                 [attr.transform]="'scale('+landSize*0.70+', '+landSize*0.70+')'", 
                 [attr.filter]="(unit.isBellongingToPlayer)?'':'url(#grayscale)'",
                 height='1', width='1')
-            rect(fill='red', width='0.7', height='0.15',
+            rect(*ngIf='!unit.isDead',
+                fill='red', width='0.7', height='0.15',
                 [attr.x]='unit.x + viewOffset.x + 0.15', 
                 [attr.y]='unit.y + viewOffset.y + 0.85', 
                 [attr.transform]="'scale('+landSize+', '+landSize+')'")
-            rect(fill='lightGreen', height='0.15',
+            rect(*ngIf='!unit.isDead',
+                fill='lightGreen', height='0.15',
                 [attr.width]='0.7*(unit.health/unit.card.unit.health)'
                 [attr.x]='unit.x + viewOffset.x + 0.15', 
                 [attr.y]='unit.y + viewOffset.y + 0.85', 
                 [attr.transform]="'scale('+landSize+', '+landSize+')'")
-            rect(fill='blue', height='0.15',
+            rect(*ngIf='!unit.isDead',
+                fill='blue', height='0.15',
                 [attr.width]='0.7*(unit.actionsLeft/unit.card.action.perTurn)'
                 [attr.x]='unit.x + viewOffset.x + 0.15', 
                 [attr.y]='unit.y + viewOffset.y', 
