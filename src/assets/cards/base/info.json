@@ -27,10 +27,18 @@
         }
     ],
     "action":{
-        "buttons":["attackNormal"],
+        "buttons":["attackNormal", "spawn"],
         "perTurn":1,
         "attackNormal":{
             "cost":1,
+            "map":[
+                [0],
+                [1,1,1,1,1,1,1,1]
+            ]
+        },
+        "spawn":{
+            "unit":"testUnit",
+            "cost":0,
             "map":[
                 [0],
                 [1,1,1,1,1,1,1,1]

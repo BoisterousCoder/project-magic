@@ -1,12 +1,12 @@
 const checkIfPathClear = require('./utils/checkIfPathClear');
 
-function checkIfValidTarget(targetTile, sourceUnit, board, units){
-    if(targetTile.isPassable && sourceUnit.actionsLeft >= 2){
+function checkIfValidTarget(targetTile, sourceUnit, board, units, cardAction){
+    if(targetTile.isPassable && sourceUnit.actionsLeft >= cardAction.cost){
         return checkIfPathClear(targetTile, sourceUnit, board);
     }else{
         // if(!targetTile.isPassable){
         //     console.log('target is not passable');
-        // }else if(sourceUnit.actionsLeft >= 2){
+        // }else if(sourceUnit.actionsLeft >= sourceUnit.card.action.move.cost){
         //     console.log('source unit is out of actions');
         // }else{
         //     console.log('This code shouldn\'t be run. If it is, there is a bug in the code.')
@@ -14,12 +14,12 @@ function checkIfValidTarget(targetTile, sourceUnit, board, units){
         return false;
     }
 }
-function useAction(targetTile, sourceUnit, game){
+function useAction(targetTile, sourceUnit, game, cardAction){
     console.log('Moving Unit');
     game.setUnit(sourceUnit.id, {
         x:targetTile.x,
         y:targetTile.y,
-        actionsLeft:sourceUnit.actionsLeft-sourceUnit.card.action.move.cost
+        actionsLeft:sourceUnit.actionsLeft-cardAction.cost
     });
 }
 module.exports={
@@ -28,5 +28,5 @@ module.exports={
     color:"white",
     name:"move",
     ref:"move",
-    img:"move.svg"
+    img:"imgs/move.svg"
 }

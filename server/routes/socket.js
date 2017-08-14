@@ -150,11 +150,11 @@ module.exports = function(io) {
             }else{
                 isTagetInRange = SOURCE.checkIfInRange(TARGET, data.action);
             }
-            let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units);
+            let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units, SOURCE.card.action[data.action]);
             let isBellongingToPlayer = SOURCE.getIsBelongingTo(GAME, socket.id);
             console.log('a user is attempting to perform the action ' + data.action)
             if(isTagetInRange && isValidAction && isBellongingToPlayer){
-                action.useAction(TARGET, SOURCE, GAME);
+                action.useAction(TARGET, SOURCE, GAME, SOURCE.card.action[data.action]);
             }else{
                 console.log('that action was impossible');
                 console.log('in range: ' + isTagetInRange);

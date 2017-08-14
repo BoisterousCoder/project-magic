@@ -18,6 +18,6 @@
         div(*ngIf='selectedCard.unit')
             h2([style.font-size]='getTextSize("subHeading")') 
                 | Unit Stats
-            p([style.font-size]='getTextSize("normText")')
-                span(*ngFor='let display of selectedCard.propertyDisplay')
-                    | {{display.name}}:{{selectedCard.unit[display.property]}}
+            p(*ngFor='let display of selectedCard.propertyDisplay',
+                [style.font-size]='getTextSize("normText")')
+                | {{display.display}}: {{selectedCard.unit[display.property]}}

@@ -1,11 +1,11 @@
-function checkIfValidTarget(targetTile, sourceUnit, board, units){
+function checkIfValidTarget(targetTile, sourceUnit, board, units, cardAction){
     if(targetTile.unitId || targetTile.unitId == 0){
         return true;
     }else{
         return false;
     }
 }
-function useAction(targetTile, sourceUnit, game){
+function useAction(targetTile, sourceUnit, game, cardAction){
     console.log('Appling Death to a Unit');
     game.setUnit(targetTile.unitId);
 }
@@ -14,5 +14,5 @@ module.exports={
     useAction:useAction,
     name:"kill",
     ref:"kill",
-    img:"move.svg"
+    img:"imgs/attackNormal.svg"
 }

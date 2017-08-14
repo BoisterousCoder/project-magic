@@ -94,10 +94,14 @@ export class GameBoardComponent implements OnInit {
         let unitData = JSON.parse(res);
         if(!unitData.isDead){
             let isUnitSelected = false;
+            let isBellongingToPlayer = false;
             if(this.units[unitData.id]){
                 if(this.units[unitData.id].isSelected){
                     this.units[unitData.id].isSelected=false;
                     isUnitSelected = true;
+                }
+                if(this.units[unitData.id].isBellongingToPlayer){
+                    isBellongingToPlayer = true;
                 }
             }
             this.units[unitData.id] = new Unit(unitData.x, unitData.y, unitData, this.changeBoard, this.unitActions);
@@ -110,6 +114,7 @@ export class GameBoardComponent implements OnInit {
                     tile.unitId = unitData.id;
                 }
             }
+            this.units[unitData.id].isBellongingToPlayer = isBellongingToPlayer;
             if(isUnitSelected){
                 this.selectedUnit.isSelected = false;
                 let unit = this.units[unitData.id];

@@ -1,6 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+const CARD_TYPES = require('./getCardTypes.js')();
 const GEN_GAME_BOARD = require('./genGameBoard.js');
 const Unit = require('./Unit.js');
 const findFurthestTiles = require('./findFurthestTiles');
@@ -37,6 +38,22 @@ class Game{
         }
 
     }
+    makeUnit(x, y, cardRefName, owner){
+        let cardTypeId;
+        for(let cardType of CARD_TYPES){
+            if(cardType.refName == cardRefName){
+                cardTypeId = cardType.typeId;
+                break;
+            }
+        }
+        if(!cardRefName){
+            throw 'Can\'t spawn unknown unit ' + cardRefName;
+        }
+        let unit = new Unit(x, y, cardTypeId);
+        unit.id = this.units.length;
+        this.setUnit(unit.id, unit);
+        this.setUnitOwner(unit.id, owner);
+    }
     genBoard(){
         this.board = [];
         let self = this;
@@ -56,9 +73,11 @@ class Game{
         this.players.map(function(player){
             if(player.socket.id == socketId){
                 self.emit('reload', 'other player disconected');
-                self.players = [];
+                self.players=[];
                 self.board = [];
                 self.units = [];
+                self.baseIds=[];
+                self.owner = {};
                 self.io.emit('updateGameListing', JSON.stringify(self.listing));
             }
         });

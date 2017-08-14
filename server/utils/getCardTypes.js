@@ -18,6 +18,7 @@ module.exports = function(){
         let cardType = fs.readFileSync(folderPath+'info.json', 'utf8')
         cardType = JSON.parse(cardType);
         cardType.typeId = cardTypes.length;
+        cardType.refName = cardName;
         cardType.folderPath = 'assets/cards/'+cardName+'/';
         cardTypes.push(cardType);
     }

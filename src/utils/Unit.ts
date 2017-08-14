@@ -32,7 +32,7 @@ export class Unit extends Point{
         const board = _board;
         const units = _units;
         const tile = _tile;
-        let isValid = action.checkIfValidTarget(tile, self, board, units)
+        let isValid = action.checkIfValidTarget(tile, self, board, units, this.card.action[this.highlightedAction])
         return isValid;
     }
     requestAction(socket, targetTileId){
