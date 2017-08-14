@@ -26,6 +26,7 @@ export class GameBoardComponent implements OnInit {
     board:Tile[] = [];
     units:Unit[] = [];
     selectedUnit;
+    isPlayersTurn:boolean = false;
     @Input() socket;
     @Input() gameId;
     @Input() scale;
@@ -77,6 +78,7 @@ export class GameBoardComponent implements OnInit {
         this.socket.on('setUnit', res => this.onUnitSet(res));
         this.socket.on('setOwner', res => this.onSetOwner(res));
         this.socket.on('finishBoard', res => this.socket.emit('getBase'));
+        this.socket.on('updateIsPlayersTurn', res => {this.onUpdateIsPlayersTurn(res)});
     }
     refreshTileSizes(){
         this.printScale = (this.minWindowSize * (this.layout.viewBox.width/100))/this.boardSize;
@@ -85,6 +87,15 @@ export class GameBoardComponent implements OnInit {
     onTileSet(res:string){
         let tileData = JSON.parse(res);
         this.board[tileData.id] = new Tile(tileData.x, tileData.y, tileData);
+    }
+    onUpdateIsPlayersTurn(res){
+        if(res == 'true'){
+            this.isPlayersTurn = true;
+        }else if(res == 'false'){
+            this.isPlayersTurn = false;
+        }else{
+            console.error('unexpected response '+res);
+        }
     }
     onSetOwner(res){
         let unitId = Number(res);

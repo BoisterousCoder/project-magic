@@ -51,6 +51,11 @@
                 [attr.x]='unit.x + viewOffset.x + 0.15', 
                 [attr.y]='unit.y + viewOffset.y + 0.85', 
                 [attr.transform]="'scale('+landSize+', '+landSize+')'")
+            rect(fill='blue', height='0.15',
+                [attr.width]='0.7*(unit.actionsLeft/unit.card.action.perTurn)'
+                [attr.x]='unit.x + viewOffset.x + 0.15', 
+                [attr.y]='unit.y + viewOffset.y', 
+                [attr.transform]="'scale('+landSize+', '+landSize+')'")
 div(*ngIf='selectedUnit')
     button(*ngFor='let actionName of selectedUnit.card.action.buttons; let i = index', 
         [style.width]='(scale*layout.actionButtons.width)+"px"', 
@@ -61,3 +66,5 @@ div(*ngIf='selectedUnit')
         (click)='selectedUnit.highlightedAction = unitActions[actionName].ref')
         img([attr.src]='"assets/actions/"+unitActions[actionName].img', 
             [style.height]='(scale*layout.actionButtons.height)+"px"')
+.loadingScreen(*ngIf='!isPlayersTurn')
+        img(src='assets/loading.gif')

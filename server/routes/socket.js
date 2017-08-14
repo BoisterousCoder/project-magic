@@ -103,12 +103,7 @@ module.exports = function(io) {
             if(attemptedGame){
                 if(attemptedGame.players.length < attemptedGame.maxPlayers){
                     game = attemptedGame;
-                    game.players.push({
-                        socket:socket,
-                        id:game.players.length
-                    });
-                    io.emit('updateGameListing', JSON.stringify(game.listing));
-                    socket.emit('joinGame', gameId)
+                    game.addPlayer(socket);
                 }else{ 
                     socket.emit('alertUser', attemptedGame.name + ' is full with ' + attemptedGame.players.length + '/' + attemptedGame.maxPlayers + 'players');
                 }
@@ -138,7 +133,7 @@ module.exports = function(io) {
         on('getBase', function(res){
             let baseId = game.baseIds[game.getPlayer(socket.id).id];
             game.setUnitOwner(baseId, socket.id)
-        });
+        }, true);
         on('getGameData', function(res){
             console.log('Fetching tiles for game ' + game.id);
 
@@ -150,11 +145,25 @@ module.exports = function(io) {
                 socket.emit('setUnit', JSON.stringify(unitData));
             }
 
+            if(game.turn == socket.id){
+                socket.emit('updateIsPlayersTurn', 'true');
+            }else{
+                socket.emit('updateIsPlayersTurn', 'false');
+            }
+
             socket.emit('finishBoard');
         }, true);
         on('requestAction', function(res){
             let data = JSON.parse(res);
             game.doAction(data.target, data.source, data.action, socket.id);
+        }, true);
+        on('endTurn', (res) => {
+            if(game.turn == socket.id){
+                let opposingPlayer = game.getOpposingPlayer(socket.id);
+                game.turn = opposingPlayer.socket.id;
+                opposingPlayer.socket.emit('updateIsPlayersTurn', 'true');
+                socket.emit('updateIsPlayersTurn', 'false');
+            }
         }, true);
     });
 };

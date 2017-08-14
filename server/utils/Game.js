@@ -18,6 +18,7 @@ class Game{
         this.actions = actions;
         this.units=[];
         this.owner={};
+        this.turn;
         this.reset = reset;
         this.password='';
         this._destroyFunc = false;
@@ -39,6 +40,17 @@ class Game{
             }
         }
 
+    }
+    addPlayer(socket){
+        this.players.push({
+            socket:socket,
+            id:this.players.length
+        });
+        if(!this.turn){
+            this.turn=socket.id;
+        }
+        this.io.emit('updateGameListing', JSON.stringify(this.listing));
+        socket.emit('joinGame', this.id)
     }
     makeUnit(x, y, cardRefName, owner){
         let cardTypeId;
@@ -110,8 +122,9 @@ class Game{
         }
         let isValidAction = action.checkIfValidTarget(TARGET, SOURCE, GAME.board, GAME.units, SOURCE.card.action[actionName]);
         let isBellongingToPlayer = SOURCE.getIsBelongingTo(GAME, socketId);
+        let isPlayersTurn = (this.turn == socketId);
         console.log('a user is attempting to perform the action ' + actionName);
-        if(isTagetInRange && isValidAction && isBellongingToPlayer){
+        if(isTagetInRange && isValidAction && isBellongingToPlayer && isPlayersTurn){
             action.useAction(TARGET, SOURCE, GAME, SOURCE.card.action[actionName]);
             let uses = SOURCE.card.action[actionName].uses;
             if(uses){
@@ -123,9 +136,10 @@ class Game{
             }
         }else{
             console.log('that action was impossible');
-            console.log('in range: ' + isTagetInRange);
+            console.log('is in range: ' + isTagetInRange);
             console.log('is valid: ' + isValidAction);
             console.log('is belonging to player: ' + isBellongingToPlayer);
+            console.log('is player\'s turn: ' + isPlayersTurn);
         }
     }
     setUnit(unitId, property, value){
@@ -191,6 +205,14 @@ class Game{
     getPlayer(socketId){
         for(let player of this.players){
             if(player.socket.id == socketId){
+                return player;
+                break;
+            }
+        }
+    }
+    getOpposingPlayer(socketId){
+        for(let player of this.players){
+            if(player.socket.id != socketId){
                 return player;
                 break;
             }
