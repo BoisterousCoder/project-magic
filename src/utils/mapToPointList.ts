@@ -2,7 +2,6 @@ import { Point } from './Point';
 
 export function mapToPointList(map, loc:Point):Point[]{
     let pointList:Point[] = [];
-    let self = this;
     map.map((layerPoints, depth) => {
         let topRight = 0; 
         let bottomRight = depth*2;
@@ -30,10 +29,10 @@ export function mapToPointList(map, loc:Point):Point[]{
                     console.error('A layer map has a point out of range')
                     return false;
                 }
-                point = point.combine(self);
+                point = point.combine(loc);
                 pointList.push(point);
             }else if(possiblePoint){
-                let point = new Point(self.x, self.y);
+                let point = new Point(loc.x, loc.y);
                 pointList.push(point);
             }
         });

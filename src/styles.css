@@ -18,7 +18,7 @@
   animation: blinker 1s linear infinite;
 }
 button a{
-    cursor: pointer;
+    cursor: auto;
 }
 .loadingScreen{
     top:0;

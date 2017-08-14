@@ -40,6 +40,7 @@
                 [style.left]='(layout.endTurnButton.x * scale)+"px"', 
                 [style.width]='(layout.endTurnButton.width * scale)+"px"', 
                 [style.height]='(layout.endTurnButton.height * scale)+"px"', 
+                [style.font-size]='(layout.textSize.normText*scale)+"px"',
                 (click)='onEndTurn($event)')
                 | {{layout.endTurnButton.text}}
     #gameSelectWrapper(*ngIf='!isInAGame')

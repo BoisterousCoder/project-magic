@@ -7,6 +7,9 @@ game-board{
     display: block;
     position: absolute;
 }
+button{
+    cursor: auto;
+}
 #endTurn{
     display: block;
     position: absolute;
