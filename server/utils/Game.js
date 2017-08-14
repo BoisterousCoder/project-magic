@@ -1,9 +1,9 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-const CARD_TYPES = require('./getCardTypes.js')();
-const GEN_GAME_BOARD = require('./genGameBoard.js');
-const Unit = require('./Unit.js');
+const CARD_TYPES = require('./getUnitTypes')();
+const GEN_GAME_BOARD = require('./genGameBoard');
+const Unit = require('./Unit');
 const findFurthestTiles = require('./findFurthestTiles');
 const EMPTINESS_UPDATE_DELAY = 60 * 1000;//In miliseconds
 
