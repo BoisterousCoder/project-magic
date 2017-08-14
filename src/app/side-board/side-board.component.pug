@@ -13,11 +13,30 @@
                 [style.max-height]='(layout.infoBoard.img.maxHeight*scale)+"px"')
         div
             h2([style.font-size]='getTextSize("subHeading")') Description
-            p([style.font-size]='getTextSize("normText")')
+            .p([style.font-size]='getTextSize("normText")')
                 | {{selectedCard.desc}}
         div(*ngIf='selectedCard.unit')
             h2([style.font-size]='getTextSize("subHeading")') 
                 | Unit Stats
-            p(*ngFor='let display of selectedCard.propertyDisplay',
+            .p(*ngFor='let display of selectedCard.propertyDisplay',
                 [style.font-size]='getTextSize("normText")')
                 | {{display.display}}: {{selectedCard.unit[display.property]}}
+            .p([style.font-size]='getTextSize("normText")')
+                | Action Points (AP): {{selectedCard.action.perTurn}}
+        div(*ngIf='selectedCard.unit')
+            h2([style.font-size]='getTextSize("subHeading")')
+                | Actions
+            .bold(*ngFor='let actionName of selectedCard.action.buttons',
+                [style.font-size]='getTextSize("normText")')
+                | {{actionName}}
+                br
+                .p(*ngIf='selectedCard.action[actionName].cost',
+                    [style.font-size]='getTextSize("normText")')
+                    | AP Cost: {{selectedCard.action[actionName].cost}}
+                .p(*ngIf='!selectedCard.action[actionName].cost',
+                    [style.font-size]='getTextSize("normText")')
+                    | AP Cost: 0
+                .p.monospace(*ngIf='selectedCard.action[actionName].map')
+                    .p(*ngFor='let command of mapToCommandArray(selectedCard.action[actionName].map)',
+                        [style.font-size]='getTextSize("normText")')
+                        |{{command}}

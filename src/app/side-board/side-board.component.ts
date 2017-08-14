@@ -18,8 +18,49 @@ export class SideBoardComponent implements OnInit {
     @Input() layout
     selectedCard;
     @Input() isWindowVertical;
-    private mapToPointList(map){
-        return mapToPointList(map, new Point());
+    private getMinMaxOfPointList(pointList){
+        let minPoint = new Point();
+        let maxPoint = new Point();
+        pointList.map((point)=>{
+            minPoint.x = Math.min(point.x, minPoint.x);
+            maxPoint.x = Math.max(point.x, maxPoint.x);
+            minPoint.y = Math.min(point.y, minPoint.y);
+            maxPoint.y = Math.max(point.y, maxPoint.y);
+        });
+        return {minPoint,maxPoint};
+    }
+    private mapToCommandArray(map){
+        let pointList = mapToPointList(map, new Point());
+        let minMax = this.getMinMaxOfPointList(pointList);
+        let minPoint = minMax.minPoint;
+        let maxPoint = minMax.maxPoint;
+        let array2d = [];
+        for(let point of pointList){
+            point = point.distance(minPoint).round();
+            if(!array2d[point.x]){
+                array2d[point.x] = [];
+            }
+            array2d[point.x][point.y] = true;
+        }
+        let commandArray = [];
+        let size = new Point(maxPoint.x-minPoint.x, maxPoint.y-minPoint.y);
+        for(let x = 0; x <= size.x; x++){
+            commandArray[x] = '';
+            if(array2d[x]){
+                for(let y = 0; y <= size.y; y++){
+                    if(array2d[x][y]){
+                        commandArray[x] += '1'
+                    }else{
+                        commandArray[x] += '0'
+                    }
+                }
+            }else{
+                for(let y = 0; y <= size.y; y++){
+                    commandArray[x] += '0'
+                }
+            }
+        }
+        return commandArray;
     }
     getTextSize(type){
         return (this.layout.textSize[type]*this.scale)+"px"

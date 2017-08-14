@@ -12,13 +12,22 @@
     font-size: inherit;
 }
 @keyframes blinker {  
-  50% { opacity: 0; }
+  50% {opacity: 0;}
 }
 .blink {
   animation: blinker 1s linear infinite;
 }
 button a{
     cursor: auto;
+}
+.monospace{
+    font-family: "Courier New", Courier, monospace
+}
+.bold{
+    font-weight: bolder;
+}
+.p{
+    font-weight: normal;
 }
 .loadingScreen{
     top:0;
