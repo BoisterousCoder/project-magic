@@ -33,3 +33,6 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Further Angular CLI help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## The Discord
+I will be using discord for public server communication. You can join the server [here](https://discord.gg/PURpPSr). This is just so anyone joinning can catch up on what is happenning. 
