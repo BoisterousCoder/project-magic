@@ -1,3 +1,8 @@
+##
+##Notice 
+##
+Project Magic will now be depreciated as the project should be resurected in the near future as project-cardboard with more up to date frameworks as this project has been left un attended for a long while now. This has become nessesary as the project has become difficult to work on the old frameworks that have had their documention updated for new versions that this project is not using. During this transition project cardboard should also do some refactoring as some of the names have become very confusing.
+
 # ProjectMagic
 
 This project's server side was generated with [Express JS](https://expressjs.com/) version 4.15.0
